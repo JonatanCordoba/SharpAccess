@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>SharpAccess test console</title>
+  <link rel="stylesheet" href="/css/app.css">
+  <script src="/js/oauth-flow.js" defer></script>
+  <script type="module" src="/js/app.js"></script>
+</head>
+<body>
+  <div id="boot" class="boot-screen" role="status" aria-live="polite">
+    <div class="brand-mark" aria-hidden="true">S</div>
+    <h1>SharpAccess</h1>
+    <p>Loading the local test console…</p>
+  </div>
+
+  <main id="login-view" class="login-view hidden" aria-labelledby="login-title">
+    <section class="login-card surface elevation-3">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true">S</div>
+        <div>
+          <p class="eyebrow">Local test environment</p>
+          <h1 id="login-title">Sign in to SharpAccess</h1>
+        </div>
+      </div>
+      <p class="supporting">Use one of the accounts created by the first-run console setup. Secrets remain in Windows Credential Manager.</p>
+      <form id="login-form" class="stack" autocomplete="on">
+        <label class="field">
+          <span>Email</span>
+          <input id="login-email" name="email" type="email" autocomplete="username" required>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="button primary" type="submit">Sign in</button>
+      </form>
+      <div id="oidc-options" class="oidc-options" aria-label="External sign-in options"></div>
+      <div class="login-links">
+        <button class="text-button" data-action="show-register" type="button">Register a test user</button>
+        <button class="text-button" data-action="show-forgot" type="button">Forgot password</button>
+      </div>
+      <details class="test-accounts">
+        <summary>Seeded test accounts</summary>
+        <div id="account-list"></div>
+      </details>
+      <p id="login-error" class="error-text" role="alert"></p>
+    </section>
+  </main>
+
+  <div id="app-view" class="app-layout hidden">
+    <header class="top-app-bar elevation-2">
+      <button id="menu-button" class="icon-button" type="button" aria-label="Toggle navigation">☰</button>
+      <a class="app-title" href="/dashboard" data-link>SharpAccess</a>
+      <span id="context-chip" class="chip">Global context</span>
+      <span class="spacer"></span>
+      <button id="theme-button" class="icon-button" type="button" aria-label="Toggle theme">◐</button>
+      <button id="account-button" class="account-button" type="button" aria-haspopup="true">Account</button>
+    </header>
+
+    <aside id="drawer" class="navigation-drawer elevation-1" aria-label="Primary navigation">
+      <div class="drawer-brand">
+        <div class="brand-mark small" aria-hidden="true">S</div>
+        <div><strong>Test console</strong><small>Non-packable sample</small></div>
+      </div>
+      <nav id="primary-nav">
+        <a href="/dashboard" data-link data-route="dashboard">Dashboard</a>
+        <a href="/users" data-link data-route="users">Users</a>
+        <a href="/tenants" data-link data-route="tenants">Tenants</a>
+        <a href="/roles" data-link data-route="roles">Roles</a>
+        <a href="/permissions" data-link data-route="permissions">Permissions</a>
+        <a href="/modules" data-link data-route="modules">Modules</a>
+        <a href="/audit" data-link data-route="audit">Audit</a>
+        <a href="/settings" data-link data-route="settings">Sample settings</a>
+      </nav>
+      <div class="drawer-footer">
+        <span id="user-email"></span>
+        <button id="logout-button" class="button tonal" type="button">Sign out</button>
+      </div>
+    </aside>
+
+    <main id="content" class="content" tabindex="-1"></main>
+  </div>
+
+  <dialog id="form-dialog" class="dialog surface">
+    <form method="dialog" class="stack">
+      <div class="dialog-heading">
+        <h2 id="dialog-title">Action</h2>
+        <button class="icon-button" value="cancel" aria-label="Close dialog">×</button>
+      </div>
+      <div id="dialog-body"></div>
+      <div class="dialog-actions">
+        <button class="button text" value="cancel">Cancel</button>
+        <button id="dialog-submit" class="button primary" value="default">Continue</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="snackbar" class="snackbar" role="status" aria-live="polite"></div>
+</body>
+</html>

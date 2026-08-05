@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>SharpAccess.EndpointTests</AssemblyName>
+    <RootNamespace>SharpAccess.EndpointTests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="../../src/SharpAccess.Core/SharpAccess.Core.csproj" />
+    <ProjectReference Include="../../providers/SharpAccess.Sqlite/SharpAccess.Sqlite.csproj" />
+    <ProjectReference Include="../../samples/SharpAccess.SampleApi/SharpAccess.SampleApi.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.OpenApi" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" />
+    <PackageReference Include="coverlet.collector" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

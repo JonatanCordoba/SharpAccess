@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>SharpAccess.QualityReport</AssemblyName>
+    <RootNamespace>SharpAccess.QualityReport</RootNamespace>
+    <StartupObject>SharpAccess.QualityReport.QualityReportEntryPoint</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Locator" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Build.Framework">
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Update="Microsoft.Build.Framework">
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.AnalyzerUtilities" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Target Name="RemoveTransitiveMSBuildFrameworkRuntimeAsset"
+          AfterTargets="ResolvePackageAssets"
+          BeforeTargets="EnsureMSBuildAssembliesNotCopied">
+    <ItemGroup>
+      <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)"
+                             Condition="'%(RuntimeCopyLocalItems.NuGetPackageId)' == 'Microsoft.Build.Framework'" />
+    </ItemGroup>
+  </Target>
+</Project>

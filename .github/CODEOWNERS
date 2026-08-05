@@ -1,0 +1,31 @@
+# Repository ownership for the Windows-only SharpAccess release tree.
+* @JonatanCordoba
+
+# Governance, release, dependency, CI, operational, and privacy controls.
+/.github/ @JonatanCordoba
+/eng/ @JonatanCordoba
+/SECURITY.md @JonatanCordoba
+/docs/SECURITY.md @JonatanCordoba
+/docs/THREAT_MODEL.md @JonatanCordoba
+/docs/RELEASE-CHECKLIST.md @JonatanCordoba
+/docs/OPERATIONS.md @JonatanCordoba
+/docs/OBSERVABILITY.md @JonatanCordoba
+/docs/INCIDENT-RESPONSE.md @JonatanCordoba
+/docs/BUSINESS-CONTINUITY.md @JonatanCordoba
+/docs/PRIVACY.md @JonatanCordoba
+/docs/CHANGE-MANAGEMENT.md @JonatanCordoba
+/docs/QUALITY-OBJECTIVES.md @JonatanCordoba
+/docs/templates/ @JonatanCordoba
+/Directory.Build.props @JonatanCordoba
+/Directory.Build.targets @JonatanCordoba
+/Directory.Packages.props @JonatanCordoba
+
+# Product code and active provider boundaries.
+/src/SharpAccess.Core/ @JonatanCordoba
+/providers/Shared/ @JonatanCordoba
+/providers/SharpAccess.Sqlite/ @JonatanCordoba
+/providers/SharpAccess.Postgres/ @JonatanCordoba
+/samples/SharpAccess.SampleApi/ @JonatanCordoba
+/tools/ @JonatanCordoba
+/tests/ @JonatanCordoba
+/scripts/ @JonatanCordoba

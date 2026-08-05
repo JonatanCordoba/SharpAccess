@@ -1,0 +1,101 @@
+name: Bug report
+description: Report a reproducible SharpAccess defect
+title: "[Bug]: "
+labels:
+  - bug
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve SharpAccess. Do not include credentials, signing keys, password peppers, raw tokens, connection strings, personal data, or active OIDC secrets. Report suspected vulnerabilities privately through the Security tab instead.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Affected package
+      options:
+        - SharpAccess.Core
+        - SharpAccess.Sqlite
+        - SharpAccess.Postgres
+        - Sample API or repository automation
+        - Unsure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: SharpAccess version or commit
+      placeholder: 0.9.0-rc.1 or commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Selected DB provider
+      options:
+        - SQLite
+        - PostgreSQL
+        - Not applicable
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Include Windows version and the exact .NET SDK version.
+      placeholder: Windows 11 24H2; .NET SDK 10.0.302
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal safe reproduction
+      description: Provide the smallest configuration and steps that reproduce the problem. Replace all secrets with placeholders.
+      placeholder: |
+        1. Register SharpAccess.Core and one provider...
+        2. Configure...
+        3. Call...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include sanitized exception categories or logs when useful.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      multiple: true
+      options:
+        - Authentication
+        - Authorization or tenancy
+        - JWT or refresh tokens
+        - Password flows
+        - OpenID Connect
+        - Migrations or persistence
+        - Rate limiting or middleware
+        - Packaging or public API
+        - Verification, quality, or release tooling
+        - Documentation
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: I searched existing issues and the Wiki for this problem.
+          required: true
+        - label: I removed secrets, credentials, tokens, connection strings, and personal data.
+          required: true
+        - label: This is not a vulnerability report.
+          required: true

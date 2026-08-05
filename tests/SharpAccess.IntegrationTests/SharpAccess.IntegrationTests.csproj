@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>SharpAccess.IntegrationTests</AssemblyName>
+    <RootNamespace>SharpAccess.IntegrationTests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="../../src/SharpAccess.Core/SharpAccess.Core.csproj" />
+    <ProjectReference Include="../../providers/SharpAccess.Sqlite/SharpAccess.Sqlite.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" />
+    <PackageReference Include="coverlet.collector" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

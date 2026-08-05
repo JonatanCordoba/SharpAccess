@@ -1,0 +1,9 @@
+<Project>
+  <ItemGroup>
+    <CoverageGate Include="CombinedSupported" Line="0.70" Branch="0.00" />
+    <CoverageGate Include="Core" Line="0.85" Branch="0.75" />
+    <CoverageGate Include="Sqlite" Line="0.80" Branch="0.65" />
+    <CoverageGate Include="Postgres" Line="0.80" Branch="0.65" />
+    <CoverageGate Include="ChangedHandwrittenProduction" Line="0.90" Branch="0.75" />
+  </ItemGroup>
+</Project>

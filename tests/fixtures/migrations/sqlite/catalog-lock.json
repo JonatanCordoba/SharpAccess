@@ -1,0 +1,21 @@
+{
+  "provider": "sqlite",
+  "baseCommit": "a4e1da74b2d2d0b2120a92582b64a9264e3c463e",
+  "historicalSources": [
+    { "path": "providers/SharpAccess.Sqlite/Migrations/SqliteMigrations.cs", "gitBlob": "0638a7f278ee8c8baa7329c51e61b184db831037" },
+    { "path": "providers/SharpAccess.Sqlite/Migrations/SqliteAuthorizationScopeMigration.cs", "gitBlob": "e875a377480bb8a60cd09ce17924dc8719a9e68d" },
+    { "path": "providers/SharpAccess.Sqlite/Migrations/SqliteTenantOwnerRoleMigration.cs", "gitBlob": "4d5621df6c90a9b96e8ba3a3b47925c8e4a4143b" },
+    { "path": "providers/SharpAccess.Sqlite/Migrations/SqliteAuthorizationDefaultCorrectionMigration.cs", "gitBlob": "ef57e55ef9b70301506ff6ef35c8f928158b2131" },
+    { "path": "providers/SharpAccess.Sqlite/Migrations/SqliteLegacyTenantRoleCleanupMigration.cs", "gitBlob": "3f781e267eee3bb2f105ae9efb2caeb0a625e720" }
+  ],
+  "migrationIds": [
+    "001_initial_schema",
+    "002_builtin_authorization_catalog",
+    "003_split_one_time_tokens",
+    "004_user_listing_created_index",
+    "005_split_global_tenant_authorization",
+    "006_add_immutable_tenant_owner_role",
+    "007_remove_standard_user_cross_tenant_read",
+    "008_remove_legacy_global_roles_from_tenant_catalogs"
+  ]
+}

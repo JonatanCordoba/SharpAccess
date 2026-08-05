@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <SharpAccessVersion>0.9.0-rc.1</SharpAccessVersion>
+    <Version>$(SharpAccessVersion)</Version>
+  </PropertyGroup>
+</Project>

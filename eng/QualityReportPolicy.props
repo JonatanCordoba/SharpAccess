@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <QualityReportSchemaVersion>2</QualityReportSchemaVersion>
+    <QualityReportEnforcement>EvidenceOnly</QualityReportEnforcement>
+    <QualityReportTopHotspots>100</QualityReportTopHotspots>
+  </PropertyGroup>
+  <ItemGroup>
+    <QualityReportProject Include="src/SharpAccess.Core/SharpAccess.Core.csproj" Assembly="SharpAccess.Core" Classification="Production" />
+    <QualityReportProject Include="providers/SharpAccess.Sqlite/SharpAccess.Sqlite.csproj" Assembly="SharpAccess.Sqlite" Classification="Production" />
+    <QualityReportProject Include="providers/SharpAccess.Postgres/SharpAccess.Postgres.csproj" Assembly="SharpAccess.Postgres" Classification="Production" />
+
+    <!-- Newly consolidated values are mandatory evidence but informational until a reviewed baseline is accepted. -->
+    <QualityReportThreshold Include="CyclomaticComplexity" Warning="15" Critical="25" Enforcement="ExistingGate" />
+    <QualityReportThreshold Include="CrapScore" Warning="15" Critical="30" Enforcement="EvidenceOnly" />
+    <QualityReportThreshold Include="MaintainabilityIndex" Warning="20" Critical="10" Enforcement="EvidenceOnly" Direction="Minimum" />
+    <QualityReportThreshold Include="ClassCoupling" Warning="40" Critical="95" Enforcement="EvidenceOnly" />
+    <QualityReportThreshold Include="Instability" Warning="0.80" Critical="0.95" Enforcement="EvidenceOnly" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,97 @@
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  DOTNET_NOLOGO: '1'
+  CHANGED_CODE_BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
+  API_TEST_PORT: '5000'
+
+jobs:
+  windows:
+    name: windows
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
+      - name: Validate PowerShell policy
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $shellFiles = @(Get-ChildItem -Recurse -File -Filter *.sh)
+          if ($shellFiles.Count -ne 0) { throw "Bash files are forbidden: $($shellFiles.FullName -join ', ')" }
+          Get-ChildItem -LiteralPath scripts -Filter *.ps1 | ForEach-Object {
+            [void][scriptblock]::Create((Get-Content -LiteralPath $_.FullName -Raw))
+            if ((Get-Content -LiteralPath $_.FullName -TotalCount 1) -ne '#Requires -Version 7.0') { throw "$($_.Name) does not require PowerShell 7." }
+          }
+      - name: Verify workflow action pins
+        shell: pwsh
+        run: ./scripts/verify-action-pins.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE
+      - name: Validate repository structure
+        shell: pwsh
+        run: ./scripts/verify-structure.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE
+      - name: Verify locked restore
+        shell: pwsh
+        run: dotnet restore SharpAccess.sln --locked-mode
+      - name: Build, test, coverage, and complexity
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Path artifacts/logs -Force | Out-Null
+          $base = $env:CHANGED_CODE_BASE_REF
+          if ([string]::IsNullOrWhiteSpace($base) -or $base -match '^0+$') { $base = 'HEAD^' }
+          ./scripts/setup-test.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE -ChangedLineBaseRef $base *>&1 | Tee-Object -FilePath artifacts/logs/setup-test-windows.log
+          if ($LASTEXITCODE -ne 0) { throw "setup-test.ps1 failed with exit code $LASTEXITCODE." }
+      - name: Audit vulnerable packages
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path artifacts/sca -Force | Out-Null
+          dotnet list SharpAccess.sln package --vulnerable --include-transitive --format json | Set-Content artifacts/sca/nuget-vulnerabilities.json -Encoding utf8
+          if ($LASTEXITCODE -ne 0) { throw 'Package vulnerability audit failed.' }
+      - name: Verify API from special-character repository path
+        shell: pwsh
+        run: |
+          $specialRoot = Join-Path $env:RUNNER_TEMP 'sharpaccess repo # path'
+          if (Test-Path -LiteralPath $specialRoot) { Remove-Item -LiteralPath $specialRoot -Force }
+          New-Item -ItemType Junction -Path $specialRoot -Target $env:GITHUB_WORKSPACE | Out-Null
+          ./scripts/check-api.ps1 -RepositoryRoot $specialRoot -Port ([int]$env:API_TEST_PORT) -BaseUrl "http://127.0.0.1:$env:API_TEST_PORT" -TestEmail 'admin@test.local' -TestPassword 'Admin123!Sample' -StartApi -StopApi
+      - name: Pack supported packages
+        shell: pwsh
+        run: ./scripts/pack.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE
+      - name: Package consumer smoke test
+        shell: pwsh
+        run: ./scripts/package-smoke.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE
+      - name: Generate SBOM evidence
+        shell: pwsh
+        run: ./scripts/sbom.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE -ReplaceExistingOutput
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: windows-verification-${{ github.sha }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            artifacts/packages/**/*
+            artifacts/coverage/**/*
+            artifacts/sbom/**/*
+            artifacts/sca/**/*
+            artifacts/logs/**/*
+            artifacts/package-smoke/**/*

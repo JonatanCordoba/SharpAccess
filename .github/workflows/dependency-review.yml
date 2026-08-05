@@ -1,0 +1,48 @@
+name: dependency review
+
+on:
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  DOTNET_NOLOGO: '1'
+
+jobs:
+  review:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Review dependency changes
+        id: dependency_review
+        continue-on-error: true
+        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4.9.0
+        with:
+          fail-on-severity: moderate
+          retry-on-snapshot-warnings: true
+
+      - name: Set up .NET fallback
+        if: steps.dependency_review.outcome == 'failure'
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
+
+      - name: Run fail-closed NuGet vulnerability fallback
+        if: steps.dependency_review.outcome == 'failure'
+        shell: pwsh
+        run: |
+          Write-Warning 'GitHub dependency review was unavailable or failed; running the locked NuGet audit fallback.'
+          dotnet restore SharpAccess.sln --locked-mode -p:NuGetAudit=true -p:NuGetAuditMode=all -warnaserror
+          if ($LASTEXITCODE -ne 0) {
+            throw 'The locked NuGet vulnerability fallback failed.'
+          }

@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "baselineStatus": "approved",
+  "policy": {
+    "assemblies": [
+      "SharpAccess.Core",
+      "SharpAccess.Sqlite",
+      "SharpAccess.Postgres"
+    ],
+    "maximumCyclomaticComplexity": 15,
+    "maximumCrapScore": 30.0,
+    "crapRegressionTolerance": 0.25
+  },
+  "hotspots": [
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Diagnostics.SharpAccessDiagnostics|TrackAsync|()",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Diagnostics.SharpAccessDiagnostics",
+      "Method": "TrackAsync",
+      "Signature": "()",
+      "File": "src/SharpAccess.Core/Diagnostics/SharpAccessDiagnostics.cs",
+      "StartLine": 67,
+      "CyclomaticComplexity": 28,
+      "CrapScore": 28.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Services.TenantService|TransferOwnershipAsync|()",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Services.TenantService",
+      "Method": "TransferOwnershipAsync",
+      "Signature": "()",
+      "File": "src/SharpAccess.Core/Services/TenantService.cs",
+      "StartLine": 192,
+      "CyclomaticComplexity": 16,
+      "CrapScore": 25.48
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Tokens.JwtAccessTokenService|Create|(SharpAccess.Domain.UserContext,System.DateTimeOffset)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Tokens.JwtAccessTokenService",
+      "Method": "Create",
+      "Signature": "(SharpAccess.Domain.UserContext,System.DateTimeOffset)",
+      "File": "src/SharpAccess.Core/Tokens/JwtAccessTokenService.cs",
+      "StartLine": 59,
+      "CyclomaticComplexity": 24,
+      "CrapScore": 24.05
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.OAuth.OAuthService|ExchangeAsync|()",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.OAuth.OAuthService",
+      "Method": "ExchangeAsync",
+      "Signature": "()",
+      "File": "src/SharpAccess.Core/OAuth/OpenIdConnectOAuthService.cs",
+      "StartLine": 434,
+      "CyclomaticComplexity": 24,
+      "CrapScore": 24.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Services.PasswordChangeUseCase|ChangePasswordAsync|()",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Services.PasswordChangeUseCase",
+      "Method": "ChangePasswordAsync",
+      "Signature": "()",
+      "File": "src/SharpAccess.Core/Services/PasswordChangeUseCase.cs",
+      "StartLine": 27,
+      "CyclomaticComplexity": 22,
+      "CrapScore": 22.0
+    },
+    {
+      "Key": "SharpAccess.Sqlite|SharpAccess.Sqlite.SqliteAuthDatabaseErrorClassifier|ClassifyCodes|(System.Int32,System.Int32)",
+      "Assembly": "SharpAccess.Sqlite",
+      "Class": "SharpAccess.Sqlite.SqliteAuthDatabaseErrorClassifier",
+      "Method": "ClassifyCodes",
+      "Signature": "(System.Int32,System.Int32)",
+      "File": "providers/SharpAccess.Sqlite/Persistence/SqliteAuthDatabaseErrorClassifier.cs",
+      "StartLine": 24,
+      "CyclomaticComplexity": 21,
+      "CrapScore": 21.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Endpoints.AuthEndpointMapper|NormalizeRefreshCookiePath|(System.String)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Endpoints.AuthEndpointMapper",
+      "Method": "NormalizeRefreshCookiePath",
+      "Signature": "(System.String)",
+      "File": "src/SharpAccess.Core/Endpoints/AuthEndpointMapper.cs",
+      "StartLine": 390,
+      "CyclomaticComplexity": 20,
+      "CrapScore": 20.3
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.OAuth.OpenIdConnectOAuthProvider|ExchangeAndValidateCoreAsync|()",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.OAuth.OpenIdConnectOAuthProvider",
+      "Method": "ExchangeAndValidateCoreAsync",
+      "Signature": "()",
+      "File": "src/SharpAccess.Core/OAuth/OpenIdConnectOAuthService.cs",
+      "StartLine": 638,
+      "CyclomaticComplexity": 20,
+      "CrapScore": 20.2
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Endpoints.AuthEndpointMapper|EnsureOpenIdConnectCallbacksDoNotCollide|(SharpAccess.Configuration.AuthOptions,System.String,System.Boolean)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Endpoints.AuthEndpointMapper",
+      "Method": "EnsureOpenIdConnectCallbacksDoNotCollide",
+      "Signature": "(SharpAccess.Configuration.AuthOptions,System.String,System.Boolean)",
+      "File": "src/SharpAccess.Core/Endpoints/AuthEndpointMapper.cs",
+      "StartLine": 127,
+      "CyclomaticComplexity": 20,
+      "CrapScore": 20.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Endpoints.EndpointResultFactory|Problem|(SharpAccess.Domain.AuthError,System.String)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Endpoints.EndpointResultFactory",
+      "Method": "Problem",
+      "Signature": "(SharpAccess.Domain.AuthError,System.String)",
+      "File": "src/SharpAccess.Core/Endpoints/EndpointResultFactory.cs",
+      "StartLine": 11,
+      "CyclomaticComplexity": 20,
+      "CrapScore": 20.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Persistence.AuthMigrationManager|MigrateCoreAsync|()",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Persistence.AuthMigrationManager",
+      "Method": "MigrateCoreAsync",
+      "Signature": "()",
+      "File": "src/SharpAccess.Core/Persistence/AuthMigrationSupport.cs",
+      "StartLine": 103,
+      "CyclomaticComplexity": 18,
+      "CrapScore": 18.4
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Security.Argon2idPasswordHasher|TryParseParameters|(System.String,System.Int32&,System.Int32&,System.Int32&)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Security.Argon2idPasswordHasher",
+      "Method": "TryParseParameters",
+      "Signature": "(System.String,System.Int32&,System.Int32&,System.Int32&)",
+      "File": "src/SharpAccess.Core/Security/PasswordHasher.cs",
+      "StartLine": 342,
+      "CyclomaticComplexity": 18,
+      "CrapScore": 18.15
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.AccessTokenKeyRingGuard|ValidateCertificate|(System.Security.Cryptography.X509Certificates.X509Certificate2,System.Boolean,System.String,System.DateTimeOffset)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.AccessTokenKeyRingGuard",
+      "Method": "ValidateCertificate",
+      "Signature": "(System.Security.Cryptography.X509Certificates.X509Certificate2,System.Boolean,System.String,System.DateTimeOffset)",
+      "File": "src/SharpAccess.Core/Tokens/AccessTokenKeyRingGuard.cs",
+      "StartLine": 188,
+      "CyclomaticComplexity": 18,
+      "CrapScore": 18.12
+    },
+    {
+      "Key": "SharpAccess.Core|Microsoft.AspNetCore.Builder.AuthApplicationExtensions|MapSharpAccessEndpoints|(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "Microsoft.AspNetCore.Builder.AuthApplicationExtensions",
+      "Method": "MapSharpAccessEndpoints",
+      "Signature": "(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String)",
+      "File": "src/SharpAccess.Core/Extensions/AuthApplicationExtensions.cs",
+      "StartLine": 135,
+      "CyclomaticComplexity": 18,
+      "CrapScore": 18.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Configuration.AuthOptionsValidator|ValidateLocalPath|(System.String,System.String,System.Collections.Generic.List`1<System.String>)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Configuration.AuthOptionsValidator",
+      "Method": "ValidateLocalPath",
+      "Signature": "(System.String,System.String,System.Collections.Generic.List`1<System.String>)",
+      "File": "src/SharpAccess.Core/Configuration/AuthOptionsValidator.Common.cs",
+      "StartLine": 344,
+      "CyclomaticComplexity": 18,
+      "CrapScore": 18.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Endpoints.AuthEndpointMapper|Map|(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String,SharpAccess.Configuration.AuthOptions)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Endpoints.AuthEndpointMapper",
+      "Method": "Map",
+      "Signature": "(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String,SharpAccess.Configuration.AuthOptions)",
+      "File": "src/SharpAccess.Core/Endpoints/AuthEndpointMapper.cs",
+      "StartLine": 33,
+      "CyclomaticComplexity": 18,
+      "CrapScore": 18.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.OAuth.OAuthService|HasBoundedIdentityClaims|(SharpAccess.OAuth.OAuthProviderIdentity)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.OAuth.OAuthService",
+      "Method": "HasBoundedIdentityClaims",
+      "Signature": "(SharpAccess.OAuth.OAuthProviderIdentity)",
+      "File": "src/SharpAccess.Core/OAuth/OpenIdConnectOAuthService.cs",
+      "StartLine": 492,
+      "CyclomaticComplexity": 18,
+      "CrapScore": 18.0
+    },
+    {
+      "Key": "SharpAccess.Sqlite|SharpAccess.Sqlite.SqliteAuthStore|GetEffectiveAuthorizationContextAsync|()",
+      "Assembly": "SharpAccess.Sqlite",
+      "Class": "SharpAccess.Sqlite.SqliteAuthStore",
+      "Method": "GetEffectiveAuthorizationContextAsync",
+      "Signature": "()",
+      "File": "providers/SharpAccess.Sqlite/Stores/Authorization/SqliteAuthStore.Authorization.cs",
+      "StartLine": 57,
+      "CyclomaticComplexity": 18,
+      "CrapScore": 18.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Configuration.AuthOptionsValidator|Validate|(System.String,SharpAccess.Configuration.AuthOptions)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Configuration.AuthOptionsValidator",
+      "Method": "Validate",
+      "Signature": "(System.String,SharpAccess.Configuration.AuthOptions)",
+      "File": "src/SharpAccess.Core/Configuration/AuthOptionsValidator.cs",
+      "StartLine": 29,
+      "CyclomaticComplexity": 16,
+      "CrapScore": 16.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.ConfiguredAccessTokenSigningKeyRing|.ctor|(Microsoft.Extensions.Options.IOptions`1<SharpAccess.Configuration.AuthOptions>,SharpAccess.Abstractions.IAuthClock)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.ConfiguredAccessTokenSigningKeyRing",
+      "Method": ".ctor",
+      "Signature": "(Microsoft.Extensions.Options.IOptions`1<SharpAccess.Configuration.AuthOptions>,SharpAccess.Abstractions.IAuthClock)",
+      "File": "src/SharpAccess.Core/Tokens/ConfiguredAccessTokenSigningKeyRing.cs",
+      "StartLine": 15,
+      "CyclomaticComplexity": 16,
+      "CrapScore": 16.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.OAuth.OAuthService|HandleCallbackAsync|()",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.OAuth.OAuthService",
+      "Method": "HandleCallbackAsync",
+      "Signature": "()",
+      "File": "src/SharpAccess.Core/OAuth/OpenIdConnectOAuthService.cs",
+      "StartLine": 191,
+      "CyclomaticComplexity": 16,
+      "CrapScore": 16.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.OAuth.OpenIdConnectOAuthProvider|ValidateIdentityClaims|(System.Security.Claims.ClaimsIdentity,SharpAccess.Configuration.OpenIdConnectProviderOptions,System.String,System.DateTimeOffset)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.OAuth.OpenIdConnectOAuthProvider",
+      "Method": "ValidateIdentityClaims",
+      "Signature": "(System.Security.Claims.ClaimsIdentity,SharpAccess.Configuration.OpenIdConnectProviderOptions,System.String,System.DateTimeOffset)",
+      "File": "src/SharpAccess.Core/OAuth/OpenIdConnectOAuthService.cs",
+      "StartLine": 720,
+      "CyclomaticComplexity": 16,
+      "CrapScore": 16.0
+    },
+    {
+      "Key": "SharpAccess.Core|SharpAccess.Security.InputValidator|TryValidateReturnUrl|(System.String,System.String&)",
+      "Assembly": "SharpAccess.Core",
+      "Class": "SharpAccess.Security.InputValidator",
+      "Method": "TryValidateReturnUrl",
+      "Signature": "(System.String,System.String&)",
+      "File": "src/SharpAccess.Core/Security/InputValidator.cs",
+      "StartLine": 110,
+      "CyclomaticComplexity": 16,
+      "CrapScore": 16.0
+    }
+  ]
+}

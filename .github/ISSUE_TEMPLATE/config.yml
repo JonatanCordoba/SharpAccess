@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/JonatanCordoba/SharpAccess/security/advisories/new
+    about: Report suspected vulnerabilities privately. Never open a public security issue.
+  - name: SharpAccess Wiki
+    url: https://github.com/JonatanCordoba/SharpAccess/wiki
+    about: Read setup, configuration, architecture, operations, quality, and troubleshooting guidance.

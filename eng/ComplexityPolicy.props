@@ -1,0 +1,5 @@
+<Project>
+  <ItemGroup>
+    <ComplexityGate Include="SupportedProduction" Assemblies="SharpAccess.Core;SharpAccess.Sqlite;SharpAccess.Postgres" Enforcement="Ratchet" MaximumCyclomaticComplexity="15" MaximumCrapScore="30" CrapRegressionTolerance="0.25" ReportTop="100" />
+  </ItemGroup>
+</Project>

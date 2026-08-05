@@ -1,0 +1,23 @@
+title = "SharpAccess secret scanning"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Exact deterministic CI fixture values"
+regexes = [
+  "Admin123!Sample",
+  "SharpAccess_CI_12345"
+]
+
+[[allowlists]]
+description = "Deterministic test fixture patterns in test-only paths"
+condition = "AND"
+paths = [
+  "tests/",
+  "samples/",
+  'scripts/package-smoke\.(ps1|sh)$'
+]
+regexes = [
+  "(?:TEST|SMOKE|SAMPLE)[-_A-Z0-9!]{12,}"
+]

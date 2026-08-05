@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>SharpAccess.Core</AssemblyName>
+    <RootNamespace>SharpAccess</RootNamespace>
+    <PackageId>SharpAccess.Core</PackageId>
+    <Authors>SharpAccess contributors</Authors>
+    <Description>Provider-neutral ASP.NET Core authentication and authorization for .NET 10 with JWT, refresh-token rotation, OpenID Connect, and multi-tenant RBAC.</Description>
+    <PackageTags>authentication;authorization;aspnetcore;dotnet;jwt;openid-connect;oidc;oauth2;security;rbac;multitenancy</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/JonatanCordoba/SharpAccess</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/JonatanCordoba/SharpAccess</PackageProjectUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable Condition="'$(SharpAccessCoreStatus)' == 'Supported'">true</IsPackable>
+    <IsPackable Condition="'$(SharpAccessCoreStatus)' != 'Supported'">false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Konscious.Security.Cryptography.Argon2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="SharpAccess.UnitTests" />
+    <None Include="../../README.md" Pack="true" PackagePath="/" Link="README.md" />
+  </ItemGroup>
+</Project>

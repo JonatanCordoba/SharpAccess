@@ -1,0 +1,416 @@
+{
+  "schemaVersion": 2,
+  "status": "approved",
+  "approvedRevision": "7342a3c04f7a1e0bf20\u0034b8949f69306bbf24a02\u0034",
+  "referenceEnvironment": "local-controlled",
+  "environmentFingerprint": "572d714596b11fc34db\u0066bc930f4e2a1724f6a51\u0033dbeb264837f39803b8f\u003020cd",
+  "environment": {
+    "label": "local-controlled",
+    "cpu": {
+      "model": "AMD Ryzen 7 1700 Eight-Core Processor          ",
+      "logicalProcessorCount": 16
+    },
+    "memory": {
+      "totalPhysicalBytes": 17084882944
+    },
+    "windows": {
+      "caption": "Microsoft Windows 10 Pro",
+      "version": "10.0.19045",
+      "buildNumber": "19045",
+      "architecture": "X64",
+      "powerPlan": "Alto rendimiento"
+    },
+    "dotnet": {
+      "sdk": "10.0.302",
+      "framework": ".NET 10.0.9",
+      "processArchitecture": "X64",
+      "runtimes": [
+        "Microsoft.AspNetCore.App 10.0.10",
+        "Microsoft.AspNetCore.App 8.0.28",
+        "Microsoft.AspNetCore.App 8.0.29",
+        "Microsoft.AspNetCore.App 9.0.17",
+        "Microsoft.NETCore.App 10.0.10",
+        "Microsoft.NETCore.App 8.0.28",
+        "Microsoft.NETCore.App 8.0.29",
+        "Microsoft.NETCore.App 9.0.17",
+        "Microsoft.WindowsDesktop.App 10.0.10",
+        "Microsoft.WindowsDesktop.App 8.0.28",
+        "Microsoft.WindowsDesktop.App 8.0.29",
+        "Microsoft.WindowsDesktop.App 9.0.17"
+      ]
+    },
+    "storage": [
+      {
+        "model": "Samsung SSD 970 EVO 500GB",
+        "mediaType": "Fixed hard disk media",
+        "interfaceType": "SCSI",
+        "sizeBytes": 500105249280
+      }
+    ],
+    "sqlite": {
+      "providerVersion": "10.0.9.0",
+      "nativeVersion": "3.50.4",
+      "datasetProfile": "isolated-sqlite-admin-plus-one-member",
+      "datasetUserCount": 2,
+      "datasetTenantMemberCount": 2
+    },
+    "postgres": {
+      "serverVersion": "18.4",
+      "providerVersion": "10.0.3.0",
+      "maxConnections": "100",
+      "sharedBuffers": "128MB",
+      "workMem": "4MB",
+      "effectiveCacheSize": "4GB",
+      "datasetProfile": "scratch-postgres-keyset-users-and-tenant-members",
+      "datasetUserCount": 226,
+      "datasetTenantMemberCount": 226
+    },
+    "argon2": {
+      "memoryKiB": 8192,
+      "maximumConcurrent": 8,
+      "maximumQueued": 32
+    }
+  },
+  "warmupProfiles": [
+    {
+      "category": "cryptography-and-token",
+      "warmupIterations": 3
+    },
+    {
+      "category": "endpoint-and-sqlite",
+      "warmupIterations": 3
+    },
+    {
+      "category": "postgresql-provider",
+      "warmupIterations": 3
+    }
+  ],
+  "tolerancePercent": 20.0,
+  "p95ComparisonEpsilonMilliseconds": 0.001,
+  "independentRuns": 3,
+  "aggregation": "median-across-independent-processes",
+  "reviewDecision": "Reviewed the exact-revision three-process median RC1 candidate in local-controlled. Environment fingerprint, warmups, metric catalog, independent observations, p95 values, allocations, and retained evidence were accepted.",
+  "reviewedUtc": "2026-08-05T17:55:30.1428337+00:00",
+  "metrics": [
+    {
+      "name": "password_hash",
+      "iterations": 10,
+      "meanMilliseconds": 21.6018,
+      "p50Milliseconds": 21.7652,
+      "p95Milliseconds": 21.9275,
+      "maximumMilliseconds": 21.9275,
+      "allocatedBytesPerOperation": 8497712,
+      "workingSetDeltaBytes": 360448,
+      "independentRunP95Milliseconds": [
+        21.8231,
+        22.2187,
+        21.9275
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        8497712,
+        8497498,
+        8497746
+      ]
+    },
+    {
+      "name": "password_verify",
+      "iterations": 20,
+      "meanMilliseconds": 21.4451,
+      "p50Milliseconds": 21.453,
+      "p95Milliseconds": 21.9829,
+      "maximumMilliseconds": 22.2859,
+      "allocatedBytesPerOperation": 8502233,
+      "workingSetDeltaBytes": 8581120,
+      "independentRunP95Milliseconds": [
+        21.6522,
+        21.9829,
+        22.1265
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        8502233,
+        8498144,
+        8535516
+      ]
+    },
+    {
+      "name": "password_hash_queue_saturation",
+      "iterations": 10,
+      "meanMilliseconds": 0.0141,
+      "p50Milliseconds": 0.0079,
+      "p95Milliseconds": 0.0556,
+      "maximumMilliseconds": 0.0556,
+      "allocatedBytesPerOperation": 1913,
+      "workingSetDeltaBytes": 0,
+      "independentRunP95Milliseconds": [
+        0.0556,
+        0.0564,
+        0.0499
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        1913,
+        1913,
+        1913
+      ]
+    },
+    {
+      "name": "password_hash_no_wait_rejection",
+      "iterations": 10,
+      "meanMilliseconds": 0.0159,
+      "p50Milliseconds": 0.0115,
+      "p95Milliseconds": 0.0567,
+      "maximumMilliseconds": 0.0567,
+      "allocatedBytesPerOperation": 1897,
+      "workingSetDeltaBytes": 0,
+      "independentRunP95Milliseconds": [
+        0.0567,
+        0.0567,
+        0.0582
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        1897,
+        1897,
+        1897
+      ]
+    },
+    {
+      "name": "jwt_sign",
+      "iterations": 500,
+      "meanMilliseconds": 0.0535,
+      "p50Milliseconds": 0.0524,
+      "p95Milliseconds": 0.0578,
+      "maximumMilliseconds": 0.3183,
+      "allocatedBytesPerOperation": 15341,
+      "workingSetDeltaBytes": 7188480,
+      "independentRunP95Milliseconds": [
+        0.059,
+        0.0578,
+        0.0573
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        15341,
+        15341,
+        15341
+      ]
+    },
+    {
+      "name": "jwt_validate",
+      "iterations": 500,
+      "meanMilliseconds": 0.0877,
+      "p50Milliseconds": 0.0853,
+      "p95Milliseconds": 0.0946,
+      "maximumMilliseconds": 0.3867,
+      "allocatedBytesPerOperation": 17829,
+      "workingSetDeltaBytes": 3399680,
+      "independentRunP95Milliseconds": [
+        0.0946,
+        0.0944,
+        0.0963
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        17829,
+        17829,
+        17829
+      ]
+    },
+    {
+      "name": "authorization_context_construction",
+      "iterations": 2500,
+      "meanMilliseconds": 0.0003,
+      "p50Milliseconds": 0.0002,
+      "p95Milliseconds": 0.0007,
+      "maximumMilliseconds": 0.1437,
+      "allocatedBytesPerOperation": 466,
+      "workingSetDeltaBytes": 0,
+      "independentRunP95Milliseconds": [
+        0.0007,
+        0.0007,
+        0.0007
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        466,
+        466,
+        466
+      ]
+    },
+    {
+      "name": "endpoint_login",
+      "iterations": 3,
+      "meanMilliseconds": 257.8308,
+      "p50Milliseconds": 255.2056,
+      "p95Milliseconds": 263.6344,
+      "maximumMilliseconds": 263.6344,
+      "allocatedBytesPerOperation": 67704837,
+      "workingSetDeltaBytes": 61562880,
+      "independentRunP95Milliseconds": [
+        261.9391,
+        263.6344,
+        267.3828
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        67705048,
+        67704837,
+        67703861
+      ]
+    },
+    {
+      "name": "endpoint_refresh_rotation",
+      "iterations": 3,
+      "meanMilliseconds": 20.1767,
+      "p50Milliseconds": 19.836,
+      "p95Milliseconds": 21.2245,
+      "maximumMilliseconds": 21.2245,
+      "allocatedBytesPerOperation": 135282,
+      "workingSetDeltaBytes": 20480,
+      "independentRunP95Milliseconds": [
+        21.2245,
+        21.1588,
+        23.2343
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        135282,
+        135229,
+        137314
+      ]
+    },
+    {
+      "name": "endpoint_refresh_replay_contention",
+      "iterations": 3,
+      "meanMilliseconds": 71.9364,
+      "p50Milliseconds": 74.3189,
+      "p95Milliseconds": 78.9938,
+      "maximumMilliseconds": 78.9938,
+      "allocatedBytesPerOperation": 243938,
+      "workingSetDeltaBytes": 73728,
+      "independentRunP95Milliseconds": [
+        71.6974,
+        81.5221,
+        78.9938
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        243938,
+        257248,
+        242776
+      ]
+    },
+    {
+      "name": "endpoint_persisted_state_validation",
+      "iterations": 30,
+      "meanMilliseconds": 8.7545,
+      "p50Milliseconds": 8.5903,
+      "p95Milliseconds": 9.6253,
+      "maximumMilliseconds": 10.1699,
+      "allocatedBytesPerOperation": 72713,
+      "workingSetDeltaBytes": 2048000,
+      "independentRunP95Milliseconds": [
+        9.6253,
+        9.224,
+        9.9648
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        72713,
+        72713,
+        72707
+      ]
+    },
+    {
+      "name": "endpoint_user_keyset_page",
+      "iterations": 30,
+      "meanMilliseconds": 5.7914,
+      "p50Milliseconds": 5.7442,
+      "p95Milliseconds": 6.3622,
+      "maximumMilliseconds": 7.4693,
+      "allocatedBytesPerOperation": 59075,
+      "workingSetDeltaBytes": 69632,
+      "independentRunP95Milliseconds": [
+        6.0392,
+        6.3622,
+        6.5862
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        59075,
+        59075,
+        59075
+      ]
+    },
+    {
+      "name": "endpoint_role_invalidation_cycle",
+      "iterations": 3,
+      "meanMilliseconds": 27.8157,
+      "p50Milliseconds": 24.5239,
+      "p95Milliseconds": 36.022,
+      "maximumMilliseconds": 36.022,
+      "allocatedBytesPerOperation": 150368,
+      "workingSetDeltaBytes": 102400,
+      "independentRunP95Milliseconds": [
+        36.022,
+        35.8987,
+        37.2543
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        150368,
+        150400,
+        150368
+      ]
+    },
+    {
+      "name": "endpoint_tenant_member_page",
+      "iterations": 30,
+      "meanMilliseconds": 10.9237,
+      "p50Milliseconds": 10.8514,
+      "p95Milliseconds": 11.5024,
+      "maximumMilliseconds": 12.475,
+      "allocatedBytesPerOperation": 81856,
+      "workingSetDeltaBytes": 368640,
+      "independentRunP95Milliseconds": [
+        11.2442,
+        11.5024,
+        13.1267
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        81856,
+        81851,
+        81885
+      ]
+    },
+    {
+      "name": "postgres_user_keyset_page",
+      "iterations": 25,
+      "meanMilliseconds": 0.7197,
+      "p50Milliseconds": 0.6118,
+      "p95Milliseconds": 0.7699,
+      "maximumMilliseconds": 2.9497,
+      "allocatedBytesPerOperation": 21159,
+      "workingSetDeltaBytes": -839680,
+      "independentRunP95Milliseconds": [
+        0.8024,
+        0.7335,
+        0.7699
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        21159,
+        21226,
+        21127
+      ]
+    },
+    {
+      "name": "postgres_tenant_member_keyset_page",
+      "iterations": 25,
+      "meanMilliseconds": 1.5443,
+      "p50Milliseconds": 1.4635,
+      "p95Milliseconds": 1.577,
+      "maximumMilliseconds": 3.1121,
+      "allocatedBytesPerOperation": 24368,
+      "workingSetDeltaBytes": 16384,
+      "independentRunP95Milliseconds": [
+        1.839,
+        1.5212,
+        1.577
+      ],
+      "independentRunAllocatedBytesPerOperation": [
+        24366,
+        24368,
+        24368
+      ]
+    }
+  ]
+}

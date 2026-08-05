@@ -1,0 +1,73 @@
+name: Feature request
+description: Propose a focused SharpAccess capability or improvement
+title: "[Feature]: "
+labels:
+  - enhancement
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        SharpAccess keeps a deliberately small, provider-neutral public API. Describe the user problem first and account for security, compatibility, operational, and provider-boundary implications.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Explain the concrete developer or operator problem without prescribing an implementation yet.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the smallest public behavior or API change that would solve the problem.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Primary area
+      options:
+        - Authentication
+        - Authorization or tenancy
+        - JWT or refresh tokens
+        - Password flows
+        - OpenID Connect
+        - Migrations or persistence
+        - Provider contracts
+        - Packaging or public API
+        - Verification, quality, or release tooling
+        - Documentation or samples
+    validations:
+      required: true
+  - type: textarea
+    id: security
+    attributes:
+      label: Security and privacy implications
+      description: Cover authentication, authorization, token handling, tenant isolation, secret management, personal data, and failure behavior where relevant.
+      placeholder: None identified, with rationale; or describe the risks and controls.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and provider implications
+      description: Explain whether this changes public API, package behavior, migrations, SQLite/PostgreSQL parity, or supported-platform claims.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Explain why host application code, middleware composition, or an existing extension point is insufficient.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: I searched existing issues, the Wiki, and the roadmap.
+          required: true
+        - label: The proposal preserves provider-neutral Core boundaries or explains why a boundary change is necessary.
+          required: true

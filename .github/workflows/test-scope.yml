@@ -1,0 +1,32 @@
+name: test-scope
+
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 4 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  classify:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    outputs:
+      mutation_tier: ${{ steps.scope.outputs.mutation_tier }}
+      core: ${{ steps.scope.outputs.core }}
+      sqlite: ${{ steps.scope.outputs.sqlite }}
+      postgres: ${{ steps.scope.outputs.postgres }}
+      release: ${{ steps.scope.outputs.release }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - id: scope
+        shell: pwsh
+        run: |
+          $base = '${{ github.event.pull_request.base.sha }}'
+          if ([string]::IsNullOrWhiteSpace($base)) { $base = 'HEAD^' }
+          ./scripts/test-scope.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE -BaseRef $base -HeadRef HEAD -GitHubOutput $env:GITHUB_OUTPUT

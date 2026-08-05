@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <Include>[SharpAccess.Core]*,[SharpAccess.Sqlite]*,[SharpAccess.Postgres]*</Include>
+          <Exclude>[SharpAccess.*Tests]*,[SharpAccess.SampleApi]*,[SharpAccess.TestBootstrap]*,[SharpAccess.MigrationTool]*,[SharpAccess.Sbom]*</Exclude>
+          <ExcludeByFile>**/samples/**/*.cs,**/obj/**/*.cs</ExcludeByFile>
+          <ExcludeByAttribute>GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+          <SingleHit>false</SingleHit>
+          <UseSourceLink>false</UseSourceLink>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

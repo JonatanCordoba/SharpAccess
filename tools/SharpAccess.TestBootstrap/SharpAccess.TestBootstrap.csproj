@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>SharpAccess.TestBootstrap</AssemblyName>
+    <RootNamespace>SharpAccess.TestBootstrap</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="../../src/SharpAccess.Core/SharpAccess.Core.csproj" />
+    <ProjectReference Include="../../providers/SharpAccess.Sqlite/SharpAccess.Sqlite.csproj" />
+  </ItemGroup>
+</Project>

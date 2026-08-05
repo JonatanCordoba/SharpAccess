@@ -1,0 +1,12 @@
+# Lowercase filename tokens that are prohibited by the English (USA) repository convention.
+# Add a token when review finds a non-English word in an active path.
+cobertura
+configuracion
+documentacion
+informe
+migracion
+prueba
+pruebas
+seguridad
+usuario
+usuarios

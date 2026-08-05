@@ -1,0 +1,32 @@
+<Project>
+  <PropertyGroup>
+    <AcceptedDotNetSdkVersion>10.0.302</AcceptedDotNetSdkVersion>
+    <AcceptedDotNetSdkRollForward>disable</AcceptedDotNetSdkRollForward>
+    <SupportedEngineeringPlatform>Windows</SupportedEngineeringPlatform>
+    <SupportedAutomationShell>PowerShell 7</SupportedAutomationShell>
+    <DevelopmentRepositoryUrl>https://github.com/JonatanCordoba/dotnet-auth</DevelopmentRepositoryUrl>
+    <CanonicalRepositoryUrl>https://github.com/JonatanCordoba/SharpAccess</CanonicalRepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <SupplyChainInput Include="SharpAccess.sln" />
+    <SupplyChainInput Include="Directory.Build.props" />
+    <SupplyChainInput Include="Directory.Build.targets" />
+    <SupplyChainInput Include="Directory.Packages.props" />
+    <SupplyChainInput Include="global.json" />
+    <SupplyChainInput Include="eng/ProviderStatus.props" />
+    <SupplyChainInput Include="eng/SupplyChain.props" />
+    <SupplyChainInput Include="eng/schemas" />
+    <SupplyChainInput Include="scripts" />
+    <SupplyChainInput Include="src/SharpAccess.Core" />
+    <SupplyChainInput Include="providers/Shared" />
+    <SupplyChainInput Include="providers/SharpAccess.Sqlite" />
+    <SupplyChainInput Include="providers/SharpAccess.Postgres" />
+    <SupplyChainInput Include="tools/SharpAccess.Sbom" />
+    <SupplyChainInput Include="tools/SharpAccess.QualityReport" />
+    <SupplyChainInput Include="eng/QualityReportPolicy.props" />
+    <ActionPin Include="actions/checkout" Sha="df4cb1c069e1874edd31b4311f1884172cec0e10" Release="v6.0.3" />
+    <ActionPin Include="actions/setup-dotnet" Sha="26b0ec14cb23fa6904739307f278c14f94c95bf1" Release="v5.4.0" />
+    <ActionPin Include="actions/upload-artifact" Sha="b7c566a772e6b6bfb58ed0dc250532a479d7789f" Release="v6.0.0" />
+    <ActionPin Include="actions/dependency-review-action" Sha="2031cfc080254a8a887f58cffee85186f0e49e48" Release="v4.9.0" />
+  </ItemGroup>
+</Project>

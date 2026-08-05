@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>SharpAccess.ProviderContractTests</AssemblyName>
+    <RootNamespace>SharpAccess.ProviderContractTests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="../../src/SharpAccess.Core/SharpAccess.Core.csproj" />
+    <ProjectReference Include="../../providers/SharpAccess.Sqlite/SharpAccess.Sqlite.csproj" />
+    <ProjectReference Include="../../providers/SharpAccess.Postgres/SharpAccess.Postgres.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Npgsql" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="All" />
+    <PackageReference Include="coverlet.collector" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

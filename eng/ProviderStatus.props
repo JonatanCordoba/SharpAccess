@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <SharpAccessProviderStatusSchemaVersion>2</SharpAccessProviderStatusSchemaVersion>
+    <SharpAccessCoreStatus>Supported</SharpAccessCoreStatus>
+    <SharpAccessSqliteStatus>Supported</SharpAccessSqliteStatus>
+    <SharpAccessPostgresStatus>Supported</SharpAccessPostgresStatus>
+  </PropertyGroup>
+</Project>

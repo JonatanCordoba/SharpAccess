@@ -1,0 +1,163 @@
+{
+  "version": 2,
+  "mutations": [
+    {
+      "id": "password-fixed-time-comparison",
+      "tier": [
+        "PullRequest",
+        "Weekly",
+        "ProviderPromotion",
+        "Release"
+      ],
+      "critical": true,
+      "path": "src/SharpAccess.Core/Security/PasswordHasher.cs",
+      "oldText": "matches = CryptographicOperations.FixedTimeEquals(actual, parsed.Hash);",
+      "newText": "matches = !CryptographicOperations.FixedTimeEquals(actual, parsed.Hash);",
+      "testProject": "tests/SharpAccess.UnitTests/SharpAccess.UnitTests.csproj",
+      "invariant": "PasswordVerification"
+    },
+    {
+      "id": "jwt-missing-kid-accepted",
+      "tier": [
+        "PullRequest",
+        "Weekly",
+        "Release"
+      ],
+      "critical": true,
+      "path": "src/SharpAccess.Core/Extensions/AuthJwtBearerConfiguration.cs",
+      "oldText": "if (string.IsNullOrWhiteSpace(keyId))\n        {\n            return Array.Empty<SecurityKey>();\n        }",
+      "newText": "if (string.IsNullOrWhiteSpace(keyId))\n        {\n            return new[] { keyRing.ActiveSigningKey.VerificationKey };\n        }",
+      "testProject": "tests/SharpAccess.UnitTests/SharpAccess.UnitTests.csproj",
+      "invariant": "JwtKeySelection"
+    },
+    {
+      "id": "inactive-account-accepted",
+      "tier": [
+        "PullRequest",
+        "Weekly",
+        "Release"
+      ],
+      "critical": true,
+      "path": "src/SharpAccess.Core/Extensions/AuthJwtBearerConfiguration.cs",
+      "oldText": "        && user.IsActive\n        && user.EmailVerifiedUtc.HasValue",
+      "newText": "        && user.SecurityVersion >= 0\n        && user.EmailVerifiedUtc.HasValue",
+      "testProject": "tests/SharpAccess.UnitTests/SharpAccess.UnitTests.csproj",
+      "invariant": "AccountState"
+    },
+    {
+      "id": "tenant-membership-bypassed",
+      "tier": [
+        "PullRequest",
+        "Weekly",
+        "ProviderPromotion",
+        "Release"
+      ],
+      "critical": true,
+      "path": "src/SharpAccess.Core/Extensions/AuthJwtBearerConfiguration.cs",
+      "oldText": "            && await store.IsTenantMemberAsync(userId, tenantId, cancellationToken).ConfigureAwait(false);",
+      "newText": "            || await store.IsTenantMemberAsync(userId, tenantId, cancellationToken).ConfigureAwait(false);",
+      "testProject": "tests/SharpAccess.UnitTests/SharpAccess.UnitTests.csproj",
+      "invariant": "TenantIsolation"
+    },
+    {
+      "id": "failed-refresh-treated-as-success",
+      "tier": [
+        "PullRequest",
+        "Weekly",
+        "ProviderPromotion",
+        "Release"
+      ],
+      "critical": true,
+      "path": "src/SharpAccess.Core/Services/RefreshSessionUseCase.cs",
+      "oldText": "            _ => InvalidRefreshToken()",
+      "newText": "            _ => ServiceResult<SessionTokens>.Success(response)",
+      "testProject": "tests/SharpAccess.UnitTests/SharpAccess.UnitTests.csproj",
+      "invariant": "RefreshRotation"
+    },
+    {
+      "id": "cross-tenant-authorization-accepted",
+      "tier": [
+        "PullRequest",
+        "Weekly",
+        "ProviderPromotion",
+        "Release"
+      ],
+      "critical": true,
+      "path": "src/SharpAccess.Core/Authorization/AttributedEndpointExtensions.cs",
+      "oldText": "                    && TenantMatches(context, requirements.RouteParameter)));",
+      "newText": "                    || TenantMatches(context, requirements.RouteParameter)));",
+      "testProject": "tests/SharpAccess.UnitTests/SharpAccess.UnitTests.csproj",
+      "invariant": "AuthorizationFailClosed"
+    },
+    {
+      "id": "oidc-nonce-mismatch-accepted",
+      "tier": [
+        "PullRequest",
+        "Weekly",
+        "Release"
+      ],
+      "critical": true,
+      "path": "src/SharpAccess.Core/OAuth/OpenIdConnectOAuthService.cs",
+      "oldText": "        && string.Equals(nonce, expectedNonce, StringComparison.Ordinal);",
+      "newText": "        || string.Equals(nonce, expectedNonce, StringComparison.Ordinal);",
+      "testProject": "tests/SharpAccess.UnitTests/SharpAccess.UnitTests.csproj",
+      "invariant": "OidcIdentityClaims"
+    },
+    {
+      "id": "refresh-replay-detection-bypassed",
+      "tier": [
+        "PullRequest",
+        "Weekly",
+        "ProviderPromotion",
+        "Release"
+      ],
+      "critical": true,
+      "path": "providers/SharpAccess.Sqlite/Stores/Tokens/SqliteAuthStore.RefreshTokenRotation.cs",
+      "oldText": "if (existing.RevokedUtc.HasValue)",
+      "newText": "if (false && existing.RevokedUtc.HasValue)",
+      "testProject": "tests/SharpAccess.ProviderContractTests/SharpAccess.ProviderContractTests.csproj",
+      "invariant": "RefreshReplay"
+    },
+    {
+      "id": "transaction-rollback-commits",
+      "tier": [
+        "PullRequest",
+        "Weekly",
+        "ProviderPromotion",
+        "Release"
+      ],
+      "critical": true,
+      "path": "providers/SharpAccess.Sqlite/Persistence/Transactions/SqliteAuthTransactionManager.cs",
+      "oldText": "await transaction.RollbackAsync(CancellationToken.None).ConfigureAwait(false);",
+      "newText": "await transaction.CommitAsync(CancellationToken.None).ConfigureAwait(false);",
+      "testProject": "tests/SharpAccess.ProviderContractTests/SharpAccess.ProviderContractTests.csproj",
+      "invariant": "TransactionAtomicity"
+    },
+    {
+      "id": "postgres-refresh-replay-detection-bypassed",
+      "tier": [
+        "ProviderPromotion",
+        "Release"
+      ],
+      "critical": true,
+      "path": "providers/SharpAccess.Postgres/Stores/Tokens/PostgresAuthStore.RefreshTokenRotation.cs",
+      "oldText": "if (existing.RevokedUtc.HasValue)",
+      "newText": "if (false && existing.RevokedUtc.HasValue)",
+      "testProject": "tests/SharpAccess.ProviderContractTests/SharpAccess.ProviderContractTests.csproj",
+      "invariant": "PostgresRefreshReplay"
+    },
+    {
+      "id": "postgres-serialization-failure-unclassified",
+      "tier": [
+        "ProviderPromotion",
+        "Release"
+      ],
+      "critical": true,
+      "path": "providers/SharpAccess.Postgres/Persistence/PostgresAuthDatabaseErrorClassifier.cs",
+      "oldText": "            [\"40001\"] = AuthDatabaseErrorCategory.SerializationFailure,",
+      "newText": "            [\"40001\"] = AuthDatabaseErrorCategory.Unknown,",
+      "testProject": "tests/SharpAccess.ProviderContractTests/SharpAccess.ProviderContractTests.csproj",
+      "invariant": "PostgresErrorClassification"
+    }
+  ]
+}

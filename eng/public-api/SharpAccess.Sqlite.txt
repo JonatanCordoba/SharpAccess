@@ -1,0 +1,2 @@
+Microsoft.Extensions.DependencyInjection.SqliteServiceCollectionExtensions
+SharpAccess.Sqlite.SqliteAuthOptions

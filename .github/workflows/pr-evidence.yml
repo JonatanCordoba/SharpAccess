@@ -1,0 +1,52 @@
+name: pull request evidence
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: pr-evidence-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate pull request evidence
+    runs-on: windows-latest
+    timeout-minutes: 5
+    env:
+      PR_BODY: ${{ github.event.pull_request.body }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Validate evidence fields
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          $body = [string]$env:PR_BODY
+          if ([string]::IsNullOrWhiteSpace($body)) { throw 'The pull request body is required.' }
+          $required = @(
+            'Head commit SHA',
+            'Targeted checks run before staging',
+            'Exact post-commit clean-tree command',
+            'Post-commit result',
+            'Retained workflow runs or artifacts',
+            'Environment-blocked or intentionally skipped evidence',
+            'Security and privacy impact',
+            'Provider impact',
+            'Public API or package impact',
+            'Compatibility impact',
+            'Operational, rollback, and recovery impact',
+            'Change classification')
+          foreach ($field in $required) {
+            if ($body -notmatch "(?im)^- \*\*$([regex]::Escape($field)):\*\*\s*\S") { throw "Required PR field is missing or empty: $field" }
+          }
+          $recorded = [regex]::Match($body, '(?im)^- \*\*Head commit SHA:\*\*\s*`?([0-9a-f]{40})`?\s*$')
+          if (-not $recorded.Success) { throw 'Head commit SHA must be a full 40-character commit.' }
+          if ($recorded.Groups[1].Value -cne $env:HEAD_SHA) { throw "Recorded SHA does not match PR head $env:HEAD_SHA." }
+          if ($body -notmatch '(?im)^- \[x\] The exact staged diff was reviewed\.\s*$') { throw 'The staged-diff review declaration must be checked.' }
+          if ($body -notmatch '(?im)^- \[x\] The recorded validation was run against the commit identified above\.\s*$') { throw 'Exact-commit validation must be checked before review.' }
+          if ($body -notmatch '(?im)^- \[x\] Tests, coverage, locked restore, package audit, endpoint smoke, package smoke, package validation, SBOMs, diagnostics, and applicable recovery evidence were not silently bypassed\.\s*$') { throw 'The non-bypass declaration must be checked.' }

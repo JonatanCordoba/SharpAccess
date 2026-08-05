@@ -1,0 +1,6 @@
+<Project>
+  <ItemGroup>
+    <ProviderCoverageThreshold Include="Sqlite" Line="0.80" Branch="0.65" PromotionLine="0.80" PromotionBranch="0.65" />
+    <ProviderCoverageThreshold Include="Postgres" Line="0.80" Branch="0.65" PromotionLine="0.80" PromotionBranch="0.65" />
+  </ItemGroup>
+</Project>

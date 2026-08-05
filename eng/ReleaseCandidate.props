@@ -1,0 +1,34 @@
+<Project>
+  <PropertyGroup>
+    <ReleaseCandidateEvidenceSchemaVersion>3</ReleaseCandidateEvidenceSchemaVersion>
+    <ReleaseCandidateEvidenceRetentionDays>90</ReleaseCandidateEvidenceRetentionDays>
+    <SupportedReleasePlatform>Windows</SupportedReleasePlatform>
+    <PerformanceRegressionTolerancePercent>20</PerformanceRegressionTolerancePercent>
+    <PerformanceP95ComparisonEpsilonMilliseconds>0.001</PerformanceP95ComparisonEpsilonMilliseconds>
+    <PerformanceIndependentRuns>3</PerformanceIndependentRuns>
+    <PerformanceUnitIterations>25</PerformanceUnitIterations>
+    <PerformanceEndpointIterations>3</PerformanceEndpointIterations>
+    <PerformanceWarmupIterations>3</PerformanceWarmupIterations>
+    <PerformancePostgresUserRows>225</PerformancePostgresUserRows>
+    <PerformancePostgresTenantMemberRows>225</PerformancePostgresTenantMemberRows>
+    <MaximumReferenceAccessTokenBytes>8192</MaximumReferenceAccessTokenBytes>
+    <InitialReleaseCohort>SharpAccess.Core;SharpAccess.Sqlite;SharpAccess.Postgres</InitialReleaseCohort>
+  </PropertyGroup>
+  <ItemGroup>
+    <ReleaseCandidateRequiredFile Include="eng/Version.props" />
+    <ReleaseCandidateRequiredFile Include="eng/ComplexityPolicy.props" />
+    <ReleaseCandidateRequiredFile Include="eng/ComplexityBaseline.json" />
+    <ReleaseCandidateRequiredFile Include="eng/PerformanceBaseline.json" />
+    <ReleaseCandidateRequiredFile Include="docs/CAPACITY-PLANNING.md" />
+    <ReleaseCandidateRequiredFile Include="docs/QUALITY-GATES.md" />
+    <ReleaseCandidateRequiredFile Include="docs/QUALITY-REPORT.md" />
+    <ReleaseCandidateRequiredFile Include="docs/RELEASE-CANDIDATE.md" />
+    <ReleaseCandidateRequiredFile Include="docs/RELEASE-EVIDENCE-MATRIX.md" />
+    <ReleaseCandidateRequiredFile Include="scripts/performance-evidence.ps1" />
+    <ReleaseCandidateRequiredFile Include="scripts/export-dry-run.ps1" />
+    <ReleaseCandidateRequiredFile Include="scripts/checksums.ps1" />
+    <ReleaseCandidateRequiredFile Include="scripts/release-candidate.ps1" />
+    <ReleaseCandidateRequiredFile Include="scripts/quality-report.ps1" />
+    <ReleaseCandidateRequiredFile Include=".github/workflows/release-candidate.yml" />
+  </ItemGroup>
+</Project>

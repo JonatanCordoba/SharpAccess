@@ -1,0 +1,44 @@
+name: Operational incident record
+description: Record a non-sensitive operational incident or post-incident follow-up.
+title: "[Incident] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include credentials, raw tokens, signing keys, peppers, personal data, exploit details, or protected evidence. Suspected vulnerabilities must use private vulnerability reporting as described in SECURITY.md.
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Critical
+        - High
+        - Moderate
+        - Low
+    validations:
+      required: true
+  - type: input
+    id: affected-version
+    attributes:
+      label: Affected version or commit
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Describe availability, integrity, privacy, or operational impact without sensitive data.
+    validations:
+      required: true
+  - type: textarea
+    id: timeline
+    attributes:
+      label: UTC timeline
+    validations:
+      required: true
+  - type: textarea
+    id: actions
+    attributes:
+      label: Containment, recovery, and follow-up
+    validations:
+      required: true

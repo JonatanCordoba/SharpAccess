@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>SharpAccess.Postgres</AssemblyName>
+    <RootNamespace>SharpAccess.Postgres</RootNamespace>
+    <PackageId>SharpAccess.Postgres</PackageId>
+    <Authors>SharpAccess contributors</Authors>
+    <Description>Supported PostgreSQL persistence provider for SharpAccess authentication and authorization on ASP.NET Core and .NET 10.</Description>
+    <PackageTags>authentication;authorization;aspnetcore;dotnet;postgresql;database;security;provider</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/JonatanCordoba/SharpAccess</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/JonatanCordoba/SharpAccess</PackageProjectUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable Condition="'$(SharpAccessPostgresStatus)' == 'Supported'">true</IsPackable>
+    <IsPackable Condition="'$(SharpAccessPostgresStatus)' != 'Supported'">false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/SharpAccess.Core/SharpAccess.Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+    <PackageReference Include="Npgsql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../Shared/AuthStoreServiceRegistration.cs" Link="DependencyInjection/AuthStoreServiceRegistration.cs" />
+    <InternalsVisibleTo Include="SharpAccess.ProviderContractTests" />
+    <None Include="../../README.md" Pack="true" PackagePath="/" Link="README.md" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,42 @@
+name: operational readiness
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: '43 6 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    name: windows
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
+      - shell: pwsh
+        run: dotnet restore SharpAccess.sln --locked-mode
+      - shell: pwsh
+        run: dotnet build SharpAccess.sln --configuration Release --no-restore -warnaserror
+      - shell: pwsh
+        run: ./scripts/operational-readiness.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE -Configuration Release -NoRestore -NoBuild
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: operational-readiness-${{ github.sha }}
+          if-no-files-found: warn
+          retention-days: 90
+          path: artifacts/operations/**/*

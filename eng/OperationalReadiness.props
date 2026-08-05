@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <RecoveryDrillFrequencyDays>90</RecoveryDrillFrequencyDays>
+    <IncidentExerciseFrequencyDays>180</IncidentExerciseFrequencyDays>
+    <OperationalEvidenceRetentionDays>90</OperationalEvidenceRetentionDays>
+    <RiskExceptionMaximumDays>30</RiskExceptionMaximumDays>
+  </PropertyGroup>
+</Project>

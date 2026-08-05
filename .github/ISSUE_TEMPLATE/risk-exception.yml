@@ -1,0 +1,45 @@
+name: Risk exception request
+description: Request a bounded, expiring exception to a repository control.
+title: "[Risk exception] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Exceptions must identify the exact control, owner, compensating controls, remediation plan, and expiry. Do not include secrets or vulnerability exploit details.
+  - type: input
+    id: control
+    attributes:
+      label: Control or gate
+    validations:
+      required: true
+  - type: input
+    id: owner
+    attributes:
+      label: Owner
+    validations:
+      required: true
+  - type: input
+    id: expiry
+    attributes:
+      label: Expiry date
+      description: Use YYYY-MM-DD and keep the duration within eng/OperationalReadiness.props.
+    validations:
+      required: true
+  - type: textarea
+    id: risk
+    attributes:
+      label: Risk and affected scope
+    validations:
+      required: true
+  - type: textarea
+    id: compensating-controls
+    attributes:
+      label: Compensating controls
+    validations:
+      required: true
+  - type: textarea
+    id: remediation
+    attributes:
+      label: Remediation plan
+    validations:
+      required: true

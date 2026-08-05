@@ -1,0 +1,100 @@
+name: integrated release candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Prerelease version expected in every active package project.
+        required: true
+        default: 0.9.0-rc.1
+        type: string
+      reference_environment:
+        description: Stable label for the controlled Windows performance environment.
+        required: true
+        default: controlled-windows-runner-01
+        type: string
+      require_approved_performance_baseline:
+        description: Require the reviewed performance ratchet.
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: integrated-release-candidate
+  cancel-in-progress: false
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  DOTNET_NOLOGO: '1'
+
+jobs:
+  windows-release-candidate:
+    name: windows-release-candidate
+    runs-on: windows-latest
+    timeout-minutes: 120
+    environment: release-candidate
+    env:
+      SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING: ${{ secrets.SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING }}
+      SHARPACCESS_PROVIDER_TEST_ALLOW_RESET: 'true'
+      SHARPACCESS_POSTGRES_READINESS: 'true'
+      SHARPACCESS_OIDC_LIVE_PROVIDER: ${{ vars.SHARPACCESS_OIDC_LIVE_PROVIDER }}
+      SHARPACCESS_OIDC_LIVE_CLIENT_AUTHENTICATION_METHOD: ${{ vars.SHARPACCESS_OIDC_LIVE_CLIENT_AUTHENTICATION_METHOD }}
+      SHARPACCESS_OIDC_LIVE_BASE_URI: ${{ vars.SHARPACCESS_OIDC_LIVE_BASE_URI }}
+      SHARPACCESS_OIDC_LIVE_CALLBACK_PATH: ${{ vars.SHARPACCESS_OIDC_LIVE_CALLBACK_PATH }}
+      SHARPACCESS_OIDC_LIVE_AUTHORIZATION_ENDPOINT: ${{ vars.SHARPACCESS_OIDC_LIVE_AUTHORIZATION_ENDPOINT }}
+      SHARPACCESS_OIDC_LIVE_TOKEN_ENDPOINT: ${{ vars.SHARPACCESS_OIDC_LIVE_TOKEN_ENDPOINT }}
+      SHARPACCESS_OIDC_LIVE_JWKS_ENDPOINT: ${{ vars.SHARPACCESS_OIDC_LIVE_JWKS_ENDPOINT }}
+      SHARPACCESS_OIDC_LIVE_VALID_ISSUERS: ${{ vars.SHARPACCESS_OIDC_LIVE_VALID_ISSUERS }}
+      SHARPACCESS_OIDC_LIVE_SIGNING_ALGORITHMS: ${{ vars.SHARPACCESS_OIDC_LIVE_SIGNING_ALGORITHMS }}
+      SHARPACCESS_OIDC_LIVE_ALLOWED_HOSTS: ${{ vars.SHARPACCESS_OIDC_LIVE_ALLOWED_HOSTS }}
+      SHARPACCESS_OIDC_LIVE_CLIENT_ID: ${{ secrets.SHARPACCESS_OIDC_LIVE_CLIENT_ID }}
+      SHARPACCESS_OIDC_LIVE_CLIENT_SECRET: ${{ secrets.SHARPACCESS_OIDC_LIVE_CLIENT_SECRET }}
+      SHARPACCESS_OIDC_LIVE_AUTHORIZATION_CODE: ${{ secrets.SHARPACCESS_OIDC_LIVE_AUTHORIZATION_CODE }}
+      SHARPACCESS_OIDC_LIVE_CODE_VERIFIER: ${{ secrets.SHARPACCESS_OIDC_LIVE_CODE_VERIFIER }}
+      SHARPACCESS_OIDC_LIVE_NONCE: ${{ secrets.SHARPACCESS_OIDC_LIVE_NONCE }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
+      - name: Install native PostgreSQL client tools
+        shell: pwsh
+        run: |
+          choco install postgresql16 --no-progress -y --params '/Password:SharpAccess_CI_NotUsed_123!'
+          'C:\Program Files\PostgreSQL\16\bin' | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Run integrated Windows release candidate
+        shell: pwsh
+        run: |
+          $arguments = @{
+            RepositoryRoot = $env:GITHUB_WORKSPACE
+            Version = '${{ inputs.version }}'
+            ReferenceEnvironment = '${{ inputs.reference_environment }}'
+            RequirePostgres = $true
+            RequireOidcLiveEvidence = $true
+          }
+          if ('${{ inputs.require_approved_performance_baseline }}' -eq 'true') {
+            $arguments.RequireApprovedPerformanceBaseline = $true
+          }
+          ./scripts/release-candidate.ps1 @arguments
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: release-candidate-${{ github.sha }}
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            artifacts/release-candidate/**/*
+            artifacts/release-export/**/*
+            artifacts/performance/**/*
+            artifacts/provider-coverage/postgres/**/*
+            artifacts/operations/**/*
+            artifacts/packages/**/*
+            artifacts/sbom/**/*
