@@ -21,7 +21,7 @@ The Windows-only generator reads each committed `packages.lock.json`, resolves t
 - root hash source and SHA-256;
 - CycloneDX and SPDX output hashes.
 
-The private development identity is `https://github.com/JonatanCordoba/dotnet-auth`. Stable publication accepts only `https://github.com/JonatanCordoba/SharpAccess`.
+The canonical development and publication identity is `https://github.com/JonatanCordoba/SharpAccess`.
 
 ## Package-root modes
 
@@ -43,7 +43,7 @@ Run on Windows with PowerShell 7:
 ```powershell
 ./scripts/sbom.ps1 `
   -RepositoryRoot $PWD `
-  -RepositoryUrl https://github.com/JonatanCordoba/dotnet-auth `
+  -RepositoryUrl https://github.com/JonatanCordoba/SharpAccess `
   -ReplaceExistingOutput
 ```
 
@@ -89,4 +89,4 @@ Windows workflows retain SHA-addressed artifacts for:
 
 ## Publication boundary
 
-`dotnet-auth` has no stable publication workflow. Stable Core, SQLite, and PostgreSQL packages, archive-root SBOMs, checksums, provenance, tag, and GitHub release are created only from the verified signed root in `JonatanCordoba/SharpAccess`.
+Stable Core, SQLite, and PostgreSQL packages, archive-root SBOMs, checksums, provenance, tags, and GitHub releases are created only from a verified signed SharpAccess release revision.

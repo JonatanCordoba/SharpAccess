@@ -246,7 +246,7 @@ public sealed class AuthenticationEndpointTests : IClassFixture<AuthenticationEn
 
     public sealed class AuthApplicationFactory : WebApplicationFactory<Program>, IDisposable
     {
-        private readonly string _databasePath = Path.Combine(Path.GetTempPath(), $"dotnet-auth-http-{Guid.NewGuid():N}.db");
+        private readonly string _databasePath = Path.Combine(Path.GetTempPath(), $"sharpaccess-http-{Guid.NewGuid():N}.db");
 
         public CapturingEmailSender Emails { get; } = new();
 

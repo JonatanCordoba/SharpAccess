@@ -35,7 +35,7 @@ A checked item represents retained evidence, not intention. Infrastructure-block
 ## Clean public repository bootstrap
 
 - [ ] `JonatanCordoba/SharpAccess` exists as a new empty repository with no generated files or imported history before bootstrap.
-- [ ] Canonical repository URLs, Source Link, badges, security links, SBOM identity, and provenance configuration are committed and verified in `dotnet-auth` before export.
+- [ ] Canonical repository URLs, Source Link, badges, security links, SBOM identity, and provenance configuration are committed and verified in SharpAccess.
 - [ ] `SharpAccess` was not created by rename, mirror, fork, or history rewrite.
 - [ ] The approved revision was exported using tracked files only.
 - [ ] The export excluded `.git`, refs, local artifacts, secrets, caches, test databases, internal prompts, audits, and unpublished evidence.
@@ -43,7 +43,7 @@ A checked item represents retained evidence, not intention. Infrastructure-block
 - [ ] A normalized manifest comparison proves the export matches the approved tree before push.
 - [ ] The public repository begins with one signed root commit and no inherited commits, branches, tags, notes, replace refs, or pull-request refs.
 - [ ] The public root SHA and normalized manifest were recorded and match the approved tree.
-- [ ] No source or metadata file was edited only in staging; changes were returned to `dotnet-auth`, revalidated, and re-exported.
+- [ ] No source or metadata file was edited only in staging; every change was committed on a SharpAccess branch and revalidated.
 - [ ] Branch protection, required checks, CODEOWNERS, security reporting, Dependabot, secret scanning, and publication environments are configured.
 - [ ] Complete Windows release verification was rerun from the exact clean root commit.
 

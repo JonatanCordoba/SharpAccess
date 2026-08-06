@@ -10,7 +10,7 @@ The ordinary development pack path produces synchronized prerelease artifacts fo
 
 SQL Server and MySQL are not active projects or package targets.
 
-`eng/Version.props` owns the synchronized package version. The current release-candidate version is `0.9.0-rc.1`. Stable-looking artifacts remain forbidden in the private development repository.
+`eng/Version.props` owns the synchronized package version. The current release-candidate version is `0.9.0-rc.1`. Stable-looking artifacts remain forbidden outside the protected SharpAccess release workflow.
 
 ## Create local evidence packages
 
@@ -22,7 +22,7 @@ Run on Windows with PowerShell 7:
 
 The pack path runs the applicable verification and creates runtime `.nupkg` and symbol `.snupkg` packages only for entries marked `Supported` in `eng/ProviderStatus.props`.
 
-Local artifacts from `JonatanCordoba/dotnet-auth` are evidence only. Public NuGet release-candidate and stable packages are published only from the exact verified clean root in `JonatanCordoba/SharpAccess`.
+Local artifacts are evidence only. Public NuGet release-candidate and stable packages are published only from the exact verified SharpAccess release revision.
 
 ## Consumer setup
 

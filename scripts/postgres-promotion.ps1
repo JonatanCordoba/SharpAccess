@@ -4,7 +4,7 @@ param(
     [string]$RepositoryRoot,
     [ValidateSet("Debug", "Release")]
     [string]$Configuration = "Release",
-    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/dotnet-auth",
+    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/SharpAccess",
     [string]$ChangedCodeBaseRef = "origin/master"
 )
 

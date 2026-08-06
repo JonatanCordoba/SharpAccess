@@ -8,7 +8,7 @@
 - Repository automation: PowerShell 7 only.
 - Container policy: no Dockerfiles, Compose files, service containers, or local container orchestration.
 - License: MIT.
-- Private development repository: `JonatanCordoba/dotnet-auth`.
+- Canonical source and development repository: `JonatanCordoba/SharpAccess`.
 - Canonical public release repository: `JonatanCordoba/SharpAccess`.
 - Authoritative synchronized package version: `eng/Version.props`.
 - Current release-candidate version: `0.9.0-rc.1`.
@@ -22,7 +22,7 @@
 
 SQL Server and MySQL are absent from the active repository tree. They remain future roadmap candidates only and may return through separate architecture, implementation, compatibility, security, migration, operational, and release-evidence work.
 
-Only projects with authoritative `Supported` status are packable through ordinary development paths. Public release-candidate and stable publication remains forbidden from `JonatanCordoba/dotnet-auth`.
+Only projects with authoritative `Supported` status are packable through ordinary development paths. Public release-candidate and stable publication is permitted only from the protected SharpAccess release workflow.
 
 ## Project layout
 

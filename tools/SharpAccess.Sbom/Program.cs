@@ -31,8 +31,6 @@ internal sealed record Dependency(string Id, string Version);
 
 internal static partial class Program
 {
-    private const string DevelopmentRepositoryUrl =
-        "https://github.com/JonatanCordoba/dotnet-auth";
     private const string CanonicalRepositoryUrl =
         "https://github.com/JonatanCordoba/SharpAccess";
 
@@ -246,7 +244,7 @@ internal static partial class Program
         if (stablePublication
             && (!string.Equals(
                     repositoryIdentity,
-                    "canonical-public",
+                    "canonical",
                     StringComparison.Ordinal)
                 || !requiredArchives.SetEquals(ProviderStatusProperties.Keys)
                 || statuses.Values.Any(
@@ -610,20 +608,13 @@ internal static partial class Program
         normalized = repositoryUrl.AbsoluteUri.TrimEnd('/');
         if (string.Equals(
             normalized,
-            DevelopmentRepositoryUrl,
-            StringComparison.OrdinalIgnoreCase))
-        {
-            return (new Uri(DevelopmentRepositoryUrl), "development-candidate");
-        }
-        if (string.Equals(
-            normalized,
             CanonicalRepositoryUrl,
             StringComparison.OrdinalIgnoreCase))
         {
-            return (new Uri(CanonicalRepositoryUrl), "canonical-public");
+            return (new Uri(CanonicalRepositoryUrl), "canonical");
         }
         throw new ArgumentException(
-            $"--repository-url must be {DevelopmentRepositoryUrl} or {CanonicalRepositoryUrl}.");
+            $"--repository-url must be {CanonicalRepositoryUrl}.");
     }
 
     private static string RequireValue(string[] args, string name)

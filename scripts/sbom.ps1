@@ -31,7 +31,7 @@ function Resolve-RepositoryUrl([string]$Candidate, [string]$Root) {
     $Candidate = $Candidate.Trim()
     if ($Candidate.EndsWith(".git", [StringComparison]::OrdinalIgnoreCase)) { $Candidate = $Candidate.Substring(0, $Candidate.Length - 4) }
     if ($Candidate -match "^git@github\.com:(.+)$") { $Candidate = "https://github.com/$($Matches[1])" }
-    $allowed = @("https://github.com/JonatanCordoba/dotnet-auth", "https://github.com/JonatanCordoba/SharpAccess")
+    $allowed = @("https://github.com/JonatanCordoba/SharpAccess")
     $normalized = $Candidate.TrimEnd("/")
     if ($allowed -notcontains $normalized) { throw "The repository URL must be an approved SharpAccess lifecycle identity." }
     return $normalized

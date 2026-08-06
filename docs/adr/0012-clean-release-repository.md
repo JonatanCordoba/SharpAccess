@@ -12,9 +12,9 @@ The first public SharpAccess release should begin with a deliberate, reviewable 
 
 ## Decision
 
-`JonatanCordoba/dotnet-auth` remains the private development repository through the stable 1.0 release process.
+`JonatanCordoba/SharpAccess` is the canonical and only active development repository after the RC1 history-clean migration.
 
-During the final release window, a new empty repository named `JonatanCordoba/SharpAccess` is created first so its canonical URL exists. Repository URLs, Source Link settings, badges, security links, SBOM metadata configuration, and provenance configuration are then updated and committed in `dotnet-auth`. That final development revision is fully validated and approved.
+The initial SharpAccess root was created from the exact privately validated tracked-file tree without inheriting private Git history. Repository URLs, Source Link settings, badges, security links, SBOM metadata, and provenance now belong to SharpAccess.
 
 The exact tracked-file tree of the approved revision is exported without the `.git` directory or any Git refs and committed to the empty `JonatanCordoba/SharpAccess` repository as a new signed root commit. Stable tags, releases, packages, SBOMs, checksums, and provenance originate from the clean release repository.
 
@@ -23,11 +23,11 @@ The release repository is not created by renaming, mirroring, forking, or force-
 ## Consequences
 
 - Public history begins with one curated initial source commit.
-- Internal development commits, branches, pull requests, and issues remain in the private development repository.
+- Historical private development records are preserved outside the active repository as migration provenance.
 - The root tree can contain valid canonical repository metadata without release-only edits.
 - Release automation must prove that the exported tree and clean root tree match the approved development revision before publication.
 - Relevant public issues and documentation may be recreated deliberately, but internal PR and issue history is not imported automatically.
-- After release, fixes are developed in the private repository and exported through the same controlled synchronization process unless a later ADR changes the contribution model.
+- All fixes and future releases are developed through SharpAccess branches and pull requests.
 
 ## Guardrails
 
@@ -35,7 +35,7 @@ The release repository is not created by renaming, mirroring, forking, or force-
 - Export uses tracked files only and must exclude `.git`, local artifacts, secrets, caches, test databases, and unpublished internal evidence.
 - A deterministic tree manifest and archive checksum must demonstrate equivalence between the approved development revision, the export, and the clean release root commit.
 - The release repository must be empty before the initial push and must not be initialized by GitHub with a README, license, or `.gitignore`.
-- Package and Source Link metadata may point to `JonatanCordoba/SharpAccess` only after the empty repository exists; that metadata transition must be committed and fully validated in `dotnet-auth` before export.
-- No source or metadata file may be edited only in the staging directory or clean release repository. Required changes return to `dotnet-auth`, receive full validation, and are exported again.
-- The private development repository must not publish stable NuGet packages directly.
+- Package and Source Link metadata points to `JonatanCordoba/SharpAccess` and is validated from the selected SharpAccess revision.
+- No source or metadata file may be edited only in staging. Required changes return to a SharpAccess branch and receive complete validation.
+- Stable NuGet packages may be published only by the protected SharpAccess release workflow.
 - Deleting or archiving the development repository is a separate retention decision and is not required for a clean public history.

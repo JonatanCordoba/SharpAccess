@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param(
     [string]$RepositoryRoot,
-    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/dotnet-auth",
+    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/SharpAccess",
     [string]$CoveragePath = "artifacts/coverage/combined/coverage-report.xml",
     [string]$ComplexityPath = "artifacts/quality/complexity/complexity.json",
     [string]$OutputDirectory = "artifacts/quality-report"

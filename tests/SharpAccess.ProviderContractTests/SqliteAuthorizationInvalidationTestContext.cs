@@ -15,7 +15,7 @@ internal sealed class SqliteAuthorizationInvalidationTestContext : IAsyncDisposa
 
     public SqliteAuthorizationInvalidationTestContext()
     {
-        _databasePath = Path.Combine(Path.GetTempPath(), $"dotnet-auth-provider-invalidation-{Guid.NewGuid():N}.db");
+        _databasePath = Path.Combine(Path.GetTempPath(), $"sharpaccess-provider-invalidation-{Guid.NewGuid():N}.db");
         SqliteAuthOptions options = new() { ConnectionString = $"Data Source={_databasePath};Pooling=False" };
         Store = new SqliteAuthStore(new SqliteAuthConnectionFactory(Options.Create(options)));
     }

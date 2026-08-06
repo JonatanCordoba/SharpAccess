@@ -4,7 +4,7 @@
     <AcceptedDotNetSdkRollForward>disable</AcceptedDotNetSdkRollForward>
     <SupportedEngineeringPlatform>Windows</SupportedEngineeringPlatform>
     <SupportedAutomationShell>PowerShell 7</SupportedAutomationShell>
-    <DevelopmentRepositoryUrl>https://github.com/JonatanCordoba/dotnet-auth</DevelopmentRepositoryUrl>
+    <DevelopmentRepositoryUrl>https://github.com/JonatanCordoba/SharpAccess</DevelopmentRepositoryUrl>
     <CanonicalRepositoryUrl>https://github.com/JonatanCordoba/SharpAccess</CanonicalRepositoryUrl>
   </PropertyGroup>
   <ItemGroup>

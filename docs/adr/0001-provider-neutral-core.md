@@ -6,7 +6,7 @@ Accepted.
 
 ## Context
 
-dotnet-auth is a NuGet package intended to provide authentication and authorization primitives to ASP.NET Core hosts while supporting multiple database providers over time. The current concrete provider is SQLite.
+SharpAccess provides authentication and authorization primitives to ASP.NET Core hosts through a provider-neutral Core package. The currently supported persistence provider packages are SQLite and PostgreSQL.
 
 A production package should not force all consumers to accept a database dependency they do not use, and it should not make the core authentication engine depend on provider-specific SQL, migrations, connection types, or package references.
 

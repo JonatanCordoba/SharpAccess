@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param(
     [string]$RepositoryRoot,
-    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/dotnet-auth",
+    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/SharpAccess",
     [ValidateRange(0, 65535)][int]$Port = 0,
     [string]$TestEmail = "admin@test.local",
     [string]$TestPassword = "Admin123!Sample",
