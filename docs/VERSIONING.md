@@ -10,7 +10,7 @@ SharpAccess follows semantic versioning for its package family.
 
 The first public release candidate is `0.9.0-rc.1`, with signed tag `v0.9.0-rc.1`. Later candidates increment the prerelease ordinal (`0.9.0-rc.2`, and so on) unless a reviewed compatibility decision changes the base version.
 
-`JonatanCordoba/dotnet-auth` is the private development-history repository. It may create prerelease evidence artifacts, but public NuGet release-candidate and stable packages are published only from the exact verified clean root in `JonatanCordoba/SharpAccess`.
+`JonatanCordoba/SharpAccess` is the canonical source, development, verification, and release repository. Public NuGet release-candidate and stable packages are published only from an exact verified SharpAccess release revision.
 
 Stable `1.0.0` is a separate post-RC release. The build rejects a stable package unless an explicit release-only override and the exact canonical GitHub repository identity are both present.
 

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`JonatanCordoba/dotnet-auth` produces implementation, review, and prerelease evidence for SharpAccess. It does not publish public NuGet release-candidate or stable packages and does not create the canonical public tag or GitHub release.
+`JonatanCordoba/SharpAccess` is the canonical implementation, review, verification, and release repository. Public NuGet packages, canonical tags, and GitHub releases originate only from its protected release flow.
 
 The first public candidate is package version `0.9.0-rc.1` with signed tag `v0.9.0-rc.1`. Public artifacts and the canonical tag are created only from the exact verified clean root in `JonatanCordoba/SharpAccess`.
 
@@ -138,4 +138,4 @@ Release-candidate evidence is complete only when:
 9. the candidate SHA, tree, package version, and retained artifact locations are approved;
 10. canonical metadata is committed and reverified before deterministic export;
 11. the exact clean public root passes the complete release matrix;
-12. no public package, canonical tag, or public GitHub release is created from `dotnet-auth`.
+12. no public package, canonical tag, or public GitHub release is created outside the protected SharpAccess release flow.

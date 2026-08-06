@@ -66,7 +66,7 @@ Risk exceptions require an owner, compensating controls, remediation, and expiry
 
 ## Release boundary
 
-`JonatanCordoba/dotnet-auth` produces prerelease evidence only. It must not publish a stable package, stable tag, or stable GitHub release.
+`JonatanCordoba/SharpAccess` is the only repository authorized to produce release evidence, packages, canonical tags, and GitHub releases.
 
 Stable publication occurs only from the verified signed root in `JonatanCordoba/SharpAccess`, after:
 
@@ -86,6 +86,6 @@ SQL Server and MySQL remain future roadmap candidates and are not release blocke
 - [ ] Required check names match `.github/required-checks.json`.
 - [ ] Force pushes and deletion are disabled.
 - [ ] Dependabot, SAST, secret scanning, push protection, and vulnerability reporting are enabled.
-- [ ] The private repository exposes prerelease evidence only.
+- [ ] Release evidence and publication originate from the selected SharpAccess revision.
 - [ ] The public repository has trusted publication environments.
 - [ ] Operational evidence retention and exercise schedules are configured.

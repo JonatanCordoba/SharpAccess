@@ -7,7 +7,7 @@ Phase 3 adds independent SAST, dependency review, secret scanning, action pinnin
 - Microsoft DevSkim analyzes the repository as the current independent SAST gate.
 - DevSkim is pinned as a local .NET tool and blocks Critical, Important, and Moderate findings with High or Medium confidence.
 - The SAST workflow has read-only repository permissions and retains SARIF output as a workflow artifact.
-- GitHub-native CodeQL remains an optional future enhancement when the repository becomes public or GitHub Code Security is enabled for the private repository.
+- GitHub-native CodeQL remains an optional enhancement when repository visibility and GitHub Code Security availability permit it.
 - Dependency review rejects newly introduced moderate-or-higher vulnerable dependencies.
 - Gitleaks scans full Git history with narrow allowlists for deterministic test fixtures.
 - Every external GitHub Action reference is pinned to a full 40-character commit SHA and verified by paired scripts plus package tests.

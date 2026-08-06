@@ -1,6 +1,6 @@
 # Contributing to SharpAccess
 
-`JonatanCordoba/dotnet-auth` is the private development system of record. Use it for implementation, review, and prerelease evidence. Public release-candidate and stable packages, canonical tags, and public GitHub releases are created only from the exact verified clean `JonatanCordoba/SharpAccess` repository.
+`JonatanCordoba/SharpAccess` is the canonical source and development repository. Use SharpAccess branches and pull requests for implementation, review, verification, releases, and packages.
 
 ## Supported contributor environment
 

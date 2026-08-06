@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param(
     [string]$RepositoryRoot,
-    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/dotnet-auth",
+    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/SharpAccess",
     [string]$Version,
     [string]$ReferenceEnvironment = "controlled-windows-runner-01",
     [switch]$RequirePostgres,
@@ -37,7 +37,7 @@ function Write-EvidenceIndex(
         status = $Status
         sourceRevision = $Commit
         packageVersion = $PackageVersion
-        repository = "JonatanCordoba/dotnet-auth"
+        repository = "JonatanCordoba/SharpAccess"
         artifactType = "windows-prerelease-release-candidate-evidence"
         referenceEnvironment = $EnvironmentName
         supportedPlatform = "Windows"

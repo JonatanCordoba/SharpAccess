@@ -4,10 +4,10 @@
 
 | Repository | Role | History policy |
 |---|---|---|
-| `JonatanCordoba/dotnet-auth` | Private development, review, CI, issues, and release preparation | Retains engineering history. |
+| `JonatanCordoba/dotnet-auth` | Historical private migration source | Retains the original engineering history until preservation and deletion gates pass. |
 | `JonatanCordoba/SharpAccess` | Canonical public source and package-publication repository | Begins with one curated signed root commit. |
 
-Do not rename, mirror, fork, filter, or rewrite `dotnet-auth` to create the public repository. The public root is a deterministic tracked-file snapshot, not a rewritten development history.
+The initial SharpAccess root was created as a deterministic tracked-file snapshot of the privately validated source tree, without inherited Git history.
 
 ## Release identity
 
@@ -29,10 +29,10 @@ Before export:
 3. Package, security, migration, operational, performance, recovery, SBOM, checksum, provenance, OIDC, and consumer-smoke evidence is complete for the selected development revision.
 4. No unresolved Critical, High, or release-blocking Moderate finding remains.
 5. The complete protected release-candidate matrix passes for the exact approved development SHA.
-6. The generated README quality snapshot is committed in `dotnet-auth`, verified again, and stable on regeneration.
+6. The generated README quality snapshot is committed in SharpAccess, verified again, and stable on regeneration.
 7. The deterministic export dry run passes for that same final SHA.
 8. `JonatanCordoba/SharpAccess` exists without generated starter files or imported private history. If an existing target is not empty, stop and obtain an explicit, reviewed disposition; do not overwrite it implicitly.
-9. Canonical repository, package, security, badge, Wiki, and release metadata is committed and fully revalidated in `dotnet-auth`.
+9. Canonical repository, package, security, badge, Wiki, and release metadata is committed and fully revalidated in SharpAccess.
 10. The final candidate is identified by an immutable full SHA and tree SHA.
 11. The bounded public-repository bootstrap sequence has explicit operator authorization.
 
@@ -40,7 +40,7 @@ Creating an empty target is not publication. It establishes the canonical identi
 
 ## Private quality-snapshot fixed point
 
-The README quality table is generated from `artifacts/quality-report/metrics.json`. Because committing the generated table changes the selected revision, complete this fixed-point cycle in the private repository before export:
+The README quality table is generated from `artifacts/quality-report/metrics.json`. Because committing the generated table changes the selected revision, complete this fixed-point cycle in SharpAccess before release:
 
 1. Run exact-revision verification on the candidate:
 
@@ -106,7 +106,7 @@ The dry run:
 
 ## Windows snapshot procedure
 
-Run from PowerShell 7 on Windows after the final development revision is approved. Use a release directory that has never been a clone of the private repository.
+Run from PowerShell 7 on Windows after the final SharpAccess revision is approved. Use a clean release directory outside the normal working clone.
 
 ```powershell
 $releaseSha = '<approved-final-development-sha>'
@@ -122,7 +122,7 @@ if (Test-Path $release) {
     throw "Release staging path already exists: $release"
 }
 
-git clone --no-tags git@github.com:JonatanCordoba/dotnet-auth.git $development
+git clone --no-tags git@github.com:JonatanCordoba/SharpAccess.git $development
 if ($LASTEXITCODE -ne 0) { throw 'Development clone failed.' }
 
 git -C $development checkout --detach $releaseSha
@@ -180,7 +180,7 @@ Record:
 - operator and reviewer identities;
 - completed change and release records.
 
-No source or metadata difference is allowed. Required changes must return to `dotnet-auth`, pass the complete gate, and be exported again.
+No source or metadata difference is allowed. Required changes must return to a SharpAccess branch, pass the complete gate, and be selected again.
 
 ## Empty target rules
 
@@ -222,4 +222,4 @@ After push, record the remote public root SHA and verify its tree and normalized
 
 ## Development repository after release
 
-`dotnet-auth` may remain private, be renamed for internal clarity, or be archived after backup and retention review. It must not be presented as the canonical public source, and deletion is not required for clean public history.
+`dotnet-auth` is the historical private migration source. It may be deleted only after its Git bundle, discussions, settings, release evidence, publication evidence, Wiki, packages, and consumer-validation results are preserved. After deletion, SharpAccess is the only workable repository.

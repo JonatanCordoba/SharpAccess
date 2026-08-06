@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param(
     [string]$RepositoryRoot,
-    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/dotnet-auth",
+    [string]$RepositoryUrl = "https://github.com/JonatanCordoba/SharpAccess",
     [string]$Version
 )
 Set-StrictMode -Version Latest
