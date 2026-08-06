@@ -66,6 +66,12 @@ Keep transactions short, monitor contention, confirm WAL/busy-timeout policy, an
 
 The repository intentionally makes ordinary local PostgreSQL execution opt-in, but supported-provider and release evidence requires the protected connection environment. Ensure the expected environment variable is present in the current PowerShell process without printing its value.
 
+## GitHub Actions is degraded or unavailable
+
+Do not rerun unrelated workflows blindly and do not relabel interrupted jobs as successful. Record the exact revision, workflow, job, conclusion, and platform symptom. After service recovery, rerun the applicable workflow and review its retained artifacts.
+
+The current disambiguated display names are `ci-windows`, `operational-readiness-windows`, `provider-contracts-classify`, and `test-scope-classify`. Required-check configuration must use names actually observed on successful runs, not stale aliases from an earlier manifest.
+
 ## Verification refuses a dirty tree
 
 `verify-local` is clean-tree and revision-bound. Inspect the complete diff, commit the coherent change, then run verification on the exact clean commit.

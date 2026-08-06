@@ -2,6 +2,9 @@
 
 SharpAccess requires Windows, PowerShell 7 for repository operations, and .NET 10 selected by the repository `global.json`.
 
+> [!NOTE]
+> The commands below target the planned `0.9.0-rc.1` cohort. Before publication, verify that each package page resolves on NuGet and that the version is listed. A repository version declaration alone does not prove package availability.
+
 ## Choose one package set
 
 ### SQLite

@@ -24,7 +24,7 @@ The signed tag, packages, symbols, checksums, SBOMs, provenance, and GitHub prer
 
 ## NuGet Trusted Publishing
 
-The intended workflow uses a GitHub environment and short-lived NuGet credential. It must verify repository identity, tag identity, tag signature, locked restore, package contents, and publication order.
+Trusted Publishing is a publication prerequisite, not proof that publication is already configured. Before the first package push, the dedicated tag-triggered workflow and NuGet trust policy must be reviewed together. They must verify repository identity, tag identity, tag signature, locked restore, package contents, and publication order before obtaining a short-lived NuGet credential.
 
 Publication order:
 
@@ -36,7 +36,11 @@ Do not use `--skip-duplicate` for the first canonical release.
 
 ## Public verification
 
-Hosted checks blocked by private quota are environment-blocked evidence, not passing evidence. Actual public hosted verification is required before final RC publication.
+Public hosted verification must complete on the exact release revision before final RC publication. A skipped, cancelled, timed-out, neutral, action-required, or infrastructure-blocked job is not passing evidence. A narrowly reviewed outage exception may allow unrelated workflow-only maintenance to merge, but it must never be reused as release evidence.
+
+The disambiguated check identities include `ci-windows`, `operational-readiness-windows`, `provider-contracts-classify`, and `test-scope-classify`. Provider and integrated release evidence also requires successful applicable jobs such as `sqlite-supported`, `postgres-native`, and `windows-release-candidate`, with retained artifacts reviewed for the exact revision.
+
+Wiki publication follows successful public hosted verification. Trusted Publishing, signed tagging, package publication, the GitHub prerelease, and clean-consumer validation remain separate later gates.
 
 ## References
 

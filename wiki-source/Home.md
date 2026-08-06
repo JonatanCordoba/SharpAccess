@@ -5,6 +5,9 @@ SharpAccess is a Windows-only authentication and authorization package family fo
 > [!IMPORTANT]
 > `0.9.0-rc.1` is a release candidate for evaluation and integration testing. Stable `1.0.0` is a later, separately gated release.
 
+> [!NOTE]
+> The repository is preparing `0.9.0-rc.1`. Until the signed tag, GitHub prerelease, and NuGet package pages exist, installation commands in this Wiki are prospective release instructions rather than proof that the packages are available.
+
 ## Package family
 
 | Package | Status | Purpose |
