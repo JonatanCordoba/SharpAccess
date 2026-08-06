@@ -1,0 +1,1 @@
+SharpAccess · Windows · .NET 10 · PowerShell 7 · [Repository](https://github.com/JonatanCordoba/SharpAccess) · [Security](https://github.com/JonatanCordoba/SharpAccess/blob/main/SECURITY.md) · [License](https://github.com/JonatanCordoba/SharpAccess/blob/main/LICENSE)

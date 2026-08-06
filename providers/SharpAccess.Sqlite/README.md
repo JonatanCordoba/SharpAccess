@@ -6,11 +6,6 @@ The provider owns the SQLite dependency, connection creation, SQL dialect behavi
 
 ## Install and register
 
-```bash
-dotnet add package SharpAccess.Core
-dotnet add package SharpAccess.Sqlite
-```
-
 ```csharp
 builder.Services.AddSharpAccess(builder.Configuration);
 builder.Services.AddSqliteAccess(builder.Configuration);
@@ -26,7 +21,7 @@ builder.Services.AddSqliteAccess(builder.Configuration);
 }
 ```
 
-Install exactly one relational provider in a host. Do not register SQLite, PostgreSQL, SQL Server, and MySQL together.
+Install exactly one supported relational provider in a host. Do not register SQLite and PostgreSQL together as primary persistence providers. SQL Server and MySQL are roadmap candidates only and have no active package or registration surface.
 
 ## Operational behavior
 
@@ -37,11 +32,6 @@ Protect the database, `-wal`, and `-shm` files with operating-system permissions
 See [`docs/SQLITE.md`](../../docs/SQLITE.md) and [`docs/BACKUP-RESTORE.md`](../../docs/BACKUP-RESTORE.md) for the complete provider and recovery contract.
 
 ## Validation
-
-```bash
-bash ./scripts/sqlite-smoke.sh --repository-root "$PWD"
-bash ./scripts/recovery-drill.sh --repository-root "$PWD"
-```
 
 ```powershell
 ./scripts/sqlite-smoke.ps1 -RepositoryRoot $PWD

@@ -21,5 +21,5 @@ SharpAccess stable `1.0.0` targets `net10.0` only. All package projects, samples
 ## Guardrails
 
 - `Directory.Build.props` remains the target-framework source of truth unless a project has an explicitly documented exception.
-- CI must validate the approved Linux, Windows, and macOS .NET 10 matrix.
+- CI and release verification must validate the approved Windows .NET 10 environment with PowerShell 7.
 - Documentation and package metadata must not imply support for another target framework.

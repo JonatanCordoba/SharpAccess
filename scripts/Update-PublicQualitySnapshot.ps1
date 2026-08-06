@@ -17,6 +17,9 @@ if ([string]::IsNullOrWhiteSpace($MetricsPath)) {
 if ([string]::IsNullOrWhiteSpace($ReadmePath)) {
     $ReadmePath = Join-Path $resolvedRepositoryRoot 'README.md'
 }
+if ([string]::IsNullOrWhiteSpace($WikiQualityPath)) {
+    $WikiQualityPath = Join-Path $resolvedRepositoryRoot 'wiki-source/Quality-and-Metrics.md'
+}
 
 function Get-Percentile {
     param(
@@ -154,8 +157,9 @@ $($rows -join "`n")
 "@
 
 Replace-Block -Path $ReadmePath -Replacement $block
-if (-not [string]::IsNullOrWhiteSpace($WikiQualityPath)) {
-    Replace-Block -Path $WikiQualityPath -Replacement $block
+if (-not (Test-Path -LiteralPath $WikiQualityPath -PathType Leaf)) {
+    throw "Tracked Wiki quality page is missing: $WikiQualityPath"
 }
+Replace-Block -Path $WikiQualityPath -Replacement $block
 
-Write-Host "Updated the public quality snapshot from metrics revision $($metrics.revision)."
+Write-Host "Updated the README and Wiki quality snapshots from metrics revision $($metrics.revision)."
