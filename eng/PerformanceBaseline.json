@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "status": "approved",
-  "approvedRevision": "7342a3c04f7a1e0bf20\u0034b8949f69306bbf24a02\u0034",
+  "approvedRevision": "2d8a44280603856b060\u0061a1ffa829ac26c880535\u0036",
   "referenceEnvironment": "local-controlled",
   "environmentFingerprint": "572d714596b11fc34db\u0066bc930f4e2a1724f6a51\u0033dbeb264837f39803b8f\u003020cd",
   "environment": {
@@ -89,62 +89,62 @@
   "p95ComparisonEpsilonMilliseconds": 0.001,
   "independentRuns": 3,
   "aggregation": "median-across-independent-processes",
-  "reviewDecision": "Reviewed the exact-revision three-process median RC1 candidate in local-controlled. Environment fingerprint, warmups, metric catalog, independent observations, p95 values, allocations, and retained evidence were accepted.",
-  "reviewedUtc": "2026-08-05T17:55:30.1428337+00:00",
+  "reviewDecision": "Approved candidate 2d8a44280603856b060aa1ffa829ac26c8805356 after review of 16 metrics, three independent runs, median aggregation, warmups, allocations, datasets, tolerances, and capacity notes. Password hash and refresh replay contention variability were accepted as controlled reference evidence, not a production SLA.",
+  "reviewedUtc": "2026-08-06T11:49:06.0865840+00:00",
   "metrics": [
     {
       "name": "password_hash",
       "iterations": 10,
-      "meanMilliseconds": 21.6018,
-      "p50Milliseconds": 21.7652,
-      "p95Milliseconds": 21.9275,
-      "maximumMilliseconds": 21.9275,
-      "allocatedBytesPerOperation": 8497712,
-      "workingSetDeltaBytes": 360448,
+      "meanMilliseconds": 21.7228,
+      "p50Milliseconds": 21.7438,
+      "p95Milliseconds": 23.5477,
+      "maximumMilliseconds": 23.5477,
+      "allocatedBytesPerOperation": 8497635,
+      "workingSetDeltaBytes": 282624,
       "independentRunP95Milliseconds": [
-        21.8231,
-        22.2187,
-        21.9275
+        47.9858,
+        23.5477,
+        22.0214
       ],
       "independentRunAllocatedBytesPerOperation": [
-        8497712,
-        8497498,
-        8497746
+        8497036,
+        8497732,
+        8497635
       ]
     },
     {
       "name": "password_verify",
       "iterations": 20,
-      "meanMilliseconds": 21.4451,
-      "p50Milliseconds": 21.453,
-      "p95Milliseconds": 21.9829,
-      "maximumMilliseconds": 22.2859,
-      "allocatedBytesPerOperation": 8502233,
-      "workingSetDeltaBytes": 8581120,
+      "meanMilliseconds": 21.8212,
+      "p50Milliseconds": 21.8622,
+      "p95Milliseconds": 22.3345,
+      "maximumMilliseconds": 22.6828,
+      "allocatedBytesPerOperation": 8522620,
+      "workingSetDeltaBytes": 9330688,
       "independentRunP95Milliseconds": [
-        21.6522,
-        21.9829,
-        22.1265
+        22.0754,
+        22.6503,
+        22.3345
       ],
       "independentRunAllocatedBytesPerOperation": [
-        8502233,
-        8498144,
-        8535516
+        8498136,
+        8545000,
+        8522620
       ]
     },
     {
       "name": "password_hash_queue_saturation",
       "iterations": 10,
-      "meanMilliseconds": 0.0141,
-      "p50Milliseconds": 0.0079,
-      "p95Milliseconds": 0.0556,
-      "maximumMilliseconds": 0.0556,
+      "meanMilliseconds": 0.0136,
+      "p50Milliseconds": 0.0078,
+      "p95Milliseconds": 0.0571,
+      "maximumMilliseconds": 0.0571,
       "allocatedBytesPerOperation": 1913,
       "workingSetDeltaBytes": 0,
       "independentRunP95Milliseconds": [
-        0.0556,
-        0.0564,
-        0.0499
+        0.0853,
+        0.0571,
+        0.0482
       ],
       "independentRunAllocatedBytesPerOperation": [
         1913,
@@ -155,16 +155,16 @@
     {
       "name": "password_hash_no_wait_rejection",
       "iterations": 10,
-      "meanMilliseconds": 0.0159,
-      "p50Milliseconds": 0.0115,
-      "p95Milliseconds": 0.0567,
-      "maximumMilliseconds": 0.0567,
+      "meanMilliseconds": 0.0163,
+      "p50Milliseconds": 0.0117,
+      "p95Milliseconds": 0.0579,
+      "maximumMilliseconds": 0.0579,
       "allocatedBytesPerOperation": 1897,
       "workingSetDeltaBytes": 0,
       "independentRunP95Milliseconds": [
-        0.0567,
-        0.0567,
-        0.0582
+        0.0882,
+        0.0579,
+        0.0541
       ],
       "independentRunAllocatedBytesPerOperation": [
         1897,
@@ -175,16 +175,16 @@
     {
       "name": "jwt_sign",
       "iterations": 500,
-      "meanMilliseconds": 0.0535,
-      "p50Milliseconds": 0.0524,
-      "p95Milliseconds": 0.0578,
-      "maximumMilliseconds": 0.3183,
+      "meanMilliseconds": 0.0541,
+      "p50Milliseconds": 0.0532,
+      "p95Milliseconds": 0.0599,
+      "maximumMilliseconds": 0.315,
       "allocatedBytesPerOperation": 15341,
       "workingSetDeltaBytes": 7188480,
       "independentRunP95Milliseconds": [
-        0.059,
-        0.0578,
-        0.0573
+        0.0823,
+        0.0599,
+        0.0591
       ],
       "independentRunAllocatedBytesPerOperation": [
         15341,
@@ -195,16 +195,16 @@
     {
       "name": "jwt_validate",
       "iterations": 500,
-      "meanMilliseconds": 0.0877,
-      "p50Milliseconds": 0.0853,
-      "p95Milliseconds": 0.0946,
-      "maximumMilliseconds": 0.3867,
+      "meanMilliseconds": 0.0879,
+      "p50Milliseconds": 0.0827,
+      "p95Milliseconds": 0.1,
+      "maximumMilliseconds": 0.4407,
       "allocatedBytesPerOperation": 17829,
-      "workingSetDeltaBytes": 3399680,
+      "workingSetDeltaBytes": 3174400,
       "independentRunP95Milliseconds": [
-        0.0946,
-        0.0944,
-        0.0963
+        0.1323,
+        0.1,
+        0.0958
       ],
       "independentRunAllocatedBytesPerOperation": [
         17829,
@@ -218,11 +218,11 @@
       "meanMilliseconds": 0.0003,
       "p50Milliseconds": 0.0002,
       "p95Milliseconds": 0.0007,
-      "maximumMilliseconds": 0.1437,
+      "maximumMilliseconds": 0.139,
       "allocatedBytesPerOperation": 466,
       "workingSetDeltaBytes": 0,
       "independentRunP95Milliseconds": [
-        0.0007,
+        0.001,
         0.0007,
         0.0007
       ],
@@ -235,96 +235,96 @@
     {
       "name": "endpoint_login",
       "iterations": 3,
-      "meanMilliseconds": 257.8308,
-      "p50Milliseconds": 255.2056,
-      "p95Milliseconds": 263.6344,
-      "maximumMilliseconds": 263.6344,
-      "allocatedBytesPerOperation": 67704837,
-      "workingSetDeltaBytes": 61562880,
+      "meanMilliseconds": 256.8667,
+      "p50Milliseconds": 254.704,
+      "p95Milliseconds": 264.0662,
+      "maximumMilliseconds": 264.0662,
+      "allocatedBytesPerOperation": 67710890,
+      "workingSetDeltaBytes": 61415424,
       "independentRunP95Milliseconds": [
-        261.9391,
-        263.6344,
-        267.3828
+        271.7086,
+        264.0662,
+        260.9303
       ],
       "independentRunAllocatedBytesPerOperation": [
-        67705048,
-        67704837,
-        67703861
+        67750480,
+        67706133,
+        67710890
       ]
     },
     {
       "name": "endpoint_refresh_rotation",
       "iterations": 3,
-      "meanMilliseconds": 20.1767,
-      "p50Milliseconds": 19.836,
-      "p95Milliseconds": 21.2245,
-      "maximumMilliseconds": 21.2245,
-      "allocatedBytesPerOperation": 135282,
-      "workingSetDeltaBytes": 20480,
+      "meanMilliseconds": 21.2655,
+      "p50Milliseconds": 21.0774,
+      "p95Milliseconds": 21.9482,
+      "maximumMilliseconds": 21.9482,
+      "allocatedBytesPerOperation": 135330,
+      "workingSetDeltaBytes": 16384,
       "independentRunP95Milliseconds": [
-        21.2245,
-        21.1588,
-        23.2343
+        24.2033,
+        21.4491,
+        21.9482
       ],
       "independentRunAllocatedBytesPerOperation": [
-        135282,
-        135229,
-        137314
+        135330,
+        135330,
+        135541
       ]
     },
     {
       "name": "endpoint_refresh_replay_contention",
       "iterations": 3,
-      "meanMilliseconds": 71.9364,
-      "p50Milliseconds": 74.3189,
-      "p95Milliseconds": 78.9938,
-      "maximumMilliseconds": 78.9938,
-      "allocatedBytesPerOperation": 243938,
-      "workingSetDeltaBytes": 73728,
+      "meanMilliseconds": 72.8542,
+      "p50Milliseconds": 61.8562,
+      "p95Milliseconds": 106.9938,
+      "maximumMilliseconds": 106.9938,
+      "allocatedBytesPerOperation": 255930,
+      "workingSetDeltaBytes": 114688,
       "independentRunP95Milliseconds": [
-        71.6974,
-        81.5221,
-        78.9938
+        139.6283,
+        106.9938,
+        71.2597
       ],
       "independentRunAllocatedBytesPerOperation": [
-        243938,
-        257248,
-        242776
+        244229,
+        300693,
+        255930
       ]
     },
     {
       "name": "endpoint_persisted_state_validation",
       "iterations": 30,
-      "meanMilliseconds": 8.7545,
-      "p50Milliseconds": 8.5903,
-      "p95Milliseconds": 9.6253,
-      "maximumMilliseconds": 10.1699,
-      "allocatedBytesPerOperation": 72713,
-      "workingSetDeltaBytes": 2048000,
+      "meanMilliseconds": 9.3683,
+      "p50Milliseconds": 9.3279,
+      "p95Milliseconds": 9.8488,
+      "maximumMilliseconds": 10.964,
+      "allocatedBytesPerOperation": 72707,
+      "workingSetDeltaBytes": 1753088,
       "independentRunP95Milliseconds": [
-        9.6253,
-        9.224,
-        9.9648
+        10.5504,
+        9.1525,
+        9.8488
       ],
       "independentRunAllocatedBytesPerOperation": [
         72713,
-        72713,
+        72707,
         72707
       ]
     },
     {
       "name": "endpoint_user_keyset_page",
       "iterations": 30,
-      "meanMilliseconds": 5.7914,
-      "p50Milliseconds": 5.7442,
-      "p95Milliseconds": 6.3622,
-      "maximumMilliseconds": 7.4693,
+      "meanMilliseconds": 6.4164,
+      "p50Milliseconds": 6.3308,
+      "p95Milliseconds": 7.137,
+      "maximumMilliseconds": 7.9696,
       "allocatedBytesPerOperation": 59075,
-      "workingSetDeltaBytes": 69632,
+      "workingSetDeltaBytes": 45056,
       "independentRunP95Milliseconds": [
-        6.0392,
-        6.3622,
-        6.5862
+        7.137,
+        7.2208,
+        6.8264
       ],
       "independentRunAllocatedBytesPerOperation": [
         59075,
@@ -335,76 +335,76 @@
     {
       "name": "endpoint_role_invalidation_cycle",
       "iterations": 3,
-      "meanMilliseconds": 27.8157,
-      "p50Milliseconds": 24.5239,
-      "p95Milliseconds": 36.022,
-      "maximumMilliseconds": 36.022,
-      "allocatedBytesPerOperation": 150368,
-      "workingSetDeltaBytes": 102400,
+      "meanMilliseconds": 27.8117,
+      "p50Milliseconds": 24.0935,
+      "p95Milliseconds": 35.8943,
+      "maximumMilliseconds": 35.8943,
+      "allocatedBytesPerOperation": 150400,
+      "workingSetDeltaBytes": 151552,
       "independentRunP95Milliseconds": [
-        36.022,
-        35.8987,
-        37.2543
+        39.7102,
+        35.8943,
+        35.764
       ],
       "independentRunAllocatedBytesPerOperation": [
-        150368,
         150400,
-        150368
+        148925,
+        150400
       ]
     },
     {
       "name": "endpoint_tenant_member_page",
       "iterations": 30,
-      "meanMilliseconds": 10.9237,
-      "p50Milliseconds": 10.8514,
-      "p95Milliseconds": 11.5024,
-      "maximumMilliseconds": 12.475,
+      "meanMilliseconds": 11.466,
+      "p50Milliseconds": 11.3335,
+      "p95Milliseconds": 12.0953,
+      "maximumMilliseconds": 13.509,
       "allocatedBytesPerOperation": 81856,
-      "workingSetDeltaBytes": 368640,
+      "workingSetDeltaBytes": 458752,
       "independentRunP95Milliseconds": [
-        11.2442,
-        11.5024,
-        13.1267
+        13.6533,
+        11.5275,
+        12.0953
       ],
       "independentRunAllocatedBytesPerOperation": [
         81856,
-        81851,
-        81885
+        81856,
+        81851
       ]
     },
     {
       "name": "postgres_user_keyset_page",
       "iterations": 25,
-      "meanMilliseconds": 0.7197,
-      "p50Milliseconds": 0.6118,
-      "p95Milliseconds": 0.7699,
-      "maximumMilliseconds": 2.9497,
-      "allocatedBytesPerOperation": 21159,
-      "workingSetDeltaBytes": -839680,
+      "meanMilliseconds": 0.7126,
+      "p50Milliseconds": 0.6139,
+      "p95Milliseconds": 0.7385,
+      "maximumMilliseconds": 2.8162,
+      "allocatedBytesPerOperation": 21163,
+      "workingSetDeltaBytes": -851968,
       "independentRunP95Milliseconds": [
-        0.8024,
-        0.7335,
-        0.7699
+        0.7254,
+        0.7385,
+        0.8004
       ],
       "independentRunAllocatedBytesPerOperation": [
-        21159,
-        21226,
-        21127
+        21163,
+        21180,
+        21140
       ]
     },
     {
       "name": "postgres_tenant_member_keyset_page",
       "iterations": 25,
-      "meanMilliseconds": 1.5443,
-      "p50Milliseconds": 1.4635,
-      "p95Milliseconds": 1.577,
-      "maximumMilliseconds": 3.1121,
+      "meanMilliseconds": 1.5331,
+      "p50Milliseconds": 1.4582,
+      "p95Milliseconds": 1.5616,
+      "maximumMilliseconds": 3.0968,
       "allocatedBytesPerOperation": 24368,
-      "workingSetDeltaBytes": 16384,
+      "workingSetDeltaBytes": 8192,
       "independentRunP95Milliseconds": [
-        1.839,
-        1.5212,
-        1.577
+        1.5074,
+        1.6558,
+        1.5616
       ],
       "independentRunAllocatedBytesPerOperation": [
         24366,
