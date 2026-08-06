@@ -28,9 +28,13 @@ The host supplies the connection string or a host-managed data source. Do not co
 - Provider transactions preserve canonical audit evidence and rollback behavior.
 - Native query-plan evidence must retain intended indexes for bounded keyset pagination.
 
-## Required local environment
+## Evidence interpretation
 
-PostgreSQL tests use an approved scratch database and the environment variable expected by the repository scripts. Its value must not appear in source, chat summaries, or retained evidence.
+`SharpAccess.Postgres` is classified as Supported by the repository policy. That classification does not convert a skipped, cancelled, timed-out, or infrastructure-blocked hosted job into passing release evidence. The applicable release revision requires a successful `postgres-native` run and retained provider-contract, coverage, and recovery artifacts.
+
+## Required local and hosted environment
+
+PostgreSQL tests use an approved scratch database and the protected connection setting expected by the repository scripts. Hosted evidence is scoped through the `postgres-evidence` environment. The connection value must not appear in source, logs, Wiki content, chat summaries, or retained evidence.
 
 ## Validation
 

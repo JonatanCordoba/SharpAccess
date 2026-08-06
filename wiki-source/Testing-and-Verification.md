@@ -24,6 +24,19 @@ The command is intentionally clean-tree and revision-bound.
 
 PostgreSQL execution can be optional during ordinary unconfigured development, but it is mandatory for Supported-provider and release evidence. SQLite-only success is not PostgreSQL evidence.
 
+## Public hosted check identities
+
+The current disambiguated workflow job display names include:
+
+- `ci-windows`;
+- `operational-readiness-windows`;
+- `provider-contracts-classify`;
+- `test-scope-classify`.
+
+Other release-relevant jobs retain their own names, including `sqlite-supported`, `postgres-native`, `devskim`, `tracked-secret-scan`, `review`, `Validate pull request evidence`, and `windows-release-candidate`.
+
+Only a completed successful conclusion is passing evidence. Skipped, cancelled, timed-out, neutral, action-required, and infrastructure-blocked conclusions must remain accurately classified. Required-check configuration must use the exact names observed on successful runs from the protected revision; a tracked manifest must be synchronized separately before it is treated as authoritative.
+
 ## Quality and security
 
 Verification includes coverage, changed-line coverage, complexity/CRAP ratchets, critical mutation invariants, SAST, dependency audit, secret scanning, package tests, SBOMs, and repository-structure policy.

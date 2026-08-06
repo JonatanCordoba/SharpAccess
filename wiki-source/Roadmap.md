@@ -8,7 +8,7 @@ The active release candidate is `0.9.0-rc.1`. The canonical package cohort is:
 - `SharpAccess.Sqlite`;
 - `SharpAccess.Postgres`.
 
-The remaining release lifecycle includes exact-revision performance approval, protected RC verification, public hosted verification, Wiki publication, Trusted Publishing, signed tagging, package publication, prerelease creation, and clean consumer validation.
+The release is in public verification and publication preparation. The tracked required-check manifest now uses the disambiguated check identities. Remaining gates include fresh successful public hosted provider and integrated RC evidence on the selected revision, reviewed Wiki publication, Trusted Publishing, signed tagging, package publication, prerelease creation, and clean consumer validation.
 
 ## Future providers
 
