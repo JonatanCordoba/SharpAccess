@@ -4,11 +4,6 @@
 
 ## Install and register
 
-```bash
-dotnet add package SharpAccess.Core
-dotnet add package SharpAccess.Sqlite
-```
-
 ```csharp
 builder.Services.AddSharpAccess(builder.Configuration);
 builder.Services.AddSqliteAccess(builder.Configuration);
@@ -52,10 +47,6 @@ JWT signing keys, token-hashing keys, and password peppers are not database cont
 
 Use the controlled procedure in [BACKUP-RESTORE.md](BACKUP-RESTORE.md). A raw copy of only the main database file is unsafe while writes or uncheckpointed WAL frames may exist. The repository recovery drill quiesces the test host, runs `wal_checkpoint(TRUNCATE)`, verifies `PRAGMA integrity_check`, copies the main file, restores it, verifies integrity again, and proves a verified account can log in.
 
-```bash
-bash ./scripts/recovery-drill.sh --repository-root "$PWD"
-```
-
 ```powershell
 ./scripts/recovery-drill.ps1 -RepositoryRoot $PWD
 ```
@@ -63,10 +54,6 @@ bash ./scripts/recovery-drill.sh --repository-root "$PWD"
 The package drill is controlled evidence, not a substitute for a host-specific backup, restore, retention, encryption, and disaster-recovery exercise.
 
 ## Validation
-
-```bash
-bash ./scripts/sqlite-smoke.sh --repository-root "$PWD"
-```
 
 ```powershell
 ./scripts/sqlite-smoke.ps1 -RepositoryRoot $PWD

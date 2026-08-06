@@ -37,7 +37,7 @@ It is designed for teams that want explicit security boundaries, deterministic m
 | Audience | What to inspect first |
 |---|---|
 | Recruiters and engineering leaders | [Architecture](#architecture), [security model](#security-model), [quality snapshot](#release-quality-snapshot), and [release integrity](#release-integrity). |
-| Application engineers | [Five-minute setup](#five-minute-setup), [package selection](#packages), and the [Configuration Reference](https://github.com/JonatanCordoba/SharpAccess/wiki/Configuration-Reference). |
+| Application engineers | [Five-minute setup](#five-minute-setup), [package selection](#packages), and the [Configuration](https://github.com/JonatanCordoba/SharpAccess/wiki/Configuration). |
 | Security reviewers | [Security model](#security-model), `SECURITY.md`, cryptography, OIDC, mutation, and supply-chain pages in the Wiki. |
 | Operators | Platform contract, migrations, observability, recovery, capacity, and release runbooks in the Wiki. |
 | Contributors | `CONTRIBUTING.md`, quality gates, provider contracts, public API baselines, and exact-revision verification. |
@@ -279,11 +279,16 @@ The complete report includes project, namespace, type, member, dependency, and h
 | Start here | Deep technical reference |
 |---|---|
 | [Wiki Home](https://github.com/JonatanCordoba/SharpAccess/wiki) | [Architecture](https://github.com/JonatanCordoba/SharpAccess/wiki/Architecture) |
-| [Getting Started](https://github.com/JonatanCordoba/SharpAccess/wiki/Getting-Started) | [Configuration Reference](https://github.com/JonatanCordoba/SharpAccess/wiki/Configuration-Reference) |
-| [Package and DB Selection](https://github.com/JonatanCordoba/SharpAccess/wiki/Database-Providers) | [Authentication and Sessions](https://github.com/JonatanCordoba/SharpAccess/wiki/Authentication-and-Sessions) |
-| [Security and Privacy](https://github.com/JonatanCordoba/SharpAccess/wiki/Security-and-Privacy) | [Authorization and Tenancy](https://github.com/JonatanCordoba/SharpAccess/wiki/Authorization-and-Tenancy) |
-| [Operations and Recovery](https://github.com/JonatanCordoba/SharpAccess/wiki/Operations-and-Recovery) | [Testing and Verification](https://github.com/JonatanCordoba/SharpAccess/wiki/Testing-and-Verification) |
-| [Quality and Metrics](https://github.com/JonatanCordoba/SharpAccess/wiki/Quality-and-Metrics) | [Release and Supply Chain](https://github.com/JonatanCordoba/SharpAccess/wiki/Release-and-Supply-Chain) |
+| [Installation](https://github.com/JonatanCordoba/SharpAccess/wiki/Installation) | [Quick Start](https://github.com/JonatanCordoba/SharpAccess/wiki/Quick-Start) |
+| [Configuration](https://github.com/JonatanCordoba/SharpAccess/wiki/Configuration) | [Authentication](https://github.com/JonatanCordoba/SharpAccess/wiki/Authentication) |
+| [Authorization](https://github.com/JonatanCordoba/SharpAccess/wiki/Authorization) | [Tokens and Refresh](https://github.com/JonatanCordoba/SharpAccess/wiki/Tokens-and-Refresh) |
+| [OIDC](https://github.com/JonatanCordoba/SharpAccess/wiki/OIDC) | [Database Migrations](https://github.com/JonatanCordoba/SharpAccess/wiki/Database-Migrations) |
+| [SQLite Provider](https://github.com/JonatanCordoba/SharpAccess/wiki/SQLite-Provider) | [PostgreSQL Provider](https://github.com/JonatanCordoba/SharpAccess/wiki/PostgreSQL-Provider) |
+| [Operations](https://github.com/JonatanCordoba/SharpAccess/wiki/Operations) | [Recovery](https://github.com/JonatanCordoba/SharpAccess/wiki/Recovery) |
+| [Security](https://github.com/JonatanCordoba/SharpAccess/wiki/Security) | [Troubleshooting](https://github.com/JonatanCordoba/SharpAccess/wiki/Troubleshooting) |
+| [Quality and Metrics](https://github.com/JonatanCordoba/SharpAccess/wiki/Quality-and-Metrics) | [Performance and Capacity](https://github.com/JonatanCordoba/SharpAccess/wiki/Performance-and-Capacity) |
+| [Testing and Verification](https://github.com/JonatanCordoba/SharpAccess/wiki/Testing-and-Verification) | [Release and Supply Chain](https://github.com/JonatanCordoba/SharpAccess/wiki/Release-and-Supply-Chain) |
+| [Roadmap](https://github.com/JonatanCordoba/SharpAccess/wiki/Roadmap) | [Contributing](https://github.com/JonatanCordoba/SharpAccess/wiki/Contributing) |
 
 ## Release integrity
 

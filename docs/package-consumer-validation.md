@@ -10,10 +10,6 @@ Verify that the packed `SharpAccess.Core` and `SharpAccess.Sqlite` packages can 
 
 Run after `scripts/pack` has produced package artifacts:
 
-```bash
-bash ./scripts/package-smoke.sh --repository-root "$PWD"
-```
-
 ```powershell
 ./scripts/package-smoke.ps1 -RepositoryRoot $PWD
 ```
@@ -51,4 +47,4 @@ A later hardening pass should extend this smoke test to start the temporary app,
 
 ## Release gate recommendation
 
-For production release candidates, run this validation on Linux and Windows after pack and before publishing artifacts.
+For production release candidates, run this validation on the approved Windows environment after pack and before publishing artifacts.
