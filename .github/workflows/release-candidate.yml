@@ -51,9 +51,6 @@ jobs:
       SHARPACCESS_OIDC_LIVE_ALLOWED_HOSTS: ${{ vars.SHARPACCESS_OIDC_LIVE_ALLOWED_HOSTS }}
       SHARPACCESS_OIDC_LIVE_CLIENT_ID: ${{ secrets.SHARPACCESS_OIDC_LIVE_CLIENT_ID }}
       SHARPACCESS_OIDC_LIVE_CLIENT_SECRET: ${{ secrets.SHARPACCESS_OIDC_LIVE_CLIENT_SECRET }}
-      SHARPACCESS_OIDC_LIVE_AUTHORIZATION_CODE: ${{ secrets.SHARPACCESS_OIDC_LIVE_AUTHORIZATION_CODE }}
-      SHARPACCESS_OIDC_LIVE_CODE_VERIFIER: ${{ secrets.SHARPACCESS_OIDC_LIVE_CODE_VERIFIER }}
-      SHARPACCESS_OIDC_LIVE_NONCE: ${{ secrets.SHARPACCESS_OIDC_LIVE_NONCE }}
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
@@ -64,6 +61,16 @@ jobs:
           global-json-file: global.json
           cache: true
           cache-dependency-path: '**/packages.lock.json'
+      - name: Run protected OIDC live smoke
+        shell: pwsh
+        env:
+          SHARPACCESS_OIDC_LIVE_AUTHORIZATION_CODE: ${{ secrets.SHARPACCESS_OIDC_LIVE_AUTHORIZATION_CODE }}
+          SHARPACCESS_OIDC_LIVE_CODE_VERIFIER: ${{ secrets.SHARPACCESS_OIDC_LIVE_CODE_VERIFIER }}
+          SHARPACCESS_OIDC_LIVE_NONCE: ${{ secrets.SHARPACCESS_OIDC_LIVE_NONCE }}
+        run: |
+          ./scripts/oidc-live-smoke.ps1 `
+            -RepositoryRoot $env:GITHUB_WORKSPACE `
+            -Configuration Release
       - name: Provision local PostgreSQL evidence database
         shell: pwsh
         run: |
@@ -135,6 +142,7 @@ jobs:
             ReferenceEnvironment = '${{ inputs.reference_environment }}'
             RequirePostgres = $true
             RequireOidcLiveEvidence = $true
+            UsePrevalidatedOidcLiveEvidence = $true
           }
           if ('${{ inputs.require_approved_performance_baseline }}' -eq 'true') {
             $arguments.RequireApprovedPerformanceBaseline = $true
