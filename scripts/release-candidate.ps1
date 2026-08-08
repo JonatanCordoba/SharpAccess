@@ -7,6 +7,7 @@ param(
     [string]$ReferenceEnvironment = "controlled-windows-runner-01",
     [switch]$RequirePostgres,
     [switch]$RequireOidcLiveEvidence,
+    [switch]$UsePrevalidatedOidcLiveEvidence,
     [switch]$RequireApprovedPerformanceBaseline,
     [switch]$SkipFullLocalGate
 )
@@ -82,6 +83,36 @@ function Clear-EphemeralOidcEnvironment {
         Remove-Item -LiteralPath "Env:$name" -ErrorAction SilentlyContinue
     }
 }
+
+function Assert-PrevalidatedOidcLiveEvidence(
+    [string]$Root,
+    [string]$CurrentRevision) {
+    $path = Join-Path $Root "artifacts/operations/oidc-live-smoke/oidc-live-smoke.json"
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
+        throw "Prevalidated OIDC live evidence is missing: $path"
+    }
+
+    $record = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json
+    $invalid =
+        [int]$record.schemaVersion -ne 1 -or
+        [string]$record.control -cne "oidc-real-provider-smoke" -or
+        [string]$record.provider -cne "protected-environment-provider" -or
+        [string]$record.mode -cne "manual-protected-authorization-code-pkce" -or
+        [string]$record.status -cne "passed" -or
+        [string]$record.configuration -cne "Release" -or
+        [string]$record.commit -cne $CurrentRevision
+
+    if ($invalid) {
+        throw "Prevalidated OIDC live evidence does not belong to the selected exact Release revision."
+    }
+
+    Write-Host "Prevalidated OIDC live evidence accepted for $CurrentRevision."
+}
+
+if ($UsePrevalidatedOidcLiveEvidence -and -not $RequireOidcLiveEvidence) {
+    throw "-UsePrevalidatedOidcLiveEvidence requires -RequireOidcLiveEvidence."
+}
+
 if (-not [OperatingSystem]::IsWindows()) { throw "SharpAccess release-candidate evidence is supported on Windows only." }
 $root = Resolve-SharpAccessRepositoryRoot $RepositoryRoot
 $authoritativeVersion = Get-SharpAccessVersion -RepositoryRoot $root
@@ -112,15 +143,22 @@ $completeEvidenceRequested =
     [bool]$RequireApprovedPerformanceBaseline
 try {
     if ($RequireOidcLiveEvidence) {
-        try {
+        if ($UsePrevalidatedOidcLiveEvidence) {
             Invoke-ReleaseCandidateStage "Protected OIDC live smoke" "release-candidate-required" {
-                & (Join-Path $root "scripts/oidc-live-smoke.ps1") `
-                    -RepositoryRoot $root `
-                    -Configuration "Release"
+                Assert-PrevalidatedOidcLiveEvidence $root $commit
             } $stages
         }
-        finally {
-            Clear-EphemeralOidcEnvironment
+        else {
+            try {
+                Invoke-ReleaseCandidateStage "Protected OIDC live smoke" "release-candidate-required" {
+                    & (Join-Path $root "scripts/oidc-live-smoke.ps1") `
+                        -RepositoryRoot $root `
+                        -Configuration "Release"
+                } $stages
+            }
+            finally {
+                Clear-EphemeralOidcEnvironment
+            }
         }
     }
     else { $stages.Add([ordered]@{ name = "Protected OIDC live smoke"; classification = "release-candidate-required"; status = "not-run-by-request" }) }

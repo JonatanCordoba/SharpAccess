@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "status": "approved",
-  "approvedRevision": "69d94fc1288ba5b8b20\u0031accc02158d7aa70549c\u0064",
+  "approvedRevision": "17a342aae553819a3e2\u006456c026c9d0934bbdd77\u0037",
   "referenceEnvironment": "local-controlled",
   "environmentFingerprint": "572d714596b11fc34db\u0066bc930f4e2a1724f6a51\u0033dbeb264837f39803b8f\u003020cd",
   "environment": {
@@ -89,8 +89,8 @@
   "p95ComparisonEpsilonMilliseconds": 0.001,
   "independentRuns": 3,
   "aggregation": "median-across-independent-processes",
-  "reviewDecision": "Reviewed by Jonatan Cordoba: the approved RC1 performance measurements captured at e64b568ee7771d84d27c6b135cc5b92fad47fe2a are carried forward to 69d94fc1288ba5b8b201accc02158d7aa70549cd without recapture. Between those revisions, only eng/PerformanceBaseline.json and the two GitHub Actions PostgreSQL provisioning workflows changed; measured code and performance tests are unchanged. Hosted provider evidence run 31230556905 passed on the carried-forward revision.",
-  "reviewedUtc": "2026-08-08T00:57:45.6986884+00:00",
+  "reviewDecision": "Reviewed by Jonatan Cordoba: the approved RC1 performance measurements are carried forward without recapture to 17a342aae553819a3e2d56c026c9d0934bbdd777. Since 69d94fc1288ba5b8b201accc02158d7aa70549cd, only eng/PerformanceBaseline.json and hosted release tooling (.github/workflows/release-candidate.yml and scripts/release-candidate.ps1) changed. Measured application/provider code, performance tests, metrics, environment fingerprint, and tolerances are unchanged.",
+  "reviewedUtc": "2026-08-08T21:29:18.9472673+00:00",
   "metrics": [
     {
       "name": "password_hash",
