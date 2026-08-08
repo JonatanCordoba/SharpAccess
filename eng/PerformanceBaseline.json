@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "status": "approved",
-  "approvedRevision": "17a342aae553819a3e2\u006456c026c9d0934bbdd77\u0037",
+  "approvedRevision": "5d3c74f27b9aa8b1b68\u003092dc590e5077a7ced5a\u0066",
   "referenceEnvironment": "local-controlled",
   "environmentFingerprint": "572d714596b11fc34db\u0066bc930f4e2a1724f6a51\u0033dbeb264837f39803b8f\u003020cd",
   "environment": {
@@ -89,8 +89,8 @@
   "p95ComparisonEpsilonMilliseconds": 0.001,
   "independentRuns": 3,
   "aggregation": "median-across-independent-processes",
-  "reviewDecision": "Reviewed by Jonatan Cordoba: the approved RC1 performance measurements are carried forward without recapture to 17a342aae553819a3e2d56c026c9d0934bbdd777. Since 69d94fc1288ba5b8b201accc02158d7aa70549cd, only eng/PerformanceBaseline.json and hosted release tooling (.github/workflows/release-candidate.yml and scripts/release-candidate.ps1) changed. Measured application/provider code, performance tests, metrics, environment fingerprint, and tolerances are unchanged.",
-  "reviewedUtc": "2026-08-08T21:29:18.9472673+00:00",
+  "reviewDecision": "Reviewed by Jonatan Cordoba: the approved RC1 controlled performance measurements are carried forward without recapture to 5d3c74f27b9aa8b1b68092dc590e5077a7ced5af. Since 17a342aae553819a3e2d56c026c9d0934bbdd777, changes are limited to baseline metadata and hosted release/performance orchestration adding a non-capturing validation path. Production code, performance test projects, controlled capture behavior, metrics, fingerprint, and tolerances are unchanged.",
+  "reviewedUtc": "2026-08-08T23:25:38.3604109+00:00",
   "metrics": [
     {
       "name": "password_hash",
