@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "status": "approved",
-  "approvedRevision": "e64b568ee7771d84d27\u00636b135cc5b92fad47fe2\u0061",
+  "approvedRevision": "69d94fc1288ba5b8b20\u0031accc02158d7aa70549c\u0064",
   "referenceEnvironment": "local-controlled",
   "environmentFingerprint": "572d714596b11fc34db\u0066bc930f4e2a1724f6a51\u0033dbeb264837f39803b8f\u003020cd",
   "environment": {
@@ -89,8 +89,8 @@
   "p95ComparisonEpsilonMilliseconds": 0.001,
   "independentRuns": 3,
   "aggregation": "median-across-independent-processes",
-  "reviewDecision": "Reviewed by Jonatan Cordoba: all 16 metrics from three independent controlled processes were assessed with median aggregation, warmups, allocation evidence, dataset metadata, tolerances, and capacity notes. The password_hash 45.0567 ms independent-run p95 was accepted as isolated process variability because the retained median was 20.2613 ms and the other observations were 20.2613 ms and 20.1599 ms. This is controlled reference evidence, not a production SLA.",
-  "reviewedUtc": "2026-08-07T01:53:56.4200642+00:00",
+  "reviewDecision": "Reviewed by Jonatan Cordoba: the approved RC1 performance measurements captured at e64b568ee7771d84d27c6b135cc5b92fad47fe2a are carried forward to 69d94fc1288ba5b8b201accc02158d7aa70549cd without recapture. Between those revisions, only eng/PerformanceBaseline.json and the two GitHub Actions PostgreSQL provisioning workflows changed; measured code and performance tests are unchanged. Hosted provider evidence run 31230556905 passed on the carried-forward revision.",
+  "reviewedUtc": "2026-08-08T00:57:45.6986884+00:00",
   "metrics": [
     {
       "name": "password_hash",
