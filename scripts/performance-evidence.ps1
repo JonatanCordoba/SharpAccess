@@ -8,6 +8,7 @@ param(
     [switch]$NoRestore,
     [switch]$NoBuild,
     [switch]$RequireApprovedBaseline,
+    [switch]$ValidateApprovedBaselineOnly,
     [switch]$ApproveBaseline,
     [string]$ReviewDecision,
     [switch]$SingleRun
@@ -319,7 +320,9 @@ function Assert-NoSensitiveRetainedEvidence(
         "endpoints.json",
         "postgresql.json",
         "candidate-baseline.json",
-        "performance-summary.json"
+        "performance-summary.json",
+        "approved-performance-baseline.json",
+        "approved-baseline-validation.json"
     )
     $files = @(Get-ChildItem -LiteralPath $OutputDirectory -File -Recurse)
     $unexpected = @($files | Where-Object { $_.Name -notin $allowedNames })
@@ -451,8 +454,92 @@ function Assert-ApprovedBaseline(
     }
 }
 
+function Assert-ApprovedBaselineForValidationOnly(
+    [pscustomobject]$Baseline,
+    [decimal]$TolerancePercent,
+    [decimal]$P95ComparisonEpsilonMilliseconds,
+    [int]$IndependentRuns,
+    [string]$Root,
+    [string]$CurrentRevision,
+    [string]$EnvironmentName
+) {
+    if ([string]$Baseline.status -cne "approved") {
+        throw "The tracked performance baseline is not approved."
+    }
+
+    $baselineIncomplete =
+        [int]$Baseline.schemaVersion -lt 2 -or
+        [string]::IsNullOrWhiteSpace([string]$Baseline.approvedRevision) -or
+        [string]::IsNullOrWhiteSpace([string]$Baseline.referenceEnvironment) -or
+        [string]::IsNullOrWhiteSpace([string]$Baseline.environmentFingerprint) -or
+        $null -eq $Baseline.environment -or
+        @($Baseline.warmupProfiles).Count -eq 0 -or
+        [string]::IsNullOrWhiteSpace([string]$Baseline.reviewDecision) -or
+        $null -eq $Baseline.p95ComparisonEpsilonMilliseconds -or
+        $null -eq $Baseline.independentRuns -or
+        [string]$Baseline.aggregation -cne "median-across-independent-processes" -or
+        @($Baseline.metrics).Count -eq 0
+
+    if ($baselineIncomplete) {
+        throw "The approved performance baseline is incomplete."
+    }
+
+    if ([string]$Baseline.referenceEnvironment -cne $EnvironmentName) {
+        throw "The approved performance environment does not match the requested controlled environment."
+    }
+
+    if ([decimal]$Baseline.tolerancePercent -ne $TolerancePercent) {
+        throw "The approved performance tolerance differs from release-candidate policy."
+    }
+
+    if ([decimal]$Baseline.p95ComparisonEpsilonMilliseconds -ne $P95ComparisonEpsilonMilliseconds) {
+        throw "The approved p95 comparison epsilon differs from release-candidate policy."
+    }
+
+    if ([int]$Baseline.independentRuns -ne $IndependentRuns) {
+        throw "The approved independent-run count differs from release-candidate policy."
+    }
+
+    if ([string]$Baseline.environment.label -cne $EnvironmentName) {
+        throw "The approved environment metadata label differs from the requested controlled environment."
+    }
+
+    $storedEnvironmentJson =
+        $Baseline.environment |
+        ConvertTo-Json -Depth 12 -Compress
+
+    $storedEnvironmentFingerprint =
+        Get-TextSha256 $storedEnvironmentJson
+
+    if ([string]$Baseline.environmentFingerprint -cne $storedEnvironmentFingerprint) {
+        throw "The approved performance environment fingerprint does not match its retained environment metadata."
+    }
+
+    Assert-WarmupEvidence @($Baseline.warmupProfiles)
+    Assert-RequiredMetricScope @($Baseline.metrics)
+
+    foreach ($metric in @($Baseline.metrics)) {
+        if (
+            @($metric.independentRunP95Milliseconds).Count -ne $IndependentRuns -or
+            @($metric.independentRunAllocatedBytesPerOperation).Count -ne $IndependentRuns
+        ) {
+            throw "Approved independent-run observations are incomplete for metric: $($metric.name)"
+        }
+    }
+
+    Assert-ApprovedRevisionScope `
+        $Root `
+        ([string]$Baseline.approvedRevision) `
+        $CurrentRevision
+}
 if ($ApproveBaseline -and $RequireApprovedBaseline) {
     throw "-ApproveBaseline and -RequireApprovedBaseline are mutually exclusive."
+}
+if ($ValidateApprovedBaselineOnly -and -not $RequireApprovedBaseline) {
+    throw "-ValidateApprovedBaselineOnly requires -RequireApprovedBaseline."
+}
+if ($ValidateApprovedBaselineOnly -and ($ApproveBaseline -or $SingleRun)) {
+    throw "-ValidateApprovedBaselineOnly cannot be combined with -ApproveBaseline or -SingleRun."
 }
 if ($ApproveBaseline) {
     $reviewDecisionInvalid =
@@ -501,6 +588,73 @@ if ($p95ComparisonEpsilonMilliseconds -lt 0 -or
 
 $output = Join-Path $root "artifacts/performance/release-candidate"
 $candidatePath = Join-Path $output "candidate-baseline.json"
+if ($ValidateApprovedBaselineOnly) {
+    $baseline =
+        Get-Content -LiteralPath $baselinePath -Raw |
+        ConvertFrom-Json
+
+    Assert-ApprovedBaselineForValidationOnly `
+        $baseline `
+        $tolerancePercent `
+        $p95ComparisonEpsilonMilliseconds `
+        $independentRuns `
+        $root `
+        $commit `
+        $ReferenceEnvironment
+
+    Remove-Item `
+        -LiteralPath $output `
+        -Recurse `
+        -Force `
+        -ErrorAction SilentlyContinue
+
+    New-Item `
+        -ItemType Directory `
+        -Force `
+        -Path $output |
+        Out-Null
+
+    Copy-Item `
+        -LiteralPath $baselinePath `
+        -Destination (Join-Path $output "approved-performance-baseline.json")
+
+    [ordered]@{
+        schemaVersion = 1
+        status = "passed"
+        mode = "approved-baseline-validation-only"
+        sourceRevision = $commit
+        approvedRevision = [string]$baseline.approvedRevision
+        referenceEnvironment = [string]$baseline.referenceEnvironment
+        environmentFingerprint = [string]$baseline.environmentFingerprint
+        tolerancePercent = [decimal]$baseline.tolerancePercent
+        p95ComparisonEpsilonMilliseconds =
+            [decimal]$baseline.p95ComparisonEpsilonMilliseconds
+        independentRuns = [int]$baseline.independentRuns
+        aggregation = [string]$baseline.aggregation
+        metricCount = @($baseline.metrics).Count
+        hostedMeasurementCapture = "not-run"
+        interpretation =
+            "Approved controlled baseline validation only; no hosted benchmark was captured."
+        completedUtc = [DateTimeOffset]::UtcNow.ToString("O")
+    } |
+        ConvertTo-Json -Depth 8 |
+        Set-Content `
+            -LiteralPath (Join-Path $output "approved-baseline-validation.json") `
+            -Encoding utf8NoBOM
+
+    Assert-NoSensitiveRetainedEvidence `
+        $output `
+        $root `
+        ([string]$env:SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING)
+
+    Write-Host (
+        "Approved controlled performance baseline validated without hosted recapture. " +
+        "ApprovedRevision=$($baseline.approvedRevision) CurrentRevision=$commit"
+    )
+
+    $global:LASTEXITCODE = 0
+    return
+}
 if (-not $ApproveBaseline -and -not $SingleRun) {
     $candidateRuns = @()
 

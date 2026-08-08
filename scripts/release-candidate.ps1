@@ -9,6 +9,7 @@ param(
     [switch]$RequireOidcLiveEvidence,
     [switch]$UsePrevalidatedOidcLiveEvidence,
     [switch]$RequireApprovedPerformanceBaseline,
+    [switch]$ValidateApprovedPerformanceBaselineOnly,
     [switch]$SkipFullLocalGate
 )
 Set-StrictMode -Version Latest
@@ -113,6 +114,10 @@ if ($UsePrevalidatedOidcLiveEvidence -and -not $RequireOidcLiveEvidence) {
     throw "-UsePrevalidatedOidcLiveEvidence requires -RequireOidcLiveEvidence."
 }
 
+if ($ValidateApprovedPerformanceBaselineOnly -and -not $RequireApprovedPerformanceBaseline) {
+    throw "-ValidateApprovedPerformanceBaselineOnly requires -RequireApprovedPerformanceBaseline."
+}
+
 if (-not [OperatingSystem]::IsWindows()) { throw "SharpAccess release-candidate evidence is supported on Windows only." }
 $root = Resolve-SharpAccessRepositoryRoot $RepositoryRoot
 $authoritativeVersion = Get-SharpAccessVersion -RepositoryRoot $root
@@ -177,6 +182,7 @@ try {
         $arguments = @{ RepositoryRoot = $root; Configuration = "Release"; ReferenceEnvironment = $ReferenceEnvironment }
         if (-not $SkipFullLocalGate) { $arguments.NoRestore = $true; $arguments.NoBuild = $true }
         if ($RequireApprovedPerformanceBaseline) { $arguments.RequireApprovedBaseline = $true }
+        if ($ValidateApprovedPerformanceBaselineOnly) { $arguments.ValidateApprovedBaselineOnly = $true }
         & (Join-Path $root "scripts/performance-evidence.ps1") @arguments
     } $stages
 
