@@ -37,7 +37,6 @@ jobs:
     timeout-minutes: 120
     environment: release-candidate
     env:
-      SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING: ${{ secrets.SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING }}
       SHARPACCESS_PROVIDER_TEST_ALLOW_RESET: 'true'
       SHARPACCESS_POSTGRES_READINESS: 'true'
       SHARPACCESS_OIDC_LIVE_PROVIDER: ${{ vars.SHARPACCESS_OIDC_LIVE_PROVIDER }}
@@ -65,11 +64,68 @@ jobs:
           global-json-file: global.json
           cache: true
           cache-dependency-path: '**/packages.lock.json'
-      - name: Install native PostgreSQL client tools
+      - name: Provision local PostgreSQL evidence database
         shell: pwsh
         run: |
-          choco install postgresql16 --no-progress -y --params '/Password:SharpAccess_CI_NotUsed_123!'
-          'C:\Program Files\PostgreSQL\16\bin' | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          $postgresPassword = "SharpAccessCi_$([guid]::NewGuid().ToString('N'))A1!"
+          Write-Output "::add-mask::$postgresPassword"
+
+          choco install postgresql16 --no-progress -y --params "/Password:$postgresPassword"
+          if ($LASTEXITCODE -ne 0) {
+            throw "PostgreSQL installation failed. ExitCode=$LASTEXITCODE"
+          }
+
+          $postgresBin = 'C:\Program Files\PostgreSQL\16\bin'
+          $postgresBin | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+          $env:PGPASSWORD = $postgresPassword
+
+          $ready = $false
+          foreach ($attempt in 1..30) {
+            & "$postgresBin\pg_isready.exe" -h 127.0.0.1 -p 5432 -U postgres
+            if ($LASTEXITCODE -eq 0) {
+              $ready = $true
+              break
+            }
+
+            Start-Sleep -Seconds 2
+          }
+
+          if (-not $ready) {
+            throw 'The runner-local PostgreSQL service did not become ready.'
+          }
+
+          & "$postgresBin\psql.exe" `
+            -h 127.0.0.1 `
+            -p 5432 `
+            -U postgres `
+            -d postgres `
+            -v ON_ERROR_STOP=1 `
+            -c 'CREATE DATABASE sharpaccess_contract_tests;'
+
+          if ($LASTEXITCODE -ne 0) {
+            throw "Could not create the SharpAccess scratch database. ExitCode=$LASTEXITCODE"
+          }
+
+          $connectionString = (
+            'Host=127.0.0.1;' +
+            'Port=5432;' +
+            'Database=sharpaccess_contract_tests;' +
+            'Username=postgres;' +
+            "Password=$postgresPassword;" +
+            'Timeout=15;' +
+            'Command Timeout=30;' +
+            'Cancellation Timeout=2000;' +
+            'Pooling=true'
+          )
+
+          Write-Output "::add-mask::$connectionString"
+
+          "SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING=$connectionString" |
+            Out-File `
+              -FilePath $env:GITHUB_ENV `
+              -Encoding utf8 `
+              -Append
       - name: Run integrated Windows release candidate
         shell: pwsh
         run: |
