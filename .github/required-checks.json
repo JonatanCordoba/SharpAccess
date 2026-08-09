@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "protectedBranches": [
     "main",
-    "master"
+    "main"
   ],
   "pullRequestRequiredChecks": [
     { "check": "ci / ci-windows", "claims": ["windows-build-test", "core-coverage", "sqlite-coverage", "changed-code-coverage", "nuget-sca", "package-validation", "sbom"] },

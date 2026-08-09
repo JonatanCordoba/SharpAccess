@@ -43,6 +43,7 @@ SQL Server and MySQL are future roadmap candidates, not active release targets.
 | SBOM, checksums, provenance | required package archive | required package archive | required package archive | SBOM/release artifacts |
 | Deterministic export | required | required | required | `artifacts/release-export` |
 | Public-root revalidation | required | required | required | canonical repository workflows/artifacts |
+| Protected NuGet Trusted Publishing | required | required | required | `.github/workflows/publish-nuget.yml`, protected `nuget-release` environment, exact successful release-candidate run, and immutable artifact identity |
 | Post-publication smoke | required | required | required | clean consumer evidence |
 
 ## Platform and tooling evidence
@@ -61,7 +62,7 @@ PostgreSQL is Supported. Applicable release revisions remain unaccepted until th
 - pass `scripts/postgres-promotion.ps1` or the equivalent aggregate Supported-provider evidence on the exact commit;
 - retain reviewer approval and artifact locations.
 
-Prior promotion evidence does not permanently verify later changed revisions. Protected OIDC, the approved performance baseline, deterministic export, public-root verification, publication, and post-publication checks remain separate requirements.
+Prior promotion evidence does not permanently verify later changed revisions. Protected OIDC, the approved performance baseline, deterministic export, public-root verification, publication, and post-publication checks remain separate requirements. NuGet publication evidence is passing only when `.github/workflows/publish-nuget.yml` successfully publishes the exact signed-tag release cohort from the exact validated release-candidate run and immutable artifact identity through the protected `nuget-release` Trusted Publishing boundary; merely installing the workflow or configuring the NuGet.org policy is not publication evidence.
 
 ## RC and stable reuse
 

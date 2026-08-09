@@ -1,0 +1,252 @@
+name: Publish NuGet
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Signed RC tag to publish, for example v0.9.0-rc.1
+        required: true
+        type: string
+      release_candidate_run_id:
+        description: Successful integrated release-candidate workflow run ID for the tagged commit
+        required: true
+        type: string
+      release_candidate_artifact_id:
+        description: Exact immutable artifact ID containing the validated publication cohort
+        required: true
+        type: string
+      release_candidate_artifact_name:
+        description: Exact expected artifact name
+        required: true
+        type: string
+      release_candidate_artifact_digest:
+        description: Exact artifact digest in sha256:<64 hex> form
+        required: true
+        type: string
+      evidence_index_path:
+        description: Relative path inside the downloaded artifact to the final release evidence index JSON
+        required: true
+        type: string
+      checksums_path:
+        description: Relative path inside the downloaded artifact to the SHA-256 checksum manifest
+        required: true
+        type: string
+      confirm_publication:
+        description: Type PUBLISH followed by one space and the exact release tag
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: nuget-publication-${{ inputs.release_tag }}
+  cancel-in-progress: false
+
+env:
+  EXPECTED_REPOSITORY: JonatanCordoba/SharpAccess
+  EXPECTED_RC_WORKFLOW_PATH: .github/workflows/release-candidate.yml
+  NUGET_SOURCE: https://api.nuget.org/v3/index.json
+
+jobs:
+  preflight:
+    name: NuGet publication preflight
+    runs-on: windows-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      release_sha: ${{ steps.identity.outputs.release_sha }}
+      release_version: ${{ steps.identity.outputs.release_version }}
+    steps:
+      - name: Checkout exact signed tag
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v7.0.1
+        with:
+          ref: ${{ inputs.release_tag }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Verify signed tag, RC run, and immutable artifact identity
+        id: identity
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_REPOSITORY: ${{ github.repository }}
+          INPUT_RELEASE_TAG: ${{ inputs.release_tag }}
+          INPUT_RC_RUN_ID: ${{ inputs.release_candidate_run_id }}
+          INPUT_RC_ARTIFACT_ID: ${{ inputs.release_candidate_artifact_id }}
+          INPUT_RC_ARTIFACT_NAME: ${{ inputs.release_candidate_artifact_name }}
+          INPUT_RC_ARTIFACT_DIGEST: ${{ inputs.release_candidate_artifact_digest }}
+          INPUT_CONFIRMATION: ${{ inputs.confirm_publication }}
+          INPUT_GITHUB_REF: ${{ github.ref }}
+          INPUT_GITHUB_WORKFLOW_REF: ${{ github.workflow_ref }}
+        run: >-
+          ./scripts/nuget-publication-preflight.ps1
+          -RepositoryRoot $PWD
+          -Repository $env:INPUT_REPOSITORY
+          -ReleaseTag $env:INPUT_RELEASE_TAG
+          -ReleaseCandidateRunId $env:INPUT_RC_RUN_ID
+          -ReleaseCandidateArtifactId $env:INPUT_RC_ARTIFACT_ID
+          -ExpectedArtifactName $env:INPUT_RC_ARTIFACT_NAME
+          -ExpectedArtifactDigest $env:INPUT_RC_ARTIFACT_DIGEST
+          -Confirmation $env:INPUT_CONFIRMATION
+          -GitHubToken $env:GH_TOKEN
+          -GitHubRef $env:INPUT_GITHUB_REF
+          -GitHubWorkflowRef $env:INPUT_GITHUB_WORKFLOW_REF
+          -ExpectedRepository $env:EXPECTED_REPOSITORY
+          -ExpectedReleaseWorkflowPath $env:EXPECTED_RC_WORKFLOW_PATH
+          -GitHubOutput $env:GITHUB_OUTPUT
+
+  publish:
+    name: Publish validated NuGet cohort
+    needs: preflight
+    runs-on: windows-latest
+    timeout-minutes: 20
+    environment: nuget-release
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout exact signed tag
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v7.0.1
+        with:
+          ref: ${{ inputs.release_tag }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install repository .NET SDK
+        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Re-verify publication identity after environment approval
+        id: identity
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_REPOSITORY: ${{ github.repository }}
+          INPUT_RELEASE_TAG: ${{ inputs.release_tag }}
+          INPUT_RC_RUN_ID: ${{ inputs.release_candidate_run_id }}
+          INPUT_RC_ARTIFACT_ID: ${{ inputs.release_candidate_artifact_id }}
+          INPUT_RC_ARTIFACT_NAME: ${{ inputs.release_candidate_artifact_name }}
+          INPUT_RC_ARTIFACT_DIGEST: ${{ inputs.release_candidate_artifact_digest }}
+          INPUT_CONFIRMATION: ${{ inputs.confirm_publication }}
+          INPUT_GITHUB_REF: ${{ github.ref }}
+          INPUT_GITHUB_WORKFLOW_REF: ${{ github.workflow_ref }}
+        run: >-
+          ./scripts/nuget-publication-preflight.ps1
+          -RepositoryRoot $PWD
+          -Repository $env:INPUT_REPOSITORY
+          -ReleaseTag $env:INPUT_RELEASE_TAG
+          -ReleaseCandidateRunId $env:INPUT_RC_RUN_ID
+          -ReleaseCandidateArtifactId $env:INPUT_RC_ARTIFACT_ID
+          -ExpectedArtifactName $env:INPUT_RC_ARTIFACT_NAME
+          -ExpectedArtifactDigest $env:INPUT_RC_ARTIFACT_DIGEST
+          -Confirmation $env:INPUT_CONFIRMATION
+          -GitHubToken $env:GH_TOKEN
+          -GitHubRef $env:INPUT_GITHUB_REF
+          -GitHubWorkflowRef $env:INPUT_GITHUB_WORKFLOW_REF
+          -ExpectedRepository $env:EXPECTED_REPOSITORY
+          -ExpectedReleaseWorkflowPath $env:EXPECTED_RC_WORKFLOW_PATH
+          -GitHubOutput $env:GITHUB_OUTPUT
+
+      - name: Require identical preflight identity
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          if ('${{ steps.identity.outputs.release_sha }}' -cne '${{ needs.preflight.outputs.release_sha }}') {
+              throw 'Release SHA changed between preflight and protected publication job.'
+          }
+          if ('${{ steps.identity.outputs.release_version }}' -cne '${{ needs.preflight.outputs.release_version }}') {
+              throw 'Release version changed between preflight and protected publication job.'
+          }
+
+      - name: Download exact validated RC artifact by immutable ID
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          artifact-ids: ${{ inputs.release_candidate_artifact_id }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.release_candidate_run_id }}
+          path: artifacts/publication-input
+          digest-mismatch: error
+
+      - name: Validate exact package cohort, evidence index, metadata, and checksums
+        id: artifact
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ steps.identity.outputs.release_version }}
+          RELEASE_SHA: ${{ steps.identity.outputs.release_sha }}
+          EVIDENCE_INDEX_PATH: ${{ inputs.evidence_index_path }}
+          CHECKSUMS_PATH: ${{ inputs.checksums_path }}
+        run: >-
+          ./scripts/validate-nuget-publication-artifact.ps1
+          -RepositoryRoot $PWD
+          -ArtifactRoot (Join-Path $PWD 'artifacts/publication-input')
+          -Version $env:RELEASE_VERSION
+          -ReleaseSha $env:RELEASE_SHA
+          -EvidenceIndexRelativePath $env:EVIDENCE_INDEX_PATH
+          -ChecksumsRelativePath $env:CHECKSUMS_PATH
+          -GitHubOutput $env:GITHUB_OUTPUT
+
+      - name: Require all three NuGet versions to be unpublished
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ steps.identity.outputs.release_version }}
+        run: >-
+          ./scripts/assert-nuget-version-unpublished.ps1
+          -Version $env:RELEASE_VERSION
+
+      - name: Validate protected NuGet profile configuration
+        shell: pwsh
+        env:
+          NUGET_USER: ${{ secrets.NUGET_USER }}
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrWhiteSpace($env:NUGET_USER)) {
+              throw 'The nuget-release environment secret NUGET_USER is not configured.'
+          }
+          if ($env:NUGET_USER -ne $env:NUGET_USER.Trim()) {
+              throw 'NUGET_USER contains leading or trailing whitespace.'
+          }
+
+      - name: NuGet Trusted Publishing login
+        id: nuget-login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Publish Core, SQLite, and PostgreSQL in dependency order
+        shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+          NUGET_SYMBOL_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+          RELEASE_VERSION: ${{ steps.identity.outputs.release_version }}
+        run: >-
+          ./scripts/publish-nuget-cohort.ps1
+          -ArtifactRoot (Join-Path $PWD 'artifacts/publication-input')
+          -Version $env:RELEASE_VERSION
+          -Source $env:NUGET_SOURCE
+
+      - name: Record publication identity
+        if: success()
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          @"
+          ## SharpAccess NuGet publication
+
+          - Tag: `${{ inputs.release_tag }}`
+          - Commit: `${{ steps.identity.outputs.release_sha }}`
+          - RC workflow run: `${{ inputs.release_candidate_run_id }}`
+          - RC artifact ID: `${{ inputs.release_candidate_artifact_id }}`
+          - RC artifact digest: `${{ inputs.release_candidate_artifact_digest }}`
+          - Version: `${{ steps.identity.outputs.release_version }}`
+          - Published cohort: `SharpAccess.Core`, `SharpAccess.Sqlite`, `SharpAccess.Postgres`
+          - Symbols: matching `.snupkg` files
+          - Authentication: NuGet Trusted Publishing / GitHub OIDC
+          "@ | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Encoding utf8NoBOM

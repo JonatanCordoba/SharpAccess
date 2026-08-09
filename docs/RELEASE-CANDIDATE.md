@@ -72,7 +72,7 @@ The evidence index records omitted protected stages as `not-run-by-request`. Do 
 Performance approval is exact-revision evidence, not merely tree evidence.
 
 1. Merge all implementation and release-gate changes.
-2. Verify the exact resulting protected `master` revision.
+2. Verify the exact resulting protected `main` revision.
 3. Capture the controlled candidate on that exact revision.
 4. Review the complete metric catalog and environment fingerprint.
 5. Create a baseline-only pull request based directly on the approved revision.
@@ -123,12 +123,45 @@ It does not use Linux/macOS runners, Bash, Docker, Compose, or service container
 
 SQL Server and MySQL are not active release-candidate targets. They remain roadmap candidates only.
 
+## Protected NuGet publication
+
+`.github/workflows/publish-nuget.yml` is the publication-only workflow for the validated release cohort. It is manually dispatched and does not restore, build, pack, regenerate, or otherwise replace the package bytes produced by the successful integrated release-candidate run.
+
+Publication is bound to the exact signed release tag, successful `.github/workflows/release-candidate.yml` run, immutable artifact identity and digest, release evidence index, checksum manifest, and an explicit release confirmation.
+
+Before publication, the workflow verifies that:
+
+- the repository is `JonatanCordoba/SharpAccess`;
+- the selected release tag satisfies the release-candidate tag contract;
+- the tag is annotated, signed, and cryptographically verified;
+- the selected release-candidate workflow run completed successfully from `main`;
+- the workflow run `head_sha` is exactly the tagged release commit;
+- the selected artifact belongs to that exact release-candidate run;
+- its immutable identity, name, digest, and availability are valid;
+- the publication cohort contains exactly `SharpAccess.Core`, `SharpAccess.Sqlite`, and `SharpAccess.Postgres` runtime and symbol packages for the requested release version;
+- package metadata, repository commit identity, dependencies, evidence identity, and checksums match the selected release;
+- the three package versions have not already been published.
+
+After approval of the protected `nuget-release` environment, the workflow obtains a short-lived NuGet credential through NuGet Trusted Publishing using GitHub OIDC and `id-token: write`. The protected environment supplies the NuGet profile identity through `NUGET_USER`; a long-lived NuGet API key is not part of the SharpAccess release contract.
+
+Publication order is:
+
+1. `SharpAccess.Core`;
+2. matching Core symbols;
+3. `SharpAccess.Sqlite`;
+4. matching SQLite symbols;
+5. `SharpAccess.Postgres`;
+6. matching PostgreSQL symbols.
+
+The first canonical publication does not use `--skip-duplicate`. A duplicate or partial publication is a release-integrity condition requiring explicit review rather than an automatically ignored retry.
+
+The existence of `publish-nuget.yml` does not itself authorize publication. NuGet.org Trusted Publishing must separately bind repository `JonatanCordoba/SharpAccess`, workflow `publish-nuget.yml`, and environment `nuget-release`. Tagging and publication remain separately authorized release operations.
 ## Completion boundary
 
 Release-candidate evidence is complete only when:
 
 1. the final version, implementation, metadata, and release-control changes are merged;
-2. the exact resulting `master` commit passes the complete Windows clean-tree gate;
+2. the exact resulting `main` commit passes the complete Windows clean-tree gate;
 3. the current complexity baseline covers Core, SQLite, and PostgreSQL and contains no superseded hotspot identities;
 4. PostgreSQL contracts, coverage, mutation evidence, query plans, restricted-principal evidence, and native recovery pass;
 5. protected OIDC evidence passes;

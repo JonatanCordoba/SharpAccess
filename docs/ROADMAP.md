@@ -18,7 +18,7 @@ This canonical-metadata synchronization is documentation-only, but its integrati
 
 ## Status vocabulary
 
-- **Implementation complete and merged**: planned repository changes are present on `master`.
+- **Implementation complete and merged**: planned repository changes are present on `main`.
 - **Evidence complete**: the exact selected commit has the required retained evidence and every referenced approval revision is reachable from protected history.
 - **Release-candidate ready**: implementation, exact-revision local and protected evidence, baselines, clean public root, packages, and publication controls are complete for the candidate.
 - **Stable ready**: RC feedback is dispositioned and every stable gate passes again on the exact stable revision.
@@ -44,7 +44,7 @@ A merged pull request or configured workflow does not establish evidence complet
 14. **Deterministic development export.** Pending from the final verified baseline-only development lineage. The export must retain the development commit SHA, source tree SHA, normalized manifest, archive checksum, exported tree identity, operator, reviewer, and evidence locations.
 15. **Clean public repository bootstrap.** Pending separate explicit authorization naming `JonatanCordoba/SharpAccess` and the bounded Git sequence. No public-repository Git operation is authorized by completion of this branch or export.
 16. **Public-root security and verification.** Pending signed one-commit root, tree-equivalence proof, visibility change, branch protection, CODEOWNERS, required checks, dependency and secret controls, vulnerability reporting, trusted publication configuration, and the complete exact public-root release matrix.
-17. **Public RC publication.** Pending separate explicit publication authorization, signed `v0.9.0-rc.1`, prerelease NuGet publication in dependency order, GitHub prerelease creation, and post-publication smoke from the verified clean public root.
+17. **Public RC publication.** Pending separate explicit publication authorization, signed `v0.9.0-rc.1`, prerelease NuGet publication in dependency order, GitHub prerelease creation, and post-publication smoke from the verified clean public root. NuGet publication must run only through `.github/workflows/publish-nuget.yml`, consuming the exact validated release-candidate artifact through the protected `nuget-release` environment and NuGet Trusted Publishing with GitHub OIDC; the publication workflow does not rebuild or repack the release cohort.
 18. **Stable `1.0.0`.** Planned only after RC feedback is dispositioned and a fresh stable evidence matrix passes.
 
 ## Performance approval lifecycle
@@ -54,7 +54,7 @@ A controlled candidate is captured on a clean exact revision. Approval is valid 
 The required sequence is:
 
 1. merge implementation, gate, or final release-state changes;
-2. verify the exact resulting `master` revision;
+2. verify the exact resulting `main` revision;
 3. capture and review the controlled candidate on that revision;
 4. submit a baseline-only pull request based directly on the approved revision;
 5. merge without rewriting away the approved parent;
