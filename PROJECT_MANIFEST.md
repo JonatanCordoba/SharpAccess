@@ -22,7 +22,7 @@
 
 SQL Server and MySQL are absent from the active repository tree. They remain future roadmap candidates only and may return through separate architecture, implementation, compatibility, security, migration, operational, and release-evidence work.
 
-Only projects with authoritative `Supported` status are packable through ordinary development paths. Public release-candidate and stable publication is permitted only from the protected SharpAccess release workflow.
+Only projects with authoritative `Supported` status are packable through ordinary development paths. Public release-candidate and stable publication is permitted only through `.github/workflows/publish-nuget.yml`, using the protected `nuget-release` environment and NuGet Trusted Publishing with GitHub OIDC. The publication workflow consumes the exact immutable artifact produced by a successful `.github/workflows/release-candidate.yml` run for the signed release-tag commit; it does not rebuild or repack release packages. A long-lived NuGet API key is not an authorized SharpAccess release credential.
 
 ## Project layout
 
