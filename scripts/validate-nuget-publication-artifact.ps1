@@ -381,6 +381,27 @@ if (-not (Test-Path -LiteralPath $resolvedRepositoryRoot -PathType Container)) {
     throw "Repository root does not exist: $resolvedRepositoryRoot"
 }
 
+$packagePolicyPath = Join-Path $resolvedRepositoryRoot 'Directory.Build.props'
+if (-not (Test-Path -LiteralPath $packagePolicyPath -PathType Leaf)) {
+    throw "Tracked package policy does not exist: $packagePolicyPath"
+}
+
+[xml]$packagePolicy = Get-Content -LiteralPath $packagePolicyPath -Raw
+$licenseNodes = @(
+    $packagePolicy.SelectNodes('/Project/PropertyGroup/PackageLicenseExpression')
+)
+
+if ($licenseNodes.Count -ne 1) {
+    throw "Directory.Build.props must declare exactly one PackageLicenseExpression; found $($licenseNodes.Count)."
+}
+
+$expectedLicenseExpression = [string]$licenseNodes[0].InnerText
+$expectedLicenseExpression = $expectedLicenseExpression.Trim()
+
+if ([string]::IsNullOrWhiteSpace($expectedLicenseExpression)) {
+    throw 'Directory.Build.props declares an empty PackageLicenseExpression.'
+}
+
 $resolvedArtifactRoot = [System.IO.Path]::GetFullPath($ArtifactRoot)
 if (-not (Test-Path -LiteralPath $resolvedArtifactRoot -PathType Container)) {
     throw "Downloaded artifact root does not exist: $resolvedArtifactRoot"
@@ -424,8 +445,8 @@ foreach ($package in $runtimePackages) {
     if ($metadata.RepositoryCommit.ToLowerInvariant() -cne $ReleaseSha) {
         throw "Package '$($metadata.Id)' repository commit '$($metadata.RepositoryCommit)' does not match '$ReleaseSha'."
     }
-    if ($metadata.LicenseExpression -cne 'AGPL-3.0-only') {
-        throw "Package '$($metadata.Id)' license expression '$($metadata.LicenseExpression)' is not 'AGPL-3.0-only'."
+    if ($metadata.LicenseExpression -cne $expectedLicenseExpression) {
+        throw "Package '$($metadata.Id)' license expression '$($metadata.LicenseExpression)' does not match tracked package license '$expectedLicenseExpression'."
     }
     if ([string]::IsNullOrWhiteSpace($metadata.Readme)) {
         throw "Package '$($metadata.Id)' does not declare a package README."

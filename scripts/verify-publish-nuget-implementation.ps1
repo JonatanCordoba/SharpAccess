@@ -30,6 +30,33 @@ foreach ($relativePath in $requiredScripts) {
 
 $workflow = Get-Content -LiteralPath $workflowPath -Raw
 
+$artifactValidatorPath =
+    Join-Path $root 'scripts/validate-nuget-publication-artifact.ps1'
+$artifactValidator =
+    Get-Content -LiteralPath $artifactValidatorPath -Raw
+
+$requiredLicenseFragments = @(
+    'Directory.Build.props',
+    'PackageLicenseExpression',
+    '$expectedLicenseExpression'
+)
+
+foreach ($fragment in $requiredLicenseFragments) {
+    if (-not $artifactValidator.Contains(
+        $fragment,
+        [System.StringComparison]::Ordinal
+    )) {
+        throw "Publication artifact validator is missing tracked license-policy fragment: $fragment"
+    }
+}
+
+if ($artifactValidator.Contains(
+    'AGPL-3.0-only',
+    [System.StringComparison]::OrdinalIgnoreCase
+)) {
+    throw 'Publication artifact validator still contains the obsolete AGPL-3.0-only license assumption.'
+}
+
 $supplyChainPath = Join-Path $root 'eng/SupplyChain.props'
 if (-not (Test-Path -LiteralPath $supplyChainPath -PathType Leaf)) {
     throw "Missing central action-pin authority: $supplyChainPath"
