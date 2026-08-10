@@ -8,7 +8,7 @@ The active release candidate is `0.9.0-rc.1`. The canonical package cohort is:
 - `SharpAccess.Sqlite`;
 - `SharpAccess.Postgres`.
 
-The release is in public verification and publication preparation. The tracked required-check manifest now uses the disambiguated check identities. Remaining gates include fresh successful public hosted provider and integrated RC evidence on the selected revision, reviewed Wiki publication, Trusted Publishing, signed tagging, package publication, prerelease creation, and clean consumer validation.
+`0.9.0-rc.1` has completed its protected release path: hosted provider and integrated release-candidate evidence, NuGet Trusted Publishing, a signed and GitHub-verified tag, public package and symbol publication, GitHub prerelease creation, published-package metadata verification, and clean-consumer validation. It remains a prerelease for evaluation and integration testing; stable `1.0.0` is a later, separately gated release.
 
 ## Future providers
 

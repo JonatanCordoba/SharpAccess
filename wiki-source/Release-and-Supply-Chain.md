@@ -24,7 +24,7 @@ The signed tag, packages, symbols, checksums, SBOMs, provenance, and GitHub prer
 
 ## NuGet Trusted Publishing
 
-Trusted Publishing is a publication prerequisite, not proof that publication is already configured. Before the first package push, the dedicated tag-triggered workflow and NuGet trust policy must be reviewed together. They must verify repository identity, tag identity, tag signature, locked restore, package contents, and publication order before obtaining a short-lived NuGet credential.
+`0.9.0-rc.1` was published through NuGet Trusted Publishing using the protected `publish-nuget.yml` workflow and the `nuget-release` GitHub environment. The workflow re-verifies repository identity, the signed tag, the exact release-candidate run and immutable artifact, package metadata and checksums, and unpublished-version state before exchanging GitHub OIDC for a short-lived NuGet credential.
 
 Publication order:
 
@@ -40,7 +40,7 @@ Public hosted verification must complete on the exact release revision before fi
 
 The disambiguated check identities include `ci-windows`, `operational-readiness-windows`, `provider-contracts-classify`, and `test-scope-classify`. Provider and integrated release evidence also requires successful applicable jobs such as `sqlite-supported`, `postgres-native`, and `windows-release-candidate`, with retained artifacts reviewed for the exact revision.
 
-Wiki publication follows successful public hosted verification. Trusted Publishing, signed tagging, package publication, the GitHub prerelease, and clean-consumer validation remain separate later gates.
+Wiki publication, Trusted Publishing, signed tagging, package publication, GitHub prerelease creation, and clean-consumer validation are separate release gates. For `0.9.0-rc.1`, the protected hosted release candidate, Trusted Publishing, signed tag, package and symbol publication, GitHub prerelease, and clean-consumer validation completed successfully.
 
 ## References
 
