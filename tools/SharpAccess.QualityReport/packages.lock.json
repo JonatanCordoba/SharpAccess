@@ -4,9 +4,12 @@
     "net10.0": {
       "Microsoft.Build.Framework": {
         "type": "Direct",
-        "requested": "[17.11.48, )",
-        "resolved": "17.11.48",
-        "contentHash": "C3WIMt2wBl4++NX3jSEpTq5KXBhvAV154R4JrYHkfy9JSBcXWiL0mkgpspk5xSdOj+fS/uz7zluIy6bMM1fkkQ=="
+        "requested": "[18.8.2, )",
+        "resolved": "18.8.2",
+        "contentHash": "0rH2AaR+TyRhISTU3DEW1pskvOCrBa3QlHnItRqtBTExfCi14CxYNL3/COXxCfd+H40h2WB3XOYSYUlF5IFIwA==",
+        "dependencies": {
+          "Microsoft.NET.StringTools": "18.8.2"
+        }
       },
       "Microsoft.Build.Locator": {
         "type": "Direct",
@@ -150,6 +153,11 @@
         "type": "Transitive",
         "resolved": "10.0.1",
         "contentHash": "DO8XrJkp5x4PddDuc/CH37yDBCs9BYN6ijlKyR3vMb55BP1Vwh90vOX8bNfnKxr5B2qEI3D8bvbY1fFbDveDHQ=="
+      },
+      "Microsoft.NET.StringTools": {
+        "type": "Transitive",
+        "resolved": "18.8.2",
+        "contentHash": "TWyg687GoiC9dhj85CagUfYFKYtxRX2jv5raO+zolLVmvKIS1k5WXYh8IMvyiPP5f9r9/snpmTZioyCO5zh+ww=="
       },
       "Microsoft.VisualStudio.SolutionPersistence": {
         "type": "Transitive",
