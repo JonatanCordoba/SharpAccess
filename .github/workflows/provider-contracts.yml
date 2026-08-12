@@ -64,7 +64,7 @@ jobs:
           $base = $env:CHANGED_CODE_BASE_REF
           if ([string]::IsNullOrWhiteSpace($base) -or $base -match '^0+$') { $base = 'HEAD^' }
           ./scripts/provider-coverage.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE -Provider Sqlite -Configuration Release -ChangedCodeBaseRef $base -NoBuild
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: sqlite-provider-evidence-${{ github.sha }}
@@ -167,7 +167,7 @@ jobs:
         run: ./scripts/provider-coverage.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE -Provider Postgres -Configuration Release -NoBuild -PromotionGate
       - shell: pwsh
         run: ./scripts/postgres-recovery-drill.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE -Configuration Release -NoRestore -NoBuild
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: always()
         with:
           name: postgres-provider-evidence-${{ github.sha }}
