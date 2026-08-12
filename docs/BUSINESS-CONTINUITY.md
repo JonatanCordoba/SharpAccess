@@ -1,42 +1,22 @@
 # Business continuity and recovery
 
-SharpAccess continuity depends on the Windows host, selected provider, secret stores, email/OIDC dependencies, and the host’s deployment and monitoring environment. This document defines minimum planning and repository evidence; it is not a service-level agreement.
+SharpAccess continuity depends on the Windows host, selected provider, secret stores, email/OIDC dependencies, deployment, and monitoring environment. This document defines minimum planning/evidence, not an SLA.
 
-## Required host objectives
+## Host objectives
 
-Each host defines and approves:
-
-- authentication recovery time objective;
-- persistence and audit recovery point objective;
-- maximum acceptable email and OIDC dependency outage;
-- database, secret-store, signing-key, and Data Protection recovery procedures;
-- rollback and fail-safe behavior;
-- accountable operators and escalation paths.
-
-Do not infer production objectives from samples or tests.
+Each host defines authentication RTO, persistence/audit RPO, tolerated email/OIDC outage, database/secret/signing/Data Protection recovery procedures, rollback/fail-safe behavior, and accountable escalation paths.
 
 ## SQLite exercise
 
-The deterministic Windows drill:
-
-1. initializes a file database;
-2. creates and verifies an account;
-3. closes all provider resources;
-4. checkpoints and creates an offline backup;
-5. simulates active-file loss;
-6. restores the backup;
-7. validates the restored provider;
-8. proves login.
+The deterministic Windows drill initializes a file database, creates/verifies an account, quiesces provider resources, checkpoints and backs up the database, simulates loss, restores, validates the provider, and proves login:
 
 ```powershell
 ./scripts/recovery-drill.ps1 -RepositoryRoot $PWD
 ```
 
-Evidence is written under `artifacts/operations/recovery-drill`. This does not replace encrypted backups, off-site retention, integrity checks, online-backup procedures, or regular production exercises.
-
 ## PostgreSQL exercise
 
-PostgreSQL remains internal until promotion. Release evidence requires the native Windows `pg_dump`/`pg_restore` drill against approved scratch databases:
+PostgreSQL is Supported. Native `pg_dump`/`pg_restore` recovery evidence is a continuing requirement on applicable provider/release revisions:
 
 ```powershell
 $env:SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING = '<approved scratch database connection string>'
@@ -44,17 +24,12 @@ $env:SHARPACCESS_PROVIDER_TEST_ALLOW_RESET = 'true'
 ./scripts/postgres-recovery-drill.ps1 -RepositoryRoot $PWD
 ```
 
-Production PostgreSQL continuity must additionally address managed backups or snapshots, WAL/PITR where required, encryption, restore isolation, version compatibility, credentials, and application smoke validation.
+Production continuity must additionally address managed backups/snapshots, WAL/PITR where required, encryption, restore isolation, version compatibility, credentials, and application smoke validation.
 
-SQL Server and MySQL are not active providers and have no current recovery claim. Future reintroduction requires new native Windows recovery evidence.
+SQL Server and MySQL are not active providers.
 
 ## Exercise policy
 
-- Run repository drills within the cadence in `eng/OperationalReadiness.props`.
-- Run provider-native restore exercises before launch and after material schema/infrastructure changes.
-- Record revision, backup/restore times, outcome, operator, findings, and remediation using `docs/templates/RECOVERY-DRILL.md`.
-- Protect backups at least as strongly as source data.
-- Verify Data Protection keys, signing keys, token-hashing keys, and historical password peppers are recoverable.
-- Test application rollback separately from database restoration.
+Run repository/provider-native exercises at the configured operational cadence and after material persistence/infrastructure changes. Record revision, backup/restore time, outcome, operator, findings, and remediation without secrets. Protect backups at least as strongly as source data and test application rollback separately from database restoration.
 
-A failed or expired drill blocks release-readiness claims until corrected and rerun. Do not weaken or bypass recovery evidence.
+A failed or expired required drill blocks a new release-readiness claim until corrected. Published RC1 recovery evidence remains historical evidence for RC1 and is not rerun merely because documentation changed.

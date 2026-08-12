@@ -1,74 +1,37 @@
 # SharpAccess documentation
 
-SharpAccess is a Windows-only .NET 10 package family. Repository automation uses PowerShell 7. Current package/provider status is owned by `eng/ProviderStatus.props`; the synchronized package version is owned by `eng/Version.props`.
+This is the documentation entry point for the current SharpAccess repository.
 
-## Package consumers
+## Mutable fact owners
 
-- [Package overview and installation](NUGET-PACKAGE.md)
-- [Architecture](ARCHITECTURE.md)
-- [Public API](PUBLIC-API.md)
-- [Authorization model](AUTHORIZATION.md)
-- [OAuth and OpenID Connect](OAUTH.md)
-- [Database providers](DATABASE-PROVIDERS.md)
-- [Migrations](MIGRATIONS.md)
-- [Provider status](PROVIDER-STATUS.md)
+- Active provider/package status: `eng/ProviderStatus.props`.
+- Synchronized package version: `eng/Version.props`.
+- Canonical package license metadata: `Directory.Build.props`.
+- Product/future-provider roadmap vocabulary: `docs/ROADMAP.md`.
+- Active provider evidence classification: `docs/PROVIDER-PARITY-EVIDENCE.md`.
+- Historical PostgreSQL promotion procedure/decision: `docs/POSTGRES-PROMOTION.md` and ADR 0021.
+- Continuing PostgreSQL operations: `docs/POSTGRES-OPERATIONS.md`.
+- Durable RC1 release identity/evidence ledger: `docs/RELEASE-EVIDENCE-MATRIX.md`.
+- Published RC1 process record: `docs/RELEASE-CANDIDATE.md`.
+- Future stable-release completion checklist: `docs/RELEASE-CHECKLIST.md`.
+- Historical clean-root migration and legacy-decommission boundary: `docs/RELEASE-REPOSITORY-BOOTSTRAP.md`.
 
-## Provider setup and operations
+`0.9.0-rc.1` is published. Current `main` may advance after publication without changing the immutable RC1 package provenance commit. Stable `1.0.0` is a future, separately opened stage.
 
-- [Persistence and connections](PERSISTENCE-AND-CONNECTIONS.md)
-- [PostgreSQL operations](POSTGRES-OPERATIONS.md)
-- [PostgreSQL promotion decision and evidence](POSTGRES-PROMOTION.md)
-- [Backup and restore](BACKUP-RESTORE.md)
-- [Operations](OPERATIONS.md)
-- [Observability](OBSERVABILITY.md)
-- [Capacity planning](CAPACITY-PLANNING.md)
-- [Performance evidence](PERFORMANCE.md)
+## Product and operator guides
 
-## Security and governance
+- Architecture: `ARCHITECTURE.md` and `architecture/`.
+- Authorization: `AUTHORIZATION.md`, `ATTRIBUTES.md`, `PUBLIC-API.md`.
+- Providers and persistence: `DATABASE-PROVIDERS.md`, `PERSISTENCE-AND-CONNECTIONS.md`, `MIGRATIONS.md`, `SQLITE.md`, `POSTGRES-OPERATIONS.md`.
+- Testing and quality: `TESTING.md`, `QUALITY-GATES.md`, `QUALITY-REPORT.md`.
+- Security: `SECURITY.md`, `THREAT_MODEL.md`, `CRYPTOGRAPHY.md`, `SIGNING-KEYS.md`, `RATE-LIMITING.md`, `SECURITY-AND-CI-HARDENING.md`.
+- Operations: `DEPLOYMENT.md`, `OPERATIONS.md`, `BACKUP-RESTORE.md`, `BUSINESS-CONTINUITY.md`, `OBSERVABILITY.md`, `CAPACITY-PLANNING.md`, `production-hardening.md`.
+- Package/release: `NUGET-PACKAGE.md`, `SUPPLY-CHAIN.md`, `VERSIONING.md`, `package-consumer-validation.md`.
 
-- [Security](SECURITY.md)
-- [Threat model](THREAT_MODEL.md)
-- [Access-token signing keys](SIGNING-KEYS.md)
-- [Privacy](PRIVACY.md)
-- [Incident response](INCIDENT-RESPONSE.md)
-- [Business continuity](BUSINESS-CONTINUITY.md)
-- [Change management](CHANGE-MANAGEMENT.md)
-- [Repository governance](repository-governance.md)
-- [Architecture decisions](adr/README.md)
+## Documentation lifecycle
 
-## Contributors and maintainers
+Current-state documentation must describe the active tree and actual release lifecycle. Historical ADRs and evidence records may preserve superseded chronology when it explains current contracts.
 
-- [Testing](TESTING.md)
-- [Quality gates](QUALITY-GATES.md)
-- [Engineering-quality report](QUALITY-REPORT.md)
-- [Provider contract testing](PROVIDER-CONTRACT-TESTING.md)
-- [Provider evidence](PROVIDER-PARITY-EVIDENCE.md)
+Pre-release patch plans are disposable working material and must not become a second current-state roadmap. Do not create duplicate release ledgers when the durable identity ledger already owns the fact. Historical clean public tree/bootstrap procedures must be clearly marked as completed history, not executable current instructions.
 
-## Release engineering
-
-- [Versioning](VERSIONING.md)
-- [Roadmap](ROADMAP.md)
-- [Release checklist](RELEASE-CHECKLIST.md)
-- [Integrated release-candidate evidence](RELEASE-CANDIDATE.md)
-- [Release evidence matrix](RELEASE-EVIDENCE-MATRIX.md)
-- [Clean release-repository bootstrap](RELEASE-REPOSITORY-BOOTSTRAP.md)
-- [Supply chain](SUPPLY-CHAIN.md)
-
-## Historical material
-
-Accepted and superseded decisions remain in [`adr`](adr/README.md). `POSTGRES-PROMOTION.md` remains historical decision/evidence documentation while `POSTGRES-OPERATIONS.md` owns continuing operations. Pre-release patch plans and duplicate release ledgers are intentionally excluded from the clean public tree; internal prompts and audit reports are also excluded. Executable migration fixtures and current compatibility documentation remain authoritative.
-
-## Ownership rules
-
-- `eng/ProviderStatus.props` owns active package status.
-- `eng/Version.props` owns the synchronized package version.
-- `docs/ROADMAP.md` owns future provider and phase sequencing.
-- `docs/PROVIDER-PARITY-EVIDENCE.md` owns current provider evidence classification.
-- `docs/POSTGRES-PROMOTION.md` and ADR 0021 own the PostgreSQL promotion decision and historical exact-revision procedure.
-- `docs/POSTGRES-OPERATIONS.md` owns continuing PostgreSQL operational guidance.
-- `docs/TESTING.md` owns test commands, taxonomy, and fixtures.
-- `docs/QUALITY-GATES.md` owns enforced coverage, changed-code, complexity, mutation, and release-quality gates.
-- `docs/QUALITY-REPORT.md` owns quality-report schema, outputs, metrics, and interpretation.
-- `docs/RELEASE-CHECKLIST.md` owns RC and stable release completion.
-- ADRs own accepted decisions and supersession history.
-- The root README summarizes these contracts without duplicating operational detail.
+When documentation is consolidated, preserve unique current facts before removing a file. Accepted and superseded ADRs remain when they explain current contracts; executable historical migration fixtures remain when compatibility tests require them.

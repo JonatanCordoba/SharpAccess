@@ -132,4 +132,6 @@ Rollback failures must not replace the original operation exception. Cancellatio
 
 ## Deliberate non-integration
 
-SharpAccess 1.0 does not expose an Entity Framework `DbContext`, accept an application transaction, or enlist in a host unit of work. Coordinate cross-boundary work through state machines, idempotency, or an outbox.
+SharpAccess `0.9.0-rc.1` does not expose an Entity Framework `DbContext`, accept an application transaction, or enlist in a host unit of work. Coordinate cross-boundary work through state machines, idempotency, or an outbox.
+
+Stable `1.0.0` has not started; any future change to this persistence boundary requires separate review and compatibility evidence.

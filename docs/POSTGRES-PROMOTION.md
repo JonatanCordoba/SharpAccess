@@ -1,24 +1,25 @@
-# PostgreSQL support promotion
+# PostgreSQL support promotion — historical record and continuing aggregate evidence
 
-`eng/ProviderStatus.props` is the authoritative provider-status source. `SharpAccess.Postgres` is exposed and packed as Supported only in the coordinated promotion revision.
+## Status
 
-## Scope
+`SharpAccess.Postgres` is already **Supported**. `eng/ProviderStatus.props` is the authoritative current status source. ADR 0021 and this document retain the historical promotion decision/procedure so the reason for the public/provider boundary remains reviewable.
 
-The promotion revision changes one provider boundary:
+The historical promotion established the public `AddPostgresAccess` registration, reviewed public API baseline, ordinary supported package membership, package-consumer validation, SBOM membership, PostgreSQL-specific mutations, real-engine contracts, coverage, restricted-principal, query-plan, and native recovery requirements.
 
-- `AddPostgresAccess` becomes public;
-- the reviewed public API baseline includes the PostgreSQL registration type;
-- the package becomes part of the ordinary supported package catalog;
-- package smoke consumes the PostgreSQL package and compiles its public registration;
-- release SBOM requirements include Core, SQLite, and PostgreSQL;
-- PostgreSQL-specific promotion mutations are mandatory;
-- the complete clean-tree gate fails when required PostgreSQL evidence is not configured.
+Promotion is not pending and must not be rerun merely to prove that PostgreSQL is currently Supported.
 
-It does not complete protected OIDC evidence, approve the controlled performance baseline, transition canonical repository metadata, export the clean public root, or publish `1.0.0`.
+## Continuing evidence command
 
-## Required environment
+The retained script name is historical. On a future applicable exact revision it can still aggregate continuing PostgreSQL evidence:
 
-Use only an approved resettable scratch database. Never paste the connection string into logs, documentation, commits, branch notes, or retained evidence.
+```powershell
+./scripts/postgres-promotion.ps1 `
+  -RepositoryRoot $PWD `
+  -Configuration Release `
+  -ChangedCodeBaseRef origin/main
+```
+
+Use only an approved resettable scratch database and never retain the connection string:
 
 ```powershell
 $env:SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING = '<approved scratch database connection string>'
@@ -26,56 +27,16 @@ $env:SHARPACCESS_PROVIDER_TEST_ALLOW_RESET = 'true'
 $env:SHARPACCESS_POSTGRES_READINESS = 'true'
 ```
 
-Windows must provide PowerShell 7, the .NET SDK selected by `global.json`, Git, and native PostgreSQL tools:
+Native recovery evidence requires `psql`, `createdb`, `dropdb`, `pg_dump`, and `pg_restore` on Windows.
 
-- `psql`
-- `createdb`
-- `dropdb`
-- `pg_dump`
-- `pg_restore`
+The aggregate command covers real-engine provider contracts/readiness, historical migrations, restricted principals, transactions/concurrency/cancellation/timeouts/SQLSTATE, bounded queries/query plans, provider coverage, PostgreSQL-specific mutations, native recovery, clean-tree verification, package validation/consumer compilation, and SBOM evidence as implemented by the current script.
 
-## Exact-revision gate
+## Evidence interpretation
 
-Fetch the current base branch, then run against a committed clean tree because `verify-local` is intentionally clean-tree and revision-bound.
+The output is exact-revision evidence. Missing required PostgreSQL infrastructure fails a selected required path rather than being treated as a pass. Retained evidence must not contain credentials, connection strings, raw tokens, or production personal data.
 
-```powershell
-git fetch origin
+Protected OIDC, controlled performance, tagging, and publication are separate release concerns. RC1 already completed those concerns for its immutable release revision; post-release documentation changes do not recapture them.
 
-./scripts/postgres-promotion.ps1 `
-  -RepositoryRoot $PWD `
-  -Configuration Release `
-  -ChangedCodeBaseRef origin/master
-```
+## Future change boundary
 
-The script runs:
-
-1. real-engine provider contracts and readiness;
-2. empty and historical migration paths;
-3. restricted-principal, transaction, isolation, concurrency, cancellation, timeout, SQLSTATE, bounded-query, and query-plan evidence;
-4. promotion line, branch, and changed-code coverage across the complete promotion branch;
-5. PostgreSQL-specific mutation evidence;
-6. native `pg_dump`/`pg_restore` recovery;
-7. the complete clean-tree Windows gate;
-8. package creation, package validation, package-consumer compilation, and SBOM generation.
-
-The final summary is written to `artifacts/postgres-promotion/evidence.json`. The summary contains hashes and paths, not credentials or connection strings.
-
-## Pull-request or branch acceptance
-
-Do not merge the promotion revision unless:
-
-- the evidence revision equals the reviewed branch head;
-- every required PostgreSQL stage passed;
-- the working tree remained clean;
-- `SharpAccess.Postgres` runtime and symbol packages exist at the synchronized version;
-- the package consumer used package references rather than project references;
-- the public API baseline and provider status agree;
-- no retained artifact contains credentials, connection strings, raw tokens, or production personal data.
-
-GitHub-hosted infrastructure failure is not passing evidence. Local exact-revision evidence may be used for review, but hosted required checks remain separately enforceable when service quota is available.
-
-## Rollback
-
-Before stable publication, rollback is a revert of the coherent promotion commit set. The revert must restore provider status, package catalog membership, public API baseline, public registration visibility, package-consumer expectations, release SBOM requirements, mutation catalog entries, and promotion documentation together.
-
-After any stable package is published, public API and package compatibility policy applies. Do not silently make the provider internal or unpublish a released version.
+A future change that materially affects PostgreSQL must continue to satisfy the applicable Supported-provider evidence. Removing or deferring PostgreSQL would require a separately reviewed compatibility/status decision; it is not accomplished by editing this historical promotion record.

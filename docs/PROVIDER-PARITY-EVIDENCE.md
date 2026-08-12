@@ -2,71 +2,51 @@
 
 ## Purpose
 
-This document classifies execution evidence for the active Core, SQLite, and PostgreSQL cohort. Repository controls are not successful evidence until the exact reviewed revision produces a retained passing result.
+This document classifies continuing execution evidence for the active Core, SQLite, and PostgreSQL cohort. `eng/ProviderStatus.props` owns current status.
 
-`eng/ProviderStatus.props` owns active status.
+Repository controls are not successful execution evidence until the exact reviewed revision produces the required passing result.
 
-## Active release impact
+## Active cohort
 
-| Package or provider | Current status | Stable 1.0 impact |
+| Package/provider | Current status | Continuing evidence role |
 |---|---|---|
-| `SharpAccess.Core` | Supported | Required. |
-| `SharpAccess.Sqlite` | Supported | Required and the zero-infrastructure reference path. |
-| `SharpAccess.Postgres` | Supported | Required initial stable server-provider path; exact-revision promotion evidence remains mandatory. |
+| `SharpAccess.Core` | Supported | Required in active package, quality, security, and release evidence. |
+| `SharpAccess.Sqlite` | Supported | Always-on zero-infrastructure reference/provider evidence. |
+| `SharpAccess.Postgres` | Supported | Real-engine contracts, coverage, mutations, migrations, restricted principals, query plans, recovery, package and consumer evidence on applicable revisions. |
 
-SQL Server and MySQL are not active providers. Their previous implementations and evidence obligations were removed. They remain future roadmap candidates in `docs/ROADMAP.md`; no unresolved SQL Server or MySQL item blocks the initial release.
+SQL Server and MySQL are deferred and absent from the active implementation. Reintroduction requires a new ADR and full evidence plan.
 
 ## Evidence vocabulary
 
-- **Initial-release required**: must pass before Core, SQLite, or PostgreSQL stable publication.
-- **Environment-blocked**: the control exists, but required infrastructure or protected configuration is unavailable. This is not success.
-- **Not applicable**: the capability does not apply, with the reason recorded.
-- **Repository control present**: implementation exists; execution has not been proven.
-- **Retained execution evidence required**: the exact revision must complete the command or workflow and retain its result.
+- **Required**: must pass for the selected scope/revision.
+- **Environment-blocked**: required infrastructure/configuration is unavailable; this is not success.
+- **Not run by request**: deliberately omitted from exploratory execution; this is not success.
+- **Not applicable**: the capability does not apply, with an explicit reason.
+- **Repository control present**: implementation exists; execution has not yet been proven for the selected revision.
+- **Retained execution evidence**: the exact revision completed the required command/workflow and retained its result.
 
-## Capability matrix
+## Provider capability matrix
 
 | Capability | SQLite | PostgreSQL |
 |---|---|---|
-| Shared provider contracts | Always available and initial-release required. | Real-engine run required; selected execution must not skip. |
-| Historical upgrades | SQLite fixtures and migration matrix required. | Real-engine historical upgrade evidence required. |
-| Restricted principals | File and operating-system access guidance applies. | Required with `SHARPACCESS_POSTGRES_READINESS=true`. |
-| Query-plan evidence | SQLite query-plan tests required. | Native `EXPLAIN (FORMAT JSON)` evidence required. |
-| Recovery | Deterministic SQLite offline recovery required. | Native `pg_dump`/`pg_restore` drill required. |
-| Provider coverage | Supported-provider threshold required. | Promotion threshold required for the coordinated support revision and retained as provider evidence. |
-| Package consumer | Required. | Required from the coordinated promotion revision onward. |
-| Public registration | `AddSqliteAccess` supported. | `AddPostgresAccess` supported in the coordinated promotion revision. |
-| Operational documentation | Required. | Required through `POSTGRES-OPERATIONS.md` and `POSTGRES-PROMOTION.md`. |
+| Provider contracts | Always available | Required real-engine run when selected |
+| Historical upgrades | Fixture matrix | Real-engine historical upgrades |
+| Restricted principals | File/OS guidance | Required readiness evidence |
+| Query plans | SQLite query-plan evidence | Native `EXPLAIN (FORMAT JSON)` evidence |
+| Recovery | Deterministic offline drill | Native `pg_dump`/`pg_restore` drill |
+| Coverage | Supported-provider threshold | Supported-provider threshold and aggregate evidence |
+| Mutations | Reference-provider invariants | PostgreSQL-specific invariants plus shared scope |
+| Package consumer | Required | Required |
+| Public registration | `AddSqliteAccess` | `AddPostgresAccess` |
 
-## Windows execution boundary
+## Windows boundary
 
-Provider evidence is produced on Windows with PowerShell 7. Docker, Compose, service containers, and Bash are not part of the evidence model.
+Provider evidence is produced on Windows with PowerShell 7. Docker, Compose, service containers, Bash, Linux, and macOS are not part of the supported evidence model.
 
-PostgreSQL tests use either a native Windows PostgreSQL installation or an approved managed scratch database. Recovery evidence additionally requires native `psql`, `createdb`, `dropdb`, `pg_dump`, and `pg_restore` tools.
+PostgreSQL uses a native Windows installation or an approved managed scratch database. Recovery additionally requires native `psql`, `createdb`, `dropdb`, `pg_dump`, and `pg_restore` tools.
 
-## Required commands
+## Historical promotion versus continuing support
 
-```powershell
-./scripts/verify-local.ps1 -RepositoryRoot $PWD
-```
+PostgreSQL promotion to Supported is historical and is documented by `POSTGRES-PROMOTION.md` and ADR 0021. The retained script name `postgres-promotion.ps1` is historical terminology; its aggregate checks remain useful as continuing Supported-provider evidence.
 
-```powershell
-$env:SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING = '<approved scratch database connection string>'
-$env:SHARPACCESS_PROVIDER_TEST_ALLOW_RESET = 'true'
-$env:SHARPACCESS_POSTGRES_READINESS = 'true'
-
-./scripts/postgres-promotion.ps1 -RepositoryRoot $PWD
-```
-
-Never retain credentials or connection strings in logs or evidence.
-
-## Completion boundary
-
-The PostgreSQL provider phase is evidence-complete only when the exact committed promotion revision has:
-
-1. successful real-engine contracts, restricted-principal readiness, historical upgrades, concurrency, cancellation, timeout, SQLSTATE, and query-plan evidence;
-2. successful promotion coverage, PostgreSQL-specific mutation, native recovery, package validation, package-consumer, and SBOM evidence;
-3. no provider-status, public-registration, package-catalog, or API-baseline drift;
-4. retained artifact locations, hashes, and reviewer approval.
-
-Protected OIDC, controlled performance, canonical export, and publication remain independent initial-release gates.
+RC1 proved the published RC1 revision. Future changed release revisions must satisfy the then-applicable continuing PostgreSQL evidence again; RC1 evidence is not a permanent verification of later code.

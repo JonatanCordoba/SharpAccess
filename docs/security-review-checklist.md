@@ -1,57 +1,43 @@
 # Security review checklist
 
-Use this checklist for pull requests that touch authentication, authorization, token handling, provider persistence, or package release behavior.
+Use this checklist for changes touching authentication, authorization, tokens, provider persistence, repository controls, or package/release behavior.
 
 ## Inputs and responses
 
-- External input is validated before use.
-- Public errors remain generic where account or token existence could be inferred.
-- ProblemDetails responses do not include exception details, source paths, request bodies, raw tokens, passwords, OAuth codes, peppers, or signing keys.
-- Request body logging is not introduced for auth endpoints.
+- External input is validated and bounded before use.
+- Public errors remain generic where account/token existence could be inferred.
+- ProblemDetails/logs do not expose exception details, source paths, request bodies, raw tokens, passwords, OAuth codes, peppers, signing keys, connection strings, or secrets.
 
-## Password flows
+## Password and token flows
 
-- Password length limits are enforced before expensive hashing work where appropriate.
-- Unknown-account paths perform comparable dummy hash verification.
-- Password-risk validation remains outside the core password-flow implementation.
-- Password reset increments security version and revokes active sessions.
-- Password change verifies the current password and revokes active sessions.
-
-## Token flows
-
-- Access tokens validate issuer, audience, lifetime, signing key, algorithm, persisted user state, security version, and tenant membership.
-- Refresh tokens remain opaque to clients.
-- Refresh-token hashes, not raw refresh tokens, are persisted.
-- Refresh tokens rotate on successful use.
-- Reuse detection revokes the refresh-token family.
-- Logout and explicit revocation do not leak whether a token exists unless the caller is authorized to know.
-- One-time tokens are purpose-scoped, hashed at rest, expiring, and single-use.
+- Password length/cost bounds are enforced before expensive work where applicable.
+- Unknown-account login performs comparable dummy verification.
+- Password change/reset increments security version and revokes active sessions.
+- Access tokens validate issuer, audience, lifetime, algorithm/key, persisted account state, versions, and tenant context.
+- Refresh/one-time tokens remain opaque, hashed at rest, expiring/purpose-bound, rotated/single-use as applicable.
+- Refresh replay revokes the family.
 
 ## Tenant and authorization flows
 
-- Tenant context is explicit.
-- Tenant membership is checked on login, refresh, current-user load, and JWT validation for tenant-scoped tokens.
-- Role and permission changes invalidate affected sessions.
-- Endpoint handlers do not contain business authorization logic beyond attributes or service delegation.
+- Global and tenant scopes remain distinct.
+- Tenant membership/route context is checked on applicable operations.
+- Security-sensitive authorization mutations invalidate affected sessions/contexts.
+- Tenant ownership changes remain atomic and auditable.
 
 ## Provider persistence
 
-- SQL uses parameters.
+- SQL is parameterized.
 - Security-sensitive multi-row changes are transactional.
-- Migrations are ordered and idempotent.
-- Provider-specific SQL does not enter the core package.
-- Provider-contract tests cover behavior, not just schema shape.
-
-## Logging and audit
-
-- Audit records contain event names and identifiers, not raw secrets.
-- New security-sensitive actions add audit events.
-- Audit writes do not block secure failure behavior from returning sanitized responses.
-- Logs never include raw tokens, passwords, OAuth codes, peppers, signing keys, or request bodies for auth endpoints.
+- Migrations are ordered/immutable and provider-owned.
+- Provider-specific SQL does not enter Core.
+- Provider-contract tests cover observable behavior.
 
 ## Package and CI
 
-- Public-surface tests are updated when public APIs intentionally change.
-- Package-consumer validation is run before release candidates.
-- Dependency audit, package validation, SBOM generation, and coverage scripts pass on Linux and Windows.
-- Documentation is updated for new production controls or operator actions.
+- Public API baselines are updated only for intentional reviewed changes.
+- Package-consumer validation covers Core, SQLite, and PostgreSQL as the active cohort.
+- Dependency review, DevSkim, tracked-secret scanning, Windows CI, provider checks, package validation, SBOMs, and coverage run as required by scope.
+- No Linux/macOS/Bash/Docker/Compose/service-container parity is introduced.
+- Documentation is updated for new production/operator controls.
+
+RC1 is already published; post-release documentation-only changes do not recapture immutable RC1 protected release evidence.

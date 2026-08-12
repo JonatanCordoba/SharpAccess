@@ -1,31 +1,21 @@
-# Versioning policy
+# Versioning
 
-SharpAccess follows semantic versioning for its package family.
+`eng/Version.props` owns the synchronized package version for Core, SQLite, and PostgreSQL.
 
-## Authoritative version
+## Current public version
 
-`eng/Version.props` owns the synchronized version for `SharpAccess.Core`, `SharpAccess.Sqlite`, and `SharpAccess.Postgres`. Package projects must not declare independent `<Version>` values.
+The first public prerelease, `0.9.0-rc.1`, is published. Its immutable package provenance commit is `4595545d8afd84c58795fc02c2c242533cdff1ac` and its signed tag is `v0.9.0-rc.1`.
 
-## Development and release-candidate versions
+Current `main` may advance after publication without changing that historical package provenance.
 
-The first public release candidate is `0.9.0-rc.1`, with signed tag `v0.9.0-rc.1`. Later candidates increment the prerelease ordinal (`0.9.0-rc.2`, and so on) unless a reviewed compatibility decision changes the base version.
+## Pre-1.0 policy
 
-`JonatanCordoba/SharpAccess` is the canonical source, development, verification, and release repository. Public NuGet release-candidate and stable packages are published only from an exact verified SharpAccess release revision.
+Until stable `1.0.0` is explicitly opened and released, SharpAccess may still make reviewed breaking changes within the pre-1.0 contract. Any public API/schema/package change must be documented, covered by public API/migration/package-consumer tests, and reflected in the selected release evidence.
 
-Stable `1.0.0` is a separate post-RC release. The build rejects a stable package unless an explicit release-only override and the exact canonical GitHub repository identity are both present.
+## Stable boundary
 
-## Additive changes
+Stable `1.0.0` is a future, separately gated stage. It requires a newly selected exact revision and the then-current stable evidence matrix. RC1 passage does not imply stable readiness.
 
-Additive changes introduce new APIs without removing or changing existing stable behavior. They normally require a minor version after 1.0. During the pre-1.0 period they still require public API review, compatibility evidence, and release notes.
+After stable release, semantic-versioning/compatibility policy applies to the released stable line and database migration compatibility must be preserved according to the published contract.
 
-## Behavioral changes
-
-Behavioral changes preserve signatures but alter documented behavior. Security corrections may ship in a patch release when they restore the documented contract. Material behavior changes require clear release notes and compatibility tests.
-
-## Breaking changes
-
-Breaking changes remove or rename public APIs, change required configuration, alter persisted contracts, or invalidate documented consumer behavior. After 1.0 they require a major version unless a security advisory requires an exceptional response.
-
-## Public API evidence
-
-The `eng/public-api` baseline files and package-surface tests define the reviewed exported type surface. Every public API change must update the relevant baseline and include a compatibility assessment.
+SQL Server and MySQL remain deferred and do not receive compatibility promises until separately accepted and published.

@@ -1,92 +1,29 @@
-# Supply-chain and release evidence
+# Supply-chain controls
 
-## Evidence boundary
+SharpAccess supply-chain controls are Windows-only and PowerShell 7-only and apply to the active Core, SQLite, and PostgreSQL cohort.
 
-SharpAccess generates one CycloneDX 1.6 document and one SPDX 2.3 document for each active package root:
+## Dependency and action controls
 
-- `SharpAccess.Core`;
-- `SharpAccess.Sqlite`;
-- `SharpAccess.Postgres`.
+- Restore uses lock files and locked mode on controlled verification/release paths.
+- Dependency review is a required pull-request control; the repository may use an explicitly documented NuGet audit fallback where applicable, but blocked native evidence is never described as passing native dependency-review evidence.
+- External GitHub Actions are pinned to reviewed full commit SHAs.
+- DevSkim is the blocking SAST control.
+- Tracked-secret scanning and repository secret controls remain independent gates.
 
-The Windows-only generator reads each committed `packages.lock.json`, resolves the exact checked-out Git revision, hashes either the package archive or project root, emits deterministic dependency documents, and generates the complete set twice. The wrapper requires byte-for-byte equality between both runs.
+## Package and SBOM controls
 
-`sbom-evidence.json` records:
+Core, SQLite, and PostgreSQL are Supported and each participates in package validation, package-consumer validation, deterministic SBOM generation, checksums, and provenance for applicable releases.
 
-- repository lifecycle identity;
-- publication mode;
-- Windows platform;
-- source revision and commit-derived timestamp;
-- package and version;
-- dependency count;
-- root hash source and SHA-256;
-- CycloneDX and SPDX output hashes.
+PostgreSQL is not an incubation/package-root exception. Its package and consumer evidence is a continuing Supported-provider obligation.
 
-The canonical development and publication identity is `https://github.com/JonatanCordoba/SharpAccess`.
+SQL Server and MySQL are not active packages or supply-chain targets.
 
-## Package-root modes
+## Published RC1
 
-Development and ordinary CI require package archives only for projects marked Supported. PostgreSQL may therefore use project-root composition evidence until its coordinated promotion revision.
+RC1 publication is complete. The validated release artifact for immutable commit `4595545d8afd84c58795fc02c2c242533cdff1ac` was consumed by the protected NuGet Trusted Publishing workflow without rebuilding package bytes. The durable release/artifact/package/publication identities are in `RELEASE-EVIDENCE-MATRIX.md`.
 
-Stable publication requires:
+Post-release documentation changes do not regenerate or replace those immutable package/SBOM/provenance identities.
 
-- Core, SQLite, and PostgreSQL all marked Supported;
-- exact package archives for all three;
-- the canonical repository identity;
-- the clean public root revision.
+## Future releases
 
-SQL Server and MySQL are not SBOM roots because they are not active projects.
-
-## Generate evidence
-
-Run on Windows with PowerShell 7:
-
-```powershell
-./scripts/sbom.ps1 `
-  -RepositoryRoot $PWD `
-  -RepositoryUrl https://github.com/JonatanCordoba/SharpAccess `
-  -ReplaceExistingOutput
-```
-
-For stable publication from the clean root:
-
-```powershell
-./scripts/sbom.ps1 `
-  -RepositoryRoot $PWD `
-  -RepositoryUrl https://github.com/JonatanCordoba/SharpAccess `
-  -RequireAllPackageArchives `
-  -StablePublication
-```
-
-Revision is derived from and must equal checked-out `HEAD`. Caller-supplied timestamps are rejected.
-
-## Toolchain and workflow pins
-
-`global.json` selects the accepted .NET 10 SDK and disables roll-forward. `eng/SupplyChain.props` owns:
-
-- supported Windows/PowerShell tooling;
-- development and canonical repository identities;
-- active source inputs;
-- full-SHA GitHub Action pins.
-
-There are no service-image or container-digest inputs. Workflows do not use Docker or service containers.
-
-## Retained evidence
-
-Windows workflows retain SHA-addressed artifacts for:
-
-- build/test logs;
-- Core, SQLite, PostgreSQL, and changed-code coverage;
-- provider-contract results;
-- mutation and operational evidence;
-- SAST SARIF;
-- NuGet vulnerability results;
-- tracked-secret scan evidence;
-- SBOMs and checksums;
-- package-consumer validation;
-- release export and release-candidate evidence.
-
-`.github/required-checks.json` is the reviewable check-name contract. Apply only `pullRequestRequiredChecks` to PR branch protection. `defaultBranchEvidenceChecks` describes protected PostgreSQL and integrated release evidence that does not run in an untrusted PR context.
-
-## Publication boundary
-
-Stable Core, SQLite, and PostgreSQL packages, archive-root SBOMs, checksums, provenance, tags, and GitHub releases are created only from a verified signed SharpAccess release revision.
+For a future release, retain exact revision, package archive hashes, deterministic SBOMs, checksum manifests, provenance, package-consumer evidence, and protected publication evidence as required by the selected policy. Missing, expired, blocked, skipped, or not-run evidence is not success.
