@@ -1,20 +1,88 @@
 {
   "schemaVersion": 3,
   "protectedBranches": [
-    "main",
     "main"
   ],
   "pullRequestRequiredChecks": [
-    { "check": "ci / ci-windows", "claims": ["windows-build-test", "core-coverage", "sqlite-coverage", "changed-code-coverage", "nuget-sca", "package-validation", "sbom"] },
-    { "check": "provider-contracts / sqlite-supported", "claims": ["sqlite-provider-contracts", "sqlite-provider-coverage"] },
-    { "check": "pull request evidence / Validate pull request evidence", "claims": ["revision-bound-pr-evidence"] },
-    { "check": "sast / devskim", "claims": ["sast"] },
-    { "check": "secret scanning / tracked-secret-scan", "claims": ["tracked-secret-scanning"] },
-    { "check": "dependency review / review", "claims": ["dependency-review"] },
-    { "check": "operational readiness / operational-readiness-windows", "claims": ["operational-readiness"] }
+    {
+      "check": "pull request evidence / Validate pull request evidence",
+      "claims": [
+        "revision-bound-pr-evidence"
+      ]
+    },
+    {
+      "check": "provider-contracts / sqlite-supported",
+      "claims": [
+        "sqlite-provider-contracts",
+        "sqlite-provider-coverage"
+      ]
+    },
+    {
+      "check": "ci / ci-windows",
+      "claims": [
+        "windows-build-test",
+        "core-coverage",
+        "sqlite-coverage",
+        "changed-code-coverage",
+        "nuget-sca",
+        "package-validation",
+        "sbom"
+      ]
+    },
+    {
+      "check": "sast / devskim",
+      "claims": [
+        "sast"
+      ]
+    },
+    {
+      "check": "operational readiness / operational-readiness-windows",
+      "claims": [
+        "operational-readiness"
+      ]
+    },
+    {
+      "check": "provider-contracts / provider-contracts-classify",
+      "claims": [
+        "provider-contracts-classify"
+      ]
+    },
+    {
+      "check": "dependency review / review",
+      "claims": [
+        "dependency-review"
+      ]
+    },
+    {
+      "check": "test-scope / test-scope-classify",
+      "claims": [
+        "test-scope-classify"
+      ]
+    },
+    {
+      "check": "secret scanning / tracked-secret-scan",
+      "claims": [
+        "tracked-secret-scanning"
+      ]
+    }
   ],
   "defaultBranchEvidenceChecks": [
-    { "check": "provider-contracts / postgres-native", "claims": ["postgres-provider-contracts", "postgres-provider-coverage", "postgres-recovery"] },
-    { "check": "integrated release candidate / windows-release-candidate", "claims": ["release-candidate", "performance", "protected-oidc", "export-equivalence"] }
+    {
+      "check": "provider-contracts / postgres-native",
+      "claims": [
+        "postgres-provider-contracts",
+        "postgres-provider-coverage",
+        "postgres-recovery"
+      ]
+    },
+    {
+      "check": "integrated release candidate / windows-release-candidate",
+      "claims": [
+        "release-candidate",
+        "performance",
+        "protected-oidc",
+        "export-equivalence"
+      ]
+    }
   ]
 }

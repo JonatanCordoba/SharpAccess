@@ -1,73 +1,60 @@
 # Release evidence matrix
 
-## Classification
+## Purpose
 
-- `release-candidate-required`: must pass before public `0.9.0-rc.1` publication.
-- `stable-required`: must pass again before stable `1.0.0` publication.
-- `environment-blocked`: a control exists but required protected infrastructure is unavailable; this is not success.
-- `not-run-by-request`: an exploratory invocation omitted a control; this is not success.
-- `not-applicable`: a capability does not apply, with the reason recorded.
+This file is the durable identity and evidence ledger for the published `0.9.0-rc.1` release. It records immutable release identities separately from later post-release repository state.
 
-SQL Server and MySQL are future roadmap candidates, not active release targets.
-## Current development evidence status
+## Immutable RC1 identities
 
-| Control | Status | Exact identity / limitation |
-|---|---|---|
-| Public-surface and publication-contract integration | Complete | PR #148 integrated as `c99c6866956c06414de23a6c30129629dc4b0e47` |
-| Controlled performance capture and review | Complete | Three-process median candidate captured on `c99c6866956c06414de23a6c30129629dc4b0e47` in `local-controlled` |
-| Baseline-only integration | Complete | PR #149 integrated as `86ac10a479e8c6fed78bf78e9024d863127f1129`; only `eng/PerformanceBaseline.json` changed |
-| Exact clean-tree development verification | Maintainer-reported complete | Selected revision `86ac10a479e8c6fed78bf78e9024d863127f1129` |
-| Complete protected development matrix | Maintainer-reported complete | PostgreSQL, live OIDC, approved performance, recovery, packages, SBOMs, quality report, checksums, evidence index, and export dry run on `86ac10a479e8c6fed78bf78e9024d863127f1129` |
-| GitHub-hosted PR workflows | Environment-blocked | PRs #148 and #149 were blocked before runner allocation by billing/spending limits; not passing evidence |
-| Canonical-metadata lineage | In progress | Its integration creates a new exact revision and requires one final verify/capture/approval/matrix/export cycle |
-| Public-root evidence | Not run | Requires separate explicit authorization before any Git operation against `JonatanCordoba/SharpAccess` |
+| Evidence | Final identity / result |
+|---|---|
+| Repository | `JonatanCordoba/SharpAccess` |
+| Version | `0.9.0-rc.1` |
+| Signed tag | `v0.9.0-rc.1` |
+| RC1 package provenance commit | `4595545d8afd84c58795fc02c2c242533cdff1ac` |
+| Annotated tag object | `8660c43aada304c7f64c271a9bfbebfbe2ac6c55` |
+| Integrated RC workflow run | `31340946355` — success |
+| RC artifact ID | `9046031931` |
+| RC artifact name | `release-candidate-4595545d8afd84c58795fc02c2c242533cdff1ac` |
+| RC artifact digest | `sha256:f7b81fe2d7d31ee298e2412da691831db9dbcc5389b99c60290ad06f31f86402` |
+| Publication workflow run | `31343342871` — success via NuGet Trusted Publishing / GitHub OIDC |
+| GitHub prerelease | ID `367623569`, `SharpAccess 0.9.0-rc.1`, prerelease, not draft |
+| License authority | `MIT` through `Directory.Build.props` package license expression |
 
-## Active package cohort
+## Published package cohort
 
-| Evidence | Core | SQLite | PostgreSQL | Retained source |
-|---|---|---|---|---|
-| Authoritative version | `0.9.0-rc.1` required | synchronized | synchronized | `eng/Version.props`, package metadata |
-| Windows build/test | required | required | required | Windows CI/release artifacts |
-| Coverage and changed-code coverage | 85/75 plus 90/75 changed code | 80/65 | 80/65 | coverage artifacts |
-| Engineering-quality report | required | required | required | `artifacts/quality-report` |
-| Complexity/CRAP ratchet | current Supported baseline required | current Supported baseline required | current Supported baseline required | complexity policy/baseline and report artifacts |
-| Provider contracts | provider-neutral behavior | required | non-skipped real-engine run required | provider-contract artifacts |
-| Historical migrations | shared contract | fixtures required | real-engine upgrades required | migration/provider artifacts |
-| Restricted principals | not applicable | Windows file/ACL guidance | required | PostgreSQL readiness artifacts |
-| Recovery | package procedures | offline drill required | native logical backup/restore required | operations artifacts |
-| Performance and capacity | controlled baseline required | endpoint/query profile | query-plan and controlled baseline required | performance/provider artifacts |
-| Package consumer | required | required | required | package-smoke artifacts |
-| Mutation evidence | signing, state, authorization, refresh invariants | reference-provider invariants | replay, one-time-token, SQLSTATE, transaction invariants | mutation artifacts |
-| OIDC | protected live and deterministic protocol evidence | provider-neutral | provider-neutral | OIDC artifacts |
-| SAST, SCA, secrets | required | required | required | CI/release artifacts |
-| SBOM, checksums, provenance | required package archive | required package archive | required package archive | SBOM/release artifacts |
-| Deterministic export | required | required | required | `artifacts/release-export` |
-| Public-root revalidation | required | required | required | canonical repository workflows/artifacts |
-| Protected NuGet Trusted Publishing | required | required | required | `.github/workflows/publish-nuget.yml`, protected `nuget-release` environment, exact successful release-candidate run, and immutable artifact identity |
-| Post-publication smoke | required | required | required | clean consumer evidence |
+| Package | Version | Runtime package | Symbols | License | Public validation |
+|---|---|---|---|---|---|
+| `SharpAccess.Core` | `0.9.0-rc.1` | published | published | MIT | public discovery, nuspec metadata, clean consumer restore/build passed |
+| `SharpAccess.Sqlite` | `0.9.0-rc.1` | published | published | MIT | public discovery, nuspec metadata, clean consumer restore/build passed |
+| `SharpAccess.Postgres` | `0.9.0-rc.1` | published | published | MIT | public discovery, nuspec metadata, clean consumer restore/build passed |
 
-## Platform and tooling evidence
+The validated published cohort has no SharpAccess package-version skew.
 
-All evidence is generated on Windows with PowerShell 7. The release tree contains no Bash, Docker, Compose, service-container, Linux, or macOS release paths.
+## Wiki publication identities
 
-PostgreSQL evidence uses protected configuration plus native Windows PostgreSQL client tools or an approved managed database. Missing service infrastructure fails required stages rather than silently skipping.
+| Evidence | Identity / result |
+|---|---|
+| Tracked Wiki source revision | `a038e7fc364c526f956ebacce7f5779fbfaac0a8` |
+| Tracked `wiki-source` subtree | `25e13e4d8d3a0379e836f5ce130535464277346f` |
+| Separate Wiki repository branch | `master` |
+| Published Wiki commit | `79c678c5c54427facba990b394240c1567c5b75a` |
+| Published Wiki tree | `25e13e4d8d3a0379e836f5ce130535464277346f` |
+| Published page count | `24` |
+| Live validation | passed |
 
-## Continuing PostgreSQL support boundary
+Published Wiki tree equality with the tracked `wiki-source` tree is the publication-equivalence proof. The Wiki `master` branch belongs to the separate Wiki repository and is not a SharpAccess source branch.
 
-PostgreSQL is Supported. Applicable release revisions remain unaccepted until they:
+## Current repository state versus release provenance
 
-- pass every provider-specific required row above;
-- retain the approved public `AddPostgresAccess` registration and package surface;
-- produce synchronized runtime, symbol, XML documentation, README, SBOM, and provenance artifacts;
-- pass `scripts/postgres-promotion.ps1` or the equivalent aggregate Supported-provider evidence on the exact commit;
-- retain reviewer approval and artifact locations.
+At the audited closure baseline, protected `main` is `a038e7fc364c526f956ebacce7f5779fbfaac0a8`. It intentionally postdates the immutable RC1 package provenance commit because documentation-only post-release Wiki synchronization was merged after publication.
 
-Prior promotion evidence does not permanently verify later changed revisions. Protected OIDC, the approved performance baseline, deterministic export, public-root verification, publication, and post-publication checks remain separate requirements. NuGet publication evidence is passing only when `.github/workflows/publish-nuget.yml` successfully publishes the exact signed-tag release cohort from the exact validated release-candidate run and immutable artifact identity through the protected `nuget-release` Trusted Publishing boundary; merely installing the workflow or configuring the NuGet.org policy is not publication evidence.
+Never substitute current `main` for the historical RC1 package provenance commit, and never repoint the RC1 tag to a later documentation commit.
 
-## RC and stable reuse
+## Evidence classification
 
-`0.9.0-rc.1` evidence cannot be reused blindly for stable `1.0.0`. Stable publication requires a fresh exact-revision matrix after RC feedback and defects are dispositioned. Evidence may be referenced only when its underlying source, package, environment, and expiration policy remain unchanged and the stable policy explicitly permits reuse.
+- **Published/complete**: release, package, symbols, prerelease, public discovery, nuspec metadata, clean-consumer restore/build, Wiki publication, and license state above.
+- **Continuing Supported-provider obligation**: future applicable PostgreSQL revisions still require real-engine contracts, restricted-principal, historical-upgrade, concurrency/cancellation/timeout/SQLSTATE, query-plan, coverage/mutation, recovery, package, and consumer evidence.
+- **Future stable**: stable `1.0.0` requires a fresh exact-revision decision and may reuse evidence only where the then-current policy explicitly permits it.
 
-## Future roadmap providers
-
-SQL Server and MySQL have no active evidence matrix. Reintroduction requires a new ADR and a new matrix covering native Windows real-engine contracts, migrations, restricted principals, query plans, coverage, recovery, package consumers, operations, and publication.
+Post-release documentation/control synchronization must not regenerate immutable RC1 PostgreSQL, OIDC, controlled-performance, package, or publication evidence solely because documentation changed.
