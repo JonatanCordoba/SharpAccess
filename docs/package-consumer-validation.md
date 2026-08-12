@@ -1,50 +1,29 @@
 # Package consumer validation
 
-Public-surface tests protect exported types, but they do not prove that a real consumer can install and compile against the generated NuGet packages. The package consumer smoke scripts validate the downstream NuGet experience from a temporary ASP.NET Core application.
-
 ## Goal
 
-Verify that the packed `SharpAccess.Core` and `SharpAccess.Sqlite` packages can be installed and used by a clean ASP.NET Core host without project references.
+Prove that the Supported prerelease package cohort can be consumed through package references rather than project references.
 
-## Implemented smoke scripts
+For RC1 the cohort is exactly:
 
-Run after `scripts/pack` has produced package artifacts:
+- `SharpAccess.Core` `0.9.0-rc.1`;
+- `SharpAccess.Sqlite` `0.9.0-rc.1`;
+- `SharpAccess.Postgres` `0.9.0-rc.1`.
 
-```powershell
-./scripts/package-smoke.ps1 -RepositoryRoot $PWD
-```
+## Repository package-smoke behavior
 
-The scripts:
+`scripts/package-smoke.ps1` validates that the expected runtime package archives exist, creates temporary consumer projects, references packages from the produced package directory, restores in locked/reviewed conditions as configured, and compiles the reviewed public registration surface.
 
-1. Require `artifacts/packages` to contain both supported runtime NuGet packages.
-2. Create a temporary ASP.NET Core `net10.0` app under the system temp directory.
-3. Configure a local NuGet source that points at the freshly packed artifacts.
-4. Install `SharpAccess.Core` and `SharpAccess.Sqlite` as package references.
-5. Fail if the smoke app uses project references.
-6. Compile the intended consumer integration shape:
-   - `AddSharpAccess(builder.Configuration, options => ...)`
-   - `AddSqliteAccess(builder.Configuration, options => ...)`
-   - `UseSharpAccess()`
-   - `MapSharpAccessEndpoints()`
-7. Build with warnings as errors.
+The consumer exercises Core plus SQLite registration and separately compiles PostgreSQL registration so package dependencies/public API are proven without a project reference. Real-engine PostgreSQL behavior remains provider-contract evidence rather than package-consumer compilation evidence.
 
-## Why this is different from public API tests
+No SQL Server or MySQL package belongs to the active consumer cohort.
 
-Reflection-based public API tests prove that exported type names and members did not drift. A consumer smoke test proves the package can actually be restored and compiled the way downstream applications will use it.
+## Published RC1 validation
 
-The smoke test can catch:
+Public discovery, published nuspec metadata, clean-consumer restore, clean-consumer Release build, and SharpAccess version-skew validation passed for the published RC1 cohort. Those results are retained in `RELEASE-EVIDENCE-MATRIX.md`.
 
-- Missing files in the `.nupkg`.
-- Incorrect package metadata.
-- Broken transitive dependency assumptions.
-- Extension-method namespace regressions.
-- Provider package install or native SQLite asset issues.
-- Accidental reliance on project references.
+Post-release documentation changes do not require republishing packages or rerunning the unpublished-version check against an already-published RC1 version.
 
-## Future runtime extension
+## Future releases
 
-A later hardening pass should extend this smoke test to start the temporary app, initialize the auth schema, and hit `/health` plus at least one auth endpoint. The current gate intentionally starts with package restore/compile validation because that is the highest-signal check for NuGet asset and public integration regressions.
-
-## Release gate recommendation
-
-For production release candidates, run this validation on the approved Windows environment after pack and before publishing artifacts.
+A future release must run the package-consumer checks required by its selected policy against the exact package bytes intended for publication, then repeat the applicable clean-consumer/public-feed checks after publication.

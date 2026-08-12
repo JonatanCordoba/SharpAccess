@@ -1,56 +1,30 @@
 # Operations
 
-SharpAccess is a package family, not a hosted service. The package supplies secure defaults, bounded diagnostic signals, release evidence, capacity controls, and recovery drills. The consuming host remains responsible for deployment architecture, secrets, networking, database operations, alert routing, retention, and on-call response.
+SharpAccess is a package family, not a hosted service. The package supplies secure defaults, bounded diagnostics, release evidence, capacity controls, and recovery drills; the consuming host owns deployment architecture, secrets, networking, database operations, alert routing, retention, and on-call response.
 
-## Operational ownership
+## Evidence ownership
 
-Assign named owners before production use:
+Retain applicable source/review records, CI/security results, package hashes/SBOM/provenance, operational-readiness and release indexes, continuing PostgreSQL evidence, performance/capacity evidence, recovery records, approved changes/risk exceptions, and incident follow-up according to policy.
 
-| Area | Package responsibility | Host responsibility |
-|---|---|---|
-| Authentication behavior | Secure package implementation and compatibility | Configuration, feature selection, user support |
-| Relational persistence | Provider-owned schema and transactions | Database availability, backup, restore, capacity, credentials |
-| Secrets and keys | Validation and safe use | Generation, storage, rotation, revocation |
-| Telemetry | Bounded `ActivitySource` and `Meter` signals | Exporters, sampling, dashboards, alerts, retention |
-| Incidents | Documented package response procedures | On-call, communications, containment, recovery |
-| Releases | Packages, checksums, SBOMs, provenance | Approval, deployment, rollback, consumer validation |
-
-## Required operational evidence
-
-Keep evidence for the period defined by policy and regulation. At minimum retain:
-
-- the source commit and review record;
-- required CI and security-check results;
-- package hashes, SBOMs, and provenance attestations;
-- the operational-readiness and release-candidate indexes;
-- PostgreSQL promotion evidence when that package is in the release cohort;
-- performance and capacity evidence;
-- deterministic export and tree-equivalence evidence;
-- recovery-drill records;
-- approved change or emergency-change records;
-- risk exceptions and expiry dates;
-- incident timelines, postmortems, and corrective actions.
-
-`scripts/operational-readiness.ps1` produces operational evidence under `artifacts/operations`. The integrated release-candidate entry point is documented in `RELEASE-CANDIDATE.md`.
+PostgreSQL is Supported. Applicable future release revisions require the continuing real-engine/provider/recovery/package obligations described in `PROVIDER-PARITY-EVIDENCE.md` and `POSTGRES-OPERATIONS.md`. `POSTGRES-PROMOTION.md` is historical promotion context, not a pending support gate.
 
 ## Production preparation
 
 Before enabling SharpAccess for real users:
 
-1. Complete `docs/RELEASE-CHECKLIST.md`.
-2. Define host-specific service-level objectives and alerts.
-3. Review `docs/CAPACITY-PLANNING.md` and test representative load.
-4. Configure persistent Data Protection keys.
-5. Store JWT keys, token-hashing keys, peppers, OAuth credentials, SMTP credentials, and database credentials outside the repository.
-6. Test database backup and restoration using provider-appropriate production tooling.
-7. Establish log and audit retention without recording secrets or raw tokens.
-8. Configure on-call ownership and incident communications.
-9. Verify rollback steps for application, package, configuration, and database changes.
+1. define host-specific service objectives and alerts;
+2. review `CAPACITY-PLANNING.md` with representative load;
+3. persist/protect Data Protection keys;
+4. store JWT/token-hashing/rate-limit/pepper/OIDC/SMTP/database secrets outside the repository;
+5. test provider-appropriate backup/restore;
+6. establish log/audit retention without secrets;
+7. configure on-call/incident ownership;
+8. verify application/package/config/database rollback procedures.
 
-## Operational changes
+The RC1 release checklist is historical release state plus future stable criteria; it is not a requirement to rerun published RC1 evidence before deploying an already-published package.
 
-Use `docs/CHANGE-MANAGEMENT.md` and `docs/templates/CHANGE-RECORD.md` for security-sensitive, release, persistence, or configuration changes. Emergency changes must preserve evidence and receive retrospective review.
+## Change management
 
-## Provider status
+Use `CHANGE-MANAGEMENT.md` and the change-record template for security-sensitive, release, persistence, or configuration changes. Emergency changes must preserve evidence and receive retrospective review.
 
-`SharpAccess.Postgres` is Supported only through the exact-revision gate in `POSTGRES-PROMOTION.md`. SQL Server and MySQL are absent from the active tree and remain roadmap candidates without active operational or release obligations.
+SQL Server and MySQL remain deferred and have no active operational/release obligations.

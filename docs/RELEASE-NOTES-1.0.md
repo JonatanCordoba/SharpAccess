@@ -1,45 +1,24 @@
-# SharpAccess 1.0 release notes
+# SharpAccess 1.0 release notes — future draft
 
-## Release scope
+Stable `1.0.0` has not started as an execution or publication stage. This file is a future release-notes draft and does not claim that `1.0.0` is released or ready.
 
-SharpAccess 1.0 is a Windows-only .NET 10 package family.
+## Current baseline inherited from RC1
 
-The stable package cohort is:
+The currently published prerelease `0.9.0-rc.1` establishes a Windows-only, PowerShell 7 engineering/release model with Supported Core, SQLite, and PostgreSQL packages.
 
-- `SharpAccess.Core`;
-- `SharpAccess.Sqlite`;
-- `SharpAccess.Postgres`, after its coordinated promotion gate passes.
+The current public surface includes provider-neutral Core registration/behavior plus `AddSqliteAccess` and `AddPostgresAccess`. PostgreSQL promotion is complete; it is not waiting on a future promotion gate.
 
-SQL Server and MySQL are not included in the active source tree or stable package set. They remain future roadmap candidates without compatibility or delivery commitments.
+## Candidate stable themes
 
-## Platform and tooling
+If/when stable work is explicitly opened, release notes should describe the actual selected stable revision and only changes/evidence that exist at that time. Expected review areas include:
 
-- Windows is the supported engineering, CI, release, and deployment platform.
-- Repository automation uses PowerShell 7 only.
-- Bash parity and Linux/macOS workflows were removed.
-- Docker, Compose, service containers, and local container orchestration were removed.
-- PostgreSQL release evidence uses native Windows client tools and an approved native or managed scratch database.
+- pre-1.0 compatibility changes and removed aliases;
+- explicit global versus tenant authorization semantics;
+- bounded cursor pagination and security-resource limits;
+- key/token/pepper rotation contracts;
+- OIDC provider-neutral behavior;
+- SQLite/PostgreSQL persistence, migrations, recovery, and operations;
+- package, SBOM, provenance, security, and clean-consumer validation;
+- RC feedback/defect disposition.
 
-## API stabilization
-
-- Removed all `DotNetAuth` registration and application aliases.
-- Removed `AddSqliteAuth` and other pre-v1 compatibility names.
-- Removed legacy bearer-scheme, refresh-cookie, and CSRF-header fallbacks.
-- Replaced unscoped authorization aliases with explicit global or active-tenant attributes.
-- Kept SQLite as the supported provider registration path.
-- Kept PostgreSQL registration internal until promotion.
-- Removed SQL Server/MySQL options, namespaces, registrations, and package identities from the active product surface.
-
-## Security and authorization
-
-- Global and tenant authorization are separate persisted and token domains.
-- Tenant authority is bound to the active route tenant.
-- JWT validation rechecks account, security-version, authorization-version, and membership state.
-- Refresh tokens are opaque, keyed-hashed, rotated, replay-detected, and family-revoked transactionally.
-- Access-token signing uses a mandatory rotatable key ring.
-- Passwords use Argon2id with versioned host-owned peppers.
-- Pagination cursors are opaque, purpose-bound Data Protection values.
-
-## Release integrity
-
-Stable packages are published only from one verified signed root commit in the clean `JonatanCordoba/SharpAccess` repository. The root tree must match the approved development revision exactly and includes locked dependencies, package smoke evidence, SBOMs, checksums, provenance, operations, recovery, and security evidence.
+Do not predeclare stable readiness, tag identity, package bytes, or final evidence before the stable stage is opened and executed.

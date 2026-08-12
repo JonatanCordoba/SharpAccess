@@ -1,63 +1,18 @@
 # Authorization attributes
 
-SharpAccess 1.0 uses explicit global and active-tenant authorization attributes. Legacy unscoped aliases are removed.
+SharpAccess uses explicit global and active-tenant authorization attributes. The published prerelease is `0.9.0-rc.1`; this is current API documentation, not a claim that stable `1.0.0` has shipped.
 
 ## Attributes
 
-- `[Authenticate]`: requires a valid identity from `SharpAccess.Jwt`.
-- `[RequireGlobalRole("name")]`: requires at least one named global role.
-- `[RequireGlobalPermission("permission")]`: requires one global permission.
-- `[RequireAnyGlobalPermission(...)]`: requires at least one listed global permission.
-- `[RequireAllGlobalPermissions(...)]`: requires every listed global permission.
-- `[RequireTenantPermission("permission")]`: requires one active-tenant permission.
-- `[RequireTenantRole("name")]`: requires one active-tenant role.
+- `[Authenticate]`: requires a valid SharpAccess JWT identity.
+- `[RequireGlobalRole]`, `[RequireGlobalPermission]`, `[RequireAnyGlobalPermission]`, `[RequireAllGlobalPermissions]`: global authorization only.
+- `[RequireTenantPermission]`, `[RequireTenantRole]`: active-tenant authorization only.
 - `[RequireTenantOwner]`: requires ownership of the active tenant.
-- `[RequireActiveTenant]`: requires an active tenant claim and route equality when the route contains the configured tenant parameter.
-- `[RequireGlobalOrTenantPermission(global, tenant)]`: accepts a named global permission or the named active-tenant permission. The tenant branch is always bound to the route tenant.
+- `[RequireActiveTenant]`: requires active-tenant context and route equality where configured.
+- `[RequireGlobalOrTenantPermission]`: deliberate endpoint policy naming both accepted scopes.
 
-## Minimal APIs
+Attributes on Minimal API delegates are applied through the package mapping helpers (`MapAttributedGet/Post/Put/Patch/Delete`).
 
-Attributes on delegates are applied during endpoint construction through the package mapping helpers.
+Tenant route policies bind tenant claims to the active/route tenant; tenant permissions cannot satisfy global administration policies.
 
-```csharp
-[RequireAllGlobalPermissions(
-    AuthPermissions.UsersRead,
-    AuthPermissions.RolesRead)]
-static IResult Overview() => Results.Ok();
-
-app.MapAttributedGet("/overview", Overview);
-```
-
-Available helpers are `MapAttributedGet`, `MapAttributedPost`, `MapAttributedPut`, `MapAttributedPatch`, and `MapAttributedDelete`.
-
-## Tenant routes
-
-```csharp
-[Authenticate]
-[RequireActiveTenant]
-[RequireTenantPermission(TenantAuthPermissions.MembersRead)]
-static IResult TenantResource(Guid tenantId) => Results.Ok(tenantId);
-
-app.MapAttributedGet("/tenants/{tenantId:guid}/resource", TenantResource);
-```
-
-The route parameter name defaults to `tenantId` and can be changed in the `RequireActiveTenantAttribute` constructor.
-
-## Middleware composition
-
-`UseSharpAccess()` installs package-specific authentication middleware without selecting a host-wide exception policy or CSP by default.
-
-Enterprise hosts may compose components explicitly:
-
-```csharp
-app.UseSharpAccessExceptionHandling();
-app.UseSharpAccessSecurityHeaders(options =>
-{
-    options.ContentSecurityPolicy = "default-src 'self'; frame-ancestors 'none'";
-});
-app.UseSharpAccessCookieProtection();
-app.UseSharpAccessRateLimiter();
-app.UseSharpAccessAuthentication();
-app.UseSharpAccessFreshAuthentication();
-app.UseSharpAccessAuthorization();
-```
+`UseSharpAccess()` installs the package authentication/authorization middleware composition. Hosts may compose the individual SharpAccess exception/security/cookie/rate-limit/authentication/fresh-auth/authorization components when they need explicit ordering and policy control.

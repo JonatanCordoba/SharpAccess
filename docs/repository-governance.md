@@ -1,91 +1,53 @@
 # Repository governance
 
-SharpAccess contains security-sensitive authentication and authorization packages. Repository settings fail closed before stable publication.
+## Canonical repository and branches
 
-## Supported repository environment
+`JonatanCordoba/SharpAccess` is the canonical source, development, review, verification, release, and publication repository.
 
-- Windows only.
-- PowerShell 7 only.
-- .NET 10 only.
-- No Bash, Docker, Compose, or service containers.
-- Active source cohort: Core, SQLite, PostgreSQL.
-- SQL Server and MySQL: roadmap-only, absent from active source and package output.
+The canonical protected source/default branch is `main`. Ordinary source workflows target `main`; `master` is not a SharpAccess source branch. The separate GitHub Wiki repository uses its own `master` branch and must not be conflated with source governance.
 
-## Default branch policy
+`JonatanCordoba/dotnet-auth` is historical migration evidence only and is not an active development or release authority.
 
-The development default branch is `master`. Configure branch protection or a repository ruleset to:
+## Pull-request protection
 
-- require pull requests;
-- require at least one approval;
-- require CODEOWNERS review for covered paths;
-- require resolved conversations;
-- require the checks listed under `pullRequestRequiredChecks` in `.github/required-checks.json`;
-- disallow force pushes and branch deletion;
-- restrict direct pushes to emergency revert use.
+The verified protected `main` pull-request policy uses these nine checks:
 
-Squash feature and refactor pull requests into one coherent commit. Revert bad changes with a new commit rather than rewriting protected history.
+1. `Validate pull request evidence`
+2. `sqlite-supported`
+3. `ci-windows`
+4. `devskim`
+5. `operational-readiness-windows`
+6. `provider-contracts-classify`
+7. `review`
+8. `test-scope-classify`
+9. `tracked-secret-scan`
 
-## Required local validation
+`postgres-native` and the integrated release-candidate job are exact-main/release evidence, not universal pull-request checks.
 
-Run targeted checks while a change is uncommitted. After committing, run:
+Repository settings and `.github/required-checks.json` must remain synchronized. Drift is a governance failure, not permission to weaken the live policy.
 
-```powershell
-./scripts/verify-local.ps1 -RepositoryRoot $PWD
-git status --short
-```
+## Change policy
 
-The complete local gate covers structure/status, SAST, locked restore, warnings-as-errors, tests, coverage, complexity, diagnostics, SQLite recovery, endpoint smoke, packages, consumer smoke, and SBOM evidence. PostgreSQL real-engine evidence remains a separately protected release requirement.
+Use a coherent branch and pull request for non-emergency changes. Review working and staged diffs, commit intentionally, run the required exact-commit verification, and preserve protected history. Revert mistakes on `main` with a new commit rather than rewriting protected history.
 
-Do not weaken warnings-as-errors, locked restore, security scans, package audit, coverage, telemetry redaction, recovery, or evidence retention to make a change pass.
+When evidence depends on ancestry, choose the integration strategy before relying on a branch revision. Squash merging is appropriate for ordinary work only when no retained evidence requires the feature revision to remain an ancestor.
 
-## Security automation
+## Release governance
 
-Keep enabled:
+RC1 `0.9.0-rc.1` is already published. Its immutable package provenance commit is `4595545d8afd84c58795fc02c2c242533cdff1ac`; current `main` may advance without changing that provenance.
 
-- blocking DevSkim SAST and retained SARIF;
-- Dependabot alerts, security updates, and version updates;
-- dependency review;
-- native GitHub secret scanning and push protection where available;
-- the tracked-file secret scanning workflow;
-- private vulnerability reporting and Security Advisories;
-- CodeQL when the public repository or GitHub security entitlement makes it available.
-
-Dependency updates run the same applicable Windows gates as other changes.
-
-## Operational governance
-
-Use:
-
-- `CHANGE-MANAGEMENT.md` for change classes;
-- `INCIDENT-RESPONSE.md` and `templates/POSTMORTEM.md` for incidents;
-- `BUSINESS-CONTINUITY.md` and `templates/RECOVERY-DRILL.md` for recovery;
-- `templates/RISK-ACCEPTANCE.md` for bounded exceptions;
-- `PRIVACY.md` for responsibility boundaries.
-
-Risk exceptions require an owner, compensating controls, remediation, and expiry.
-
-## Release boundary
-
-`JonatanCordoba/SharpAccess` is the only repository authorized to produce release evidence, packages, canonical tags, and GitHub releases.
-
-Stable publication occurs only from the verified signed root in `JonatanCordoba/SharpAccess`, after:
-
-- PostgreSQL is promoted through the complete gate;
-- Core, SQLite, and PostgreSQL are the only stable package outputs;
-- the Windows release commit passes required checks;
-- public API and package contents are inspected;
-- consumer smoke, operations, recovery, SBOM, checksums, provenance, and signing evidence pass;
-- security and release documentation is current.
-
-SQL Server and MySQL remain future roadmap candidates and are not release blockers.
+Future tagging and publication require explicit authorization and must use the protected SharpAccess release flow. Stable `1.0.0` has not started as an execution stage.
 
 ## Settings audit
 
-- [ ] `master` has branch protection or an equivalent ruleset.
-- [ ] PRs, approval, CODEOWNERS, and conversation resolution are required.
-- [ ] Required check names match `.github/required-checks.json`.
-- [ ] Force pushes and deletion are disabled.
-- [ ] Dependabot, SAST, secret scanning, push protection, and vulnerability reporting are enabled.
-- [ ] Release evidence and publication originate from the selected SharpAccess revision.
-- [ ] The public repository has trusted publication environments.
-- [ ] Operational evidence retention and exercise schedules are configured.
+Periodically verify:
+
+- [ ] `main` is the repository default branch.
+- [ ] `main` has branch protection/ruleset enforcement.
+- [ ] required review/conversation-resolution policy matches the approved governance contract.
+- [ ] the nine required PR checks above match the live protected policy and `.github/required-checks.json`.
+- [ ] force pushes and branch deletion are disabled for protected `main`.
+- [ ] CODEOWNERS, private vulnerability reporting, dependency controls, secret scanning/push protection, and protected release environments remain configured.
+- [ ] release workflows retain least privilege and exact-artifact/revision checks.
+
+Repository-setting evidence is separate from tracked-file evidence and must be inspected as settings state when a decision depends on it.

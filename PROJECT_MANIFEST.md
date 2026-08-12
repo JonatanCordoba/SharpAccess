@@ -1,28 +1,35 @@
 # Project manifest
 
-## Runtime, platform, and package targets
+## Runtime, platform, repository, and release state
 
 - Target framework: `net10.0`.
 - SDK: the exact version selected by `global.json`.
-- Supported engineering, CI, release, and deployment platform: Windows.
+- Supported engineering, CI, verification, release, and deployment platform: Windows.
 - Repository automation: PowerShell 7 only.
 - Container policy: no Dockerfiles, Compose files, service containers, or local container orchestration.
-- License: MIT.
-- Canonical source and development repository: `JonatanCordoba/SharpAccess`.
-- Canonical public release repository: `JonatanCordoba/SharpAccess`.
+- License: MIT. Canonical package license metadata is `<PackageLicenseExpression>MIT</PackageLicenseExpression>` in `Directory.Build.props`.
+- Canonical source, development, review, release, and publication repository: `JonatanCordoba/SharpAccess`.
+- Canonical protected source branch: `main`.
 - Authoritative synchronized package version: `eng/Version.props`.
-- Current release-candidate version: `0.9.0-rc.1`.
+- Published prerelease version: `0.9.0-rc.1`.
+- Published signed tag: `v0.9.0-rc.1`.
+- Immutable RC1 package provenance commit: `4595545d8afd84c58795fc02c2c242533cdff1ac`.
+- Current post-release `main` at the audited closure baseline: `a038e7fc364c526f956ebacce7f5779fbfaac0a8`.
+
+Current `main` is intentionally newer than the immutable RC1 provenance commit. Documentation, Wiki, governance, and stage-closure commits after publication do not change the source identity of the already-published RC1 package bytes.
+
+Stable `1.0.0` has not started as an execution stage.
 
 ## Active package cohort
 
 - `SharpAccess.Core`: Supported.
 - `SharpAccess.Sqlite`: Supported.
-- `SharpAccess.Postgres`: Supported server provider.
+- `SharpAccess.Postgres`: Supported.
 - Provider status source of truth: `eng/ProviderStatus.props`.
 
-SQL Server and MySQL are absent from the active repository tree. They remain future roadmap candidates only and may return through separate architecture, implementation, compatibility, security, migration, operational, and release-evidence work.
+PostgreSQL remains subject to continuing real-engine contracts, restricted-principal, historical-upgrade, concurrency, cancellation, timeout/SQLSTATE, query-plan, coverage, mutation, native-recovery, package-validation, and consumer-evidence obligations on applicable future release revisions.
 
-Only projects with authoritative `Supported` status are packable through ordinary development paths. Public release-candidate and stable publication is permitted only through `.github/workflows/publish-nuget.yml`, using the protected `nuget-release` environment and NuGet Trusted Publishing with GitHub OIDC. The publication workflow consumes the exact immutable artifact produced by a successful `.github/workflows/release-candidate.yml` run for the signed release-tag commit; it does not rebuild or repack release packages. A long-lived NuGet API key is not an authorized SharpAccess release credential.
+SQL Server and MySQL are absent from the active repository tree. They remain future roadmap candidates only and may return only through separate architecture, implementation, security, compatibility, migration, operations, and release-evidence work.
 
 ## Project layout
 
@@ -30,38 +37,27 @@ Only projects with authoritative `Supported` status are packable through ordinar
 - `providers/SharpAccess.Sqlite`: supported SQLite provider source.
 - `providers/SharpAccess.Postgres`: supported PostgreSQL provider source.
 - `providers/Shared`: linked internal registration source shared by active providers.
-- `samples/SharpAccess.SampleApi`: thin Minimal API and test-console host.
+- `samples/SharpAccess.SampleApi`: Minimal API sample and test-console host.
 - `tools/SharpAccess.TestBootstrap`: deterministic test bootstrap.
 - `tools/SharpAccess.MigrationTool`: migration command-line utility.
 - `tools/SharpAccess.Sbom`: deterministic active-cohort SBOM generator.
 - `tools/SharpAccess.QualityReport`: exact-revision engineering-quality report generator.
-- `tests/SharpAccess.UnitTests`: unit tests.
-- `tests/SharpAccess.IntegrationTests`: integration tests.
-- `tests/SharpAccess.EndpointTests`: endpoint behavior tests.
-- `tests/SharpAccess.ProviderContractTests`: SQLite and PostgreSQL provider contracts.
-- `tests/SharpAccess.PackageTests`: package, public-surface, and repository-policy tests.
-- `scripts`: PowerShell 7 verification and release tools.
+- `tests/*`: unit, integration, endpoint, provider-contract, and package/repository-policy tests.
+- `scripts`: PowerShell 7 verification, quality, provider, recovery, and release tools.
 - `.github/workflows`: Windows-only GitHub Actions workflows.
-- `docs`: consumer, operator, security, quality, and release documentation.
+- `docs`: consumer, operator, security, quality, governance, and release documentation.
+- `wiki-source`: tracked source for the separately published GitHub Wiki.
 
 Every active project inherits lock-file generation from `Directory.Build.props`. Project-level lock-file opt-outs are forbidden.
 
-## Release policy
+## Publication policy
 
-The public `0.9.0-rc.1` and initial stable `1.0.0` cohorts are Core, SQLite, and PostgreSQL. PostgreSQL remains subject to continuing real-engine contracts, restricted-principal, migration, query-plan, coverage, mutation, recovery, package-validation, and consumer evidence on applicable release revisions.
+The RC1 cohort consists exactly of Core, SQLite, and PostgreSQL. RC1 publication is complete and was performed through `.github/workflows/publish-nuget.yml` using NuGet Trusted Publishing with GitHub OIDC and the protected publication boundary. The publication workflow consumed the exact validated release-candidate artifact; it did not rebuild or repack the release cohort.
 
-The public release repository starts from one signed root commit containing the exact approved tracked tree. No development history, branches, tags, notes, replace refs, pull-request refs, local artifacts, internal prompts, audits, or unpublished evidence are inherited.
+The durable immutable RC1 identity ledger is `docs/RELEASE-EVIDENCE-MATRIX.md`.
 
-The first canonical public tag is `v0.9.0-rc.1`. Stable `v1.0.0` is created only after RC feedback is dispositioned and the stable release matrix passes again.
+The SharpAccess Git history began from a signed, history-clean migration root. That bootstrap is historical evidence, not an instruction to recreate or replace the existing repository. See `docs/RELEASE-REPOSITORY-BOOTSTRAP.md`.
 
 ## Provider-test safety
 
-PostgreSQL contract and recovery tests require:
-
-- a dedicated `sharpaccess_contract_tests` scratch database;
-- `SHARPACCESS_PROVIDER_TEST_ALLOW_RESET=true`;
-- `SHARPACCESS_POSTGRES_TEST_CONNECTION_STRING`;
-- `SHARPACCESS_POSTGRES_READINESS=true` for readiness evidence;
-- native Windows PostgreSQL client tools for recovery evidence.
-
-Unconfigured CI may remain SQLite-only, but the supported-provider release gate requires the approved PostgreSQL scratch database and must fail rather than skip when PostgreSQL evidence is selected.
+PostgreSQL contract and recovery tests require an approved scratch database, explicit reset acknowledgment, protected connection configuration, and native Windows PostgreSQL tools where recovery evidence is selected. Missing required PostgreSQL infrastructure fails a selected release/provider evidence path rather than being silently treated as success.

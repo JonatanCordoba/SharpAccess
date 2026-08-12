@@ -5,7 +5,7 @@ param(
     [ValidateSet("Debug", "Release")]
     [string]$Configuration = "Release",
     [string]$RepositoryUrl = "https://github.com/JonatanCordoba/SharpAccess",
-    [string]$ChangedCodeBaseRef = "origin/master"
+    [string]$ChangedCodeBaseRef = "origin/main"
 )
 
 Set-StrictMode -Version Latest
