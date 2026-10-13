@@ -33,7 +33,7 @@ jobs:
         run: dotnet build SharpAccess.sln --configuration Release --no-restore -warnaserror
       - shell: pwsh
         run: ./scripts/operational-readiness.ps1 -RepositoryRoot $env:GITHUB_WORKSPACE -Configuration Release -NoRestore -NoBuild
-      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: operational-readiness-${{ github.sha }}
